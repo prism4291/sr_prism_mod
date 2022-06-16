@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <title>prismSR</title>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+    <script type="text/javascript">
+        function load() {
+            let gameLoadOutput;
+            let gameLoadReturn;
+            let bunValue;
+            document.getElementById('bun').value = document.getElementById('bun').value.replace(/\x0D\x0A|\x0D|\x0A/g, '');
+            bunValue = document.getElementById('bun').value;
+            gameLoadReturn = -1;
+            gameLoadOutput = 'Error';
+            if (bunValue !== '') {
+                if (document.getElementById('cv')) {
+                    gameLoadReturn = setSaveCode(bunValue);
+                }
+            }
+            if (gameLoadReturn !== -1) {
+                gameLoadOutput = 'Set OK';
+            }
+            document.getElementById('pass').innerHTML = gameLoadOutput;
+        }
+
+        function save() {
+            let gameSaveReturn = '';
+            let gameSaveOutput = 'Error';
+            if (document.getElementById('cv')) {
+                gameSaveReturn = getSaveCode('0');
+            }
+            if (gameSaveReturn !== '') {
+                document.getElementById('bun').value = gameSaveReturn;
+                gameSaveOutput = 'Get OK';
+            }
+            document.getElementById('pass').innerHTML = gameSaveOutput;
+        }
+    </script>
+    <table>
+        <tbody>
+            <tr>
+                <th>code</th>
+                <td>
+                    <label for="bun"></label><textarea id="bun" onclick="this.select();"></textarea>
+                </td>
+                <th>
+                    <input type="SUBMIT" value="get" onclick="save()" onmousedown="document.getElementById('bun').value='';document.getElementById('pass').innerHTML='';">
+                    <input type="SUBMIT" value="set" onclick="load()" onmousedown="document.getElementById('pass').value='';">
+                </th>
+            </tr>
+        </tbody>
+    </table>
+    <div id="pass"></div>
+    <canvas ID="cv" style="margin:auto;display:block;width:512px;height:384px; "></canvas>
+    <script async src="./ranger.js" onload="startGame('','',0,'');"></script>
+    random item <input type="submit" value="summon" onclick="SR_DROP.add(100,100,srFloor(srRandomRange(3,563)),0,0);"><br>
+    <label for="custom_fps">fps:</label><input type="number" id="custom_fps" value="60"> 処理数:<label for="multiple_move"> 処理数:</label><input type="number" id="multiple_move" value="1"><br>
+    <input type="button" value="sp増加" onclick="for(let ii=0;ii<4;ii++){PlayerSp[ii]+=10;}">
+</body>
+
+</html>
