@@ -777,11 +777,11 @@ function setSaveCode(a) {
             PlayerMp[a] = 0;
         }
         ClickToSell = 0;
-        SR_PLAYER.o();
-        SR_INDICATOR.o();
-        SR_PROJECTILE.o();
-        SR_DROP.o();
-        SR_WORLD_MAP.o();
+        SR_PLAYER.plReset();
+        SR_INDICATOR.inReset();
+        SR_PROJECTILE.pjReset();
+        SR_DROP.dpReset();
+        SR_WORLD_MAP.mpSet();
         SaveCodeError = loadSaveCode(SaveCodeErrorMessage, 0);
         if (0 < SaveCodeError) {
             SaveCodeErrorMessageTime = 50;
@@ -1708,28 +1708,28 @@ function startGame(a, b, c, d, e, g, h, q, m, l, A, z, Z, B) {
         for (a = 0; 196608 > a; a++) {
             GameCanvas[a] = 0;
         }
-        LARGE_TEXT.o("font.gif", 8, 12);
-        SMALL_TEXT.o("font_s.gif", 5, 7);
+        LARGE_TEXT.txSet("font.gif", 8, 12);
+        SMALL_TEXT.txSet("font_s.gif", 5, 7);
         for (a = 0; 13 > a; a++) {
             TerrainTextureImageArray[a] = new SrImage;
-            TerrainTextureImageArray[a].o("gt" + a + ".gif");
+            TerrainTextureImageArray[a].imSet("gt" + a + ".gif");
         }
-        PlayerImage.o("pl.gif");
-        SmallItemImage.o("icon.gif");
-        LargeItemImage.o("item.gif");
-        EnemyHeadImage.o("en.gif");
-        SignImage.o("next.gif");
-        ProjectileImage.o("mag.gif");
-        TitleImage.o("title.gif");
-        StageEffectImage.o("ef.gif");
-        HouseImage.o("town.gif");
-        WaterImage.o("water.gif");
-        BloodImage.o("water2.gif");
-        ForgetTreeImage.o("tree.gif");
-        MapElevationImage.o("map.gif");
-        MapTileImage.o("mt.gif");
-        MapImage.o("map2.gif");
-        MapSymbolImage.o("mt2.gif");
+        PlayerImage.imSet("pl.gif");
+        SmallItemImage.imSet("icon.gif");
+        LargeItemImage.imSet("item.gif");
+        EnemyHeadImage.imSet("en.gif");
+        SignImage.imSet("next.gif");
+        ProjectileImage.imSet("mag.gif");
+        TitleImage.imSet("title.gif");
+        StageEffectImage.imSet("ef.gif");
+        HouseImage.imSet("town.gif");
+        WaterImage.imSet("water.gif");
+        BloodImage.imSet("water2.gif");
+        ForgetTreeImage.imSet("tree.gif");
+        MapElevationImage.imSet("map.gif");
+        MapTileImage.imSet("mt.gif");
+        MapImage.imSet("map2.gif");
+        MapSymbolImage.imSet("mt2.gif");
         if (checkHost()) {
             StartUpStep--
         } else {
@@ -1765,11 +1765,11 @@ function startGame(a, b, c, d, e, g, h, q, m, l, A, z, Z, B) {
         }
     }
     if (2 == StartUpStep) {
-        SR_PLAYER.o();
-        SR_INDICATOR.o();
-        SR_PROJECTILE.o();
-        SR_DROP.o();
-        SR_WORLD_MAP.o();
+        SR_PLAYER.plReset();
+        SR_INDICATOR.inReset();
+        SR_PROJECTILE.pjReset();
+        SR_DROP.dpReset();
+        SR_WORLD_MAP.mpSet();
         if (1 == GameMode) {
             loadSaveCode(OpponentSaveData, 1)
         }
@@ -1832,8 +1832,8 @@ function menuAndMap() {
     var a;
     if (!SequenceStep) {
         //if (SR_PLAYER.o(), SR_ENEMY.o(0), SequenceStep++, 1 == GameMode)
-        SR_PLAYER.o();
-        SR_ENEMY.o(0);
+        SR_PLAYER.plReset();
+        SR_ENEMY.enReset(0);
         SequenceStep++;
         if (1 == GameMode) {
             SequenceStep = 60;
@@ -1842,20 +1842,20 @@ function menuAndMap() {
         }
     } else if (1 == SequenceStep) {
         CurrentArea = 0;
-        if (SR_TERRAIN.o(0)) {
-            SR_PLAYER.set(0, 20, SR_TERRAIN.b[20]);
-            SR_PLAYER.set(1, 28, SR_TERRAIN.b[28]);
-            SR_PLAYER.set(2, 36, SR_TERRAIN.b[36]);
-            SR_PLAYER.set(3, 44, SR_TERRAIN.b[44]);
+        if (SR_TERRAIN.trSet(0)) {
+            SR_PLAYER.plSet(0, 20, SR_TERRAIN.b[20]);
+            SR_PLAYER.plSet(1, 28, SR_TERRAIN.b[28]);
+            SR_PLAYER.plSet(2, 36, SR_TERRAIN.b[36]);
+            SR_PLAYER.plSet(3, 44, SR_TERRAIN.b[44]);
             setPlayerStatus();
-            SR_ENEMY.o(1);
+            SR_ENEMY.enReset(1);
             SequenceStep++;
         }
     } else if (2 == SequenceStep) {
-        SR_PLAYER.G();
+        SR_PLAYER.plMain();
         setPlayerStatus();
         TrDraw();
-        SR_PLAYER.B();
+        SR_PLAYER.plDraw();
         if (Language) {
             drawFromImageCentered(TitleImage, 256, 100, 365, 121, 0, 0, 365, 121, 16777215);
         } else {
@@ -1939,9 +1939,9 @@ function menuAndMap() {
         }
         drawMenuCopyRight()
     } else if (3 == SequenceStep) {
-        SR_PLAYER.G();
+        SR_PLAYER.plMain();
         TrDraw();
-        SR_PLAYER.B();
+        SR_PLAYER.plDraw();
         showText(LARGE_TEXT, 256, 50, "Player's Class Selection", 204, 148, 73, 255, 100, 0, 0, 255, 16, 24);
         for (a = 0; 4 > a; a++) {
             if (isMouseHoveredCenter(160 + 64 * a, 140, 24, 24)) {
@@ -2147,10 +2147,10 @@ function menuAndMap() {
                         h.y = 8 * (MAP_DATA[MAP_DATA[b][e]][1] - MAP_DATA[b][1]);
                         g = normalize(h) / 8 - 1;
                         scaleVec2(h, 8);
-                        d.add(h);
+                        d.vecAdd(h);
                         for (c = 0; c < g; c++) {
                             filledRectCentered(a.a + d.x, d.y, 2, 2, 13421772);
-                            d.add(h);
+                            d.vecAdd(h);
                         }
                     }
                 }
@@ -2255,12 +2255,12 @@ WINDOW.fff = pveScreen;
 function pveScreen() {
     var a, b, c, d;
     if (10 == SequenceStep) {
-        if (SR_TERRAIN.o(CurrentStage)) {
-            SR_PLAYER.set(0, 0, SR_TERRAIN.b[0]);
-            SR_PLAYER.set(1, 1, SR_TERRAIN.b[1]);
-            SR_PLAYER.set(2, 2, SR_TERRAIN.b[2]);
-            SR_PLAYER.set(3, 3, SR_TERRAIN.b[3]);
-            SR_ENEMY.o(1);
+        if (SR_TERRAIN.trSet(CurrentStage)) {
+            SR_PLAYER.plSet(0, 0, SR_TERRAIN.b[0]);
+            SR_PLAYER.plSet(1, 1, SR_TERRAIN.b[1]);
+            SR_PLAYER.plSet(2, 2, SR_TERRAIN.b[2]);
+            SR_PLAYER.plSet(3, 3, SR_TERRAIN.b[3]);
+            SR_ENEMY.enReset(1);
             var e = srFloor(srRandomRange(12, 28));
             var g = srFloor(srRandomRange(28, 44));
             var h = srFloor(srRandomRange(44, 60));
@@ -2330,7 +2330,7 @@ function pveScreen() {
                     } else {
                         continue;
                     }
-                    SR_ENEMY.add(c, d, l)
+                    SR_ENEMY.enAdd(c, d, l)
                 }
             }
             SR_PROJECTILE.a = 0;
@@ -2532,7 +2532,7 @@ function pveScreen() {
             }
             drawItem(TerrainTextureImageArray[12], 166 + 60 * a - 12, 233, 24, 8, 0, 0, 24, 8)
         }
-        SR_PLAYER.B();
+        SR_PLAYER.plDraw();
         if (Clicked) {
             antiCheatCheck();
             for (a = 0; 4 > a; a++) {
@@ -2554,12 +2554,12 @@ shopとかいろいろ
 function townScreen() {
     var a, b, c, d, e;
     if (50 == SequenceStep) {
-        if (SR_TERRAIN.o(CurrentStage)) {
-            SR_PLAYER.set(0, 16, SR_TERRAIN.b[0]);
-            SR_PLAYER.set(1, 19, SR_TERRAIN.b[1]);
-            SR_PLAYER.set(2, 22, SR_TERRAIN.b[2]);
-            SR_PLAYER.set(3, 25, SR_TERRAIN.b[3]);
-            SR_ENEMY.o(1);
+        if (SR_TERRAIN.trSet(CurrentStage)) {
+            SR_PLAYER.plSet(0, 16, SR_TERRAIN.b[0]);
+            SR_PLAYER.plSet(1, 19, SR_TERRAIN.b[1]);
+            SR_PLAYER.plSet(2, 22, SR_TERRAIN.b[2]);
+            SR_PLAYER.plSet(3, 25, SR_TERRAIN.b[3]);
+            SR_ENEMY.enReset(1);
             SR_PROJECTILE.a = 0;
             SR_INDICATOR.a = 0;
             SR_DROP.a = 0;
@@ -2638,7 +2638,7 @@ function townScreen() {
                     antiCheatCheck();
                     for (a = 0; 4 > a; a++) {
                         if (PlayerCurrentLp[a] != PlayerMaxLp[a]) {
-                            SR_INDICATOR.add(SR_PLAYER.a[a][0].x, SR_PLAYER.a[a][0].y, 0, PlayerMaxLp[a] - PlayerCurrentLp[a], 65280)
+                            SR_INDICATOR.inAdd(SR_PLAYER.a[a][0].x, SR_PLAYER.a[a][0].y, 0, PlayerMaxLp[a] - PlayerCurrentLp[a], 65280)
                         }
 
                         PlayerCurrentLp[a] = PlayerMaxLp[a];
@@ -2665,7 +2665,7 @@ function townScreen() {
                 antiCheatCheck();
                 for (a = 0; 4 > a; a++) {
                     if (PlayerCurrentLp[a] != PlayerMaxLp[a]) {
-                        SR_INDICATOR.add(SR_PLAYER.a[a][0].x, SR_PLAYER.a[a][0].y, 0, PlayerMaxLp[a] - PlayerCurrentLp[a], 65280);
+                        SR_INDICATOR.inAdd(SR_PLAYER.a[a][0].x, SR_PLAYER.a[a][0].y, 0, PlayerMaxLp[a] - PlayerCurrentLp[a], 65280);
                     }
                     PlayerCurrentLp[a] = PlayerMaxLp[a];
                 }
@@ -2806,7 +2806,7 @@ function townScreen() {
                 if (!e || 2 == e && !b) {
                     a = 59;
                 }
-                SR_DROP.add(40, 200, h, 0, a);
+                SR_DROP.dpAdd(40, 200, h, 0, a);
                 PartyGold -= g;
                 antiCheatSet()
             }
@@ -2853,7 +2853,7 @@ function townScreen() {
             g = srFloor(getItemData(InventoryItem[40], 2) / 8);
             if (Clicked) {
                 antiCheatCheck();
-                SR_DROP.add(40, 200, 1, g, 0);
+                SR_DROP.dpAdd(40, 200, 1, g, 0);
                 InventoryItem[40] = 0;
                 InventoryCompo1[40] = 0;
                 InventoryCompo2[40] = 0;
@@ -3151,12 +3151,12 @@ function pvpScreen() {
     if (70 == SequenceStep) {
         CurrentStage = 0;
         CurrentArea = 1;
-        if (SR_TERRAIN.o(CurrentStage)) {
-            SR_PLAYER.set(0, 26, SR_TERRAIN.b[0]);
-            SR_PLAYER.set(1, 30, SR_TERRAIN.b[1]);
-            SR_PLAYER.set(2, 34, SR_TERRAIN.b[2]);
-            SR_PLAYER.set(3, 38, SR_TERRAIN.b[3]);
-            SR_ENEMY.o(1);
+        if (SR_TERRAIN.trSet(CurrentStage)) {
+            SR_PLAYER.plSet(0, 26, SR_TERRAIN.b[0]);
+            SR_PLAYER.plSet(1, 30, SR_TERRAIN.b[1]);
+            SR_PLAYER.plSet(2, 34, SR_TERRAIN.b[2]);
+            SR_PLAYER.plSet(3, 38, SR_TERRAIN.b[3]);
+            SR_ENEMY.enReset(1);
             SR_PROJECTILE.a = 0;
             SR_INDICATOR.a = 0;
             SR_DROP.a = 0;
@@ -3164,16 +3164,16 @@ function pvpScreen() {
             SequenceStep++;
         }
     } else if (71 == SequenceStep || 72 == SequenceStep || 73 == SequenceStep || 74 == SequenceStep) {
-        //if (TrDraw(), SR_PLAYER.G(), DpMain(), InMain(), $e(), DpDraw(), SR_PLAYER.B(), PjDraw(), cf(), drawUi(0), 71 == SequenceStep)
+        //if (TrDraw(), SR_PLAYER.G(), DpMain(), InMain(), $e(), DpDraw(), SR_PLAYER.B(), PjDraw(), InDraw(), drawUi(0), 71 == SequenceStep)
         TrDraw();
-        SR_PLAYER.G();
+        SR_PLAYER.plMain();
         DpMain();
         InMain();
         PjMain();
         DpDraw();
-        SR_PLAYER.B();
+        SR_PLAYER.plDraw();
         PjDraw();
-        cf();
+        InDraw();
         drawUi(0);
         if (71 == SequenceStep) {
             if (UploadError) {
@@ -3327,15 +3327,15 @@ function pvpScreen() {
     } else if (60 == SequenceStep) {
         CurrentStage = 0;
         CurrentArea = 1;
-        if (SR_TERRAIN.o(CurrentStage)) {
-            SR_PLAYER.set(0, 10, SR_TERRAIN.b[0]);
-            SR_PLAYER.set(1, 11, SR_TERRAIN.b[1]);
-            SR_PLAYER.set(2, 12, SR_TERRAIN.b[2]);
-            SR_PLAYER.set(3, 13, SR_TERRAIN.b[3]);
-            SR_PLAYER.set(4, 53, SR_TERRAIN.b[0]);
-            SR_PLAYER.set(5, 52, SR_TERRAIN.b[1]);
-            SR_PLAYER.set(6, 51, SR_TERRAIN.b[2]);
-            SR_PLAYER.set(7, 50, SR_TERRAIN.b[3]);
+        if (SR_TERRAIN.trSet(CurrentStage)) {
+            SR_PLAYER.plSet(0, 10, SR_TERRAIN.b[0]);
+            SR_PLAYER.plSet(1, 11, SR_TERRAIN.b[1]);
+            SR_PLAYER.plSet(2, 12, SR_TERRAIN.b[2]);
+            SR_PLAYER.plSet(3, 13, SR_TERRAIN.b[3]);
+            SR_PLAYER.plSet(4, 53, SR_TERRAIN.b[0]);
+            SR_PLAYER.plSet(5, 52, SR_TERRAIN.b[1]);
+            SR_PLAYER.plSet(6, 51, SR_TERRAIN.b[2]);
+            SR_PLAYER.plSet(7, 50, SR_TERRAIN.b[3]);
             setPlayerStatus();
             antiCheatCheck();
             for (a = 0; 8 > a; a++) {
@@ -3346,7 +3346,7 @@ function pvpScreen() {
             }
             PartyGold = 9999999;
             antiCheatSet();
-            SR_ENEMY.o(1);
+            SR_ENEMY.enReset(1);
             SR_PROJECTILE.a = 0;
             SR_INDICATOR.a = 0;
             SR_DROP.a = 0;
@@ -3354,18 +3354,18 @@ function pvpScreen() {
             SequenceStep++
         }
     } else if (61 == SequenceStep || 62 == SequenceStep || 63 == SequenceStep || 64 == SequenceStep) {
-        //for (TrDraw(), 61 == SequenceStep && (SR_PLAYER.N = 1), SR_PLAYER.G(), InMain(), $e(), SR_PLAYER.N = 0, SR_PLAYER.B(), PjDraw(), cf(), setPlayerStatus(), 61 == SequenceStep ? (TextFadeTime = srClampA(TextFadeTime + 1, 0, 30), a = srFloor(255 * TextFadeTime / 30), drawLine(0, 110, srFloor(512 * TextFadeTime / 30), 110, 8421504), drawLine(512 - srFloor(512 * TextFadeTime / 30), 143, 512, 143, 8421504), isMouseHoveredCenter(256, 127, 512, 32) && 30 == TextFadeTime ? (Clicked && (SequenceStep++, TextFadeTime = 0), filledRectCentered(256, 127, 512, 32, 8388608), showText(LARGE_TEXT, 256, 128, "FIGHT", 255, 255, 255, 255, 0, 0, 0, 255, 16, 24)) : showText(LARGE_TEXT, 256, 128, "READY", 255, 255, 255, a, 0, 0, 0, a, 16, 24), Ce = 1, b = 110, c = 120, df(UserNameImage, UserName), drawFromImageCentered(UserNameImage, b, c + 0 - 2, UserNameImage.a, 16, 0, 0, UserNameImage.a, 16, a << 24 | 16777215), df(UserPartyNameImage, UserPartyName), drawFromImageCentered(UserPartyNameImage, b, c + 16 - 2, UserPartyNameImage.a, 16, 0, 0, UserPartyNameImage.a, 16, a << 24 | 16777215), b = 402, df(OpponentNameImage, OpponentName), drawFromImageCentered(OpponentNameImage, b, c + 0 - 2, OpponentNameImage.a, 16, 0, 0, OpponentNameImage.a, 16, a << 24 | 16777215), df(OpponentPartyNameImage, OpponentPartyName), drawFromImageCentered(OpponentPartyNameImage, b, c + 16 - 2, OpponentPartyNameImage.a, 16, 0, 0, OpponentPartyNameImage.a, 16, a << 24 | 16777215), Ce = 0) : 62 == SequenceStep ? 0 == PlayerCurrentLp[0] + PlayerCurrentLp[1] + PlayerCurrentLp[2] + PlayerCurrentLp[3] ? (VsResult = 2, SequenceStep++) : 0 == PlayerCurrentLp[4] + PlayerCurrentLp[5] + PlayerCurrentLp[6] + PlayerCurrentLp[7] && (VsResult = 1, SequenceStep++) : 63 == SequenceStep ? (UploadError || (UploadError = 1, c = FROM_CHAR_CODE(47, 115, 99, 111, 114, 101, 47, 114, 97, 110, 103, 101, 114, 95, 118, 115, 46, 112, 104, 112, 63, 97, 61), c += UserCode1, c += CHAR_AND_B_EQUAL + (Language ? "0" : "1"), c += CHAR_AND_C_EQUAL + UserPartyId, c += CHAR_AND_D_EQUAL + OpponentPartyId, 0 != InventoryItem[4] && 0 != InventoryItem[5] && 0 != InventoryItem[6] && 0 != InventoryItem[7] && (c += CHAR_AND_E_EQUAL + vsUploadCode(VsResult)), consoleLog(c), httpRequest(c)), SequenceStep++) : 64 == SequenceStep && (TextFadeTime = srClampA(TextFadeTime + 1, 0, 50), a = srFloor(255 * TextFadeTime / 50), isMouseHoveredCenter(256, 128, 96, 32) && 50 == TextFadeTime && (Clicked && (SequenceStep = 60), filledRectCentered(256, 128, 96, 32, 8388608)), frameRectCentered(256, 128, 96, 32, 0 | srFloor(a / 2) << 16), showText(LARGE_TEXT, 256, 129, "RETRY", 255, 255, 255, a, 0, 0, 0, a, 16, 24), b = 60, c = 72, Ce = 1, drawFromImage(UserNameImage, b, c + 0 - 2, UserNameImage.a, 16, 0, 0, UserNameImage.a, 16, a << 24 | 16777215), Ce = 0, showText(LARGE_TEXT, b + 60, c + 40, 1 == VsResult ? "WIN" : "LOSE", 255, 255, 255, a, 1 == VsResult ? 255 : 0, 0, 1 == VsResult ? 0 : 255, a, 32, 48), RequestResult && ("ok" == RequestResponse[0] ? (textOutputM(LARGE_TEXT, b, c + 64, "" + RequestResponse[1] + " win " + RequestResponse[2] + " lose", 255, 255, 255, a, 0, 0, 0, a, 8, 12), textOutputM(LARGE_TEXT, b, c + 80, "Winning per " + RequestResponse[3] + "%", 255, 255, 255, a, 0, 0, 0, a, 8, 12)) : textOutputM(LARGE_TEXT, b, c + 64, " RANKING ERROR", 255, 255, 255, a, 0, 0, 0, a, 8, 12)), b = 332, Ce = 1, drawFromImage(OpponentNameImage, b, c + 0 - 2, OpponentNameImage.a, 16, 0, 0, OpponentNameImage.a, 16, a << 24 | 16777215), Ce = 0, showText(LARGE_TEXT, b + 60, c + 40, 2 == VsResult ? "WIN" : "LOSE", 255, 255, 255, a, 2 == VsResult ? 255 : 0, 0, 2 == VsResult ? 0 : 255, a, 32, 48), RequestResult && ("ok" == RequestResponse[0] ? (textOutputM(LARGE_TEXT, b, c + 64, "" + RequestResponse[4] + " win " + RequestResponse[5] + " lose", 255, 255, 255, a, 0, 0, 0, a, 8, 12), textOutputM(LARGE_TEXT, b, c + 80, "Winning per " + RequestResponse[6] + "%", 255, 255, 255, a, 0, 0, 0, a, 8, 12)) : textOutputM(LARGE_TEXT, b, c + 64, " RANKING ERROR", 255, 255, 255, a, 0, 0, 0, a, 8, 12))), filledRect(0, 257, 512, 126, [13407305, 9480368, 7241784, 10993609, 11302740, 24586, 7297069, 7297069, 10053120][STAGE_DATA[CurrentStage][CurrentArea][0]]), textOutputM(SMALL_TEXT, 10, 374, CHAR_COPYRIGHT1, 0, 0, 0, 0, 0, 0, 0, 128, 5, 7), showText(LARGE_TEXT, 256, 328, "VS", 255, 255, 255, 255, 0, 0, 0, 255, 16, 24), b = 40, c = 268, drawFromImage(UserNameImage, b, c + 0 - 2, UserNameImage.a, 16, 0, 0, UserNameImage.a, 16, 0), textOutputB(LARGE_TEXT, b, c + 16, "LV " + PartyLv[0], 16777215, 0), textOutputB(LARGE_TEXT, b, c + 16, "        FP " + PartyFp[0], 16777215, 0), df(UserPartyNameBracketImage, "\u300c " + UserPartyName + " \u300d"), drawFromImageCentered(UserPartyNameBracketImage, b + 60, c + 88, UserPartyNameBracketImage.a, 16, 0, 0, UserPartyNameBracketImage.a, 16, 0), b = 206, showText(LARGE_TEXT, b, c + 22, "Rank", 0, 0, 0, 0, 0, 0, 0, 128, 8, 12), showText(LARGE_TEXT, b, c + 60, "" + RANK_NAME[PartyRank[0]], 0, 0, 0, 0, 0, 0, 0, 80, 32, 48), b = 352, drawFromImage(OpponentNameImage, b, c + 0 - 2, OpponentNameImage.a, 16, 0, 0, OpponentNameImage.a, 16, 0), textOutputB(LARGE_TEXT, b, c + 16, "LV " + PartyLv[1], 16777215, 0), textOutputB(LARGE_TEXT, b, c + 16, "        FP " + PartyFp[1], 16777215, 0), df(OpponentPartyNameBracketImage, "\u300c " + OpponentPartyName + " \u300d"), drawFromImageCentered(OpponentPartyNameBracketImage, b + 60, c + 88, OpponentPartyNameBracketImage.a, 16, 0, 0, OpponentPartyNameBracketImage.a, 16, 0), b = 306, showText(LARGE_TEXT, b, c + 22, "Rank", 0, 0, 0, 0, 0, 0, 0, 128, 8, 12), showText(LARGE_TEXT, b, c + 60, "" + RANK_NAME[PartyRank[1]], 0, 0, 0, 0, 0, 0, 0, 80, 32, 48), b = 40, c = 316, a = 0; 8 > a; a++)
+        //for (TrDraw(), 61 == SequenceStep && (SR_PLAYER.N = 1), SR_PLAYER.G(), InMain(), $e(), SR_PLAYER.N = 0, SR_PLAYER.B(), PjDraw(), InDraw(), setPlayerStatus(), 61 == SequenceStep ? (TextFadeTime = srClampA(TextFadeTime + 1, 0, 30), a = srFloor(255 * TextFadeTime / 30), drawLine(0, 110, srFloor(512 * TextFadeTime / 30), 110, 8421504), drawLine(512 - srFloor(512 * TextFadeTime / 30), 143, 512, 143, 8421504), isMouseHoveredCenter(256, 127, 512, 32) && 30 == TextFadeTime ? (Clicked && (SequenceStep++, TextFadeTime = 0), filledRectCentered(256, 127, 512, 32, 8388608), showText(LARGE_TEXT, 256, 128, "FIGHT", 255, 255, 255, 255, 0, 0, 0, 255, 16, 24)) : showText(LARGE_TEXT, 256, 128, "READY", 255, 255, 255, a, 0, 0, 0, a, 16, 24), Ce = 1, b = 110, c = 120, df(UserNameImage, UserName), drawFromImageCentered(UserNameImage, b, c + 0 - 2, UserNameImage.a, 16, 0, 0, UserNameImage.a, 16, a << 24 | 16777215), df(UserPartyNameImage, UserPartyName), drawFromImageCentered(UserPartyNameImage, b, c + 16 - 2, UserPartyNameImage.a, 16, 0, 0, UserPartyNameImage.a, 16, a << 24 | 16777215), b = 402, df(OpponentNameImage, OpponentName), drawFromImageCentered(OpponentNameImage, b, c + 0 - 2, OpponentNameImage.a, 16, 0, 0, OpponentNameImage.a, 16, a << 24 | 16777215), df(OpponentPartyNameImage, OpponentPartyName), drawFromImageCentered(OpponentPartyNameImage, b, c + 16 - 2, OpponentPartyNameImage.a, 16, 0, 0, OpponentPartyNameImage.a, 16, a << 24 | 16777215), Ce = 0) : 62 == SequenceStep ? 0 == PlayerCurrentLp[0] + PlayerCurrentLp[1] + PlayerCurrentLp[2] + PlayerCurrentLp[3] ? (VsResult = 2, SequenceStep++) : 0 == PlayerCurrentLp[4] + PlayerCurrentLp[5] + PlayerCurrentLp[6] + PlayerCurrentLp[7] && (VsResult = 1, SequenceStep++) : 63 == SequenceStep ? (UploadError || (UploadError = 1, c = FROM_CHAR_CODE(47, 115, 99, 111, 114, 101, 47, 114, 97, 110, 103, 101, 114, 95, 118, 115, 46, 112, 104, 112, 63, 97, 61), c += UserCode1, c += CHAR_AND_B_EQUAL + (Language ? "0" : "1"), c += CHAR_AND_C_EQUAL + UserPartyId, c += CHAR_AND_D_EQUAL + OpponentPartyId, 0 != InventoryItem[4] && 0 != InventoryItem[5] && 0 != InventoryItem[6] && 0 != InventoryItem[7] && (c += CHAR_AND_E_EQUAL + vsUploadCode(VsResult)), consoleLog(c), httpRequest(c)), SequenceStep++) : 64 == SequenceStep && (TextFadeTime = srClampA(TextFadeTime + 1, 0, 50), a = srFloor(255 * TextFadeTime / 50), isMouseHoveredCenter(256, 128, 96, 32) && 50 == TextFadeTime && (Clicked && (SequenceStep = 60), filledRectCentered(256, 128, 96, 32, 8388608)), frameRectCentered(256, 128, 96, 32, 0 | srFloor(a / 2) << 16), showText(LARGE_TEXT, 256, 129, "RETRY", 255, 255, 255, a, 0, 0, 0, a, 16, 24), b = 60, c = 72, Ce = 1, drawFromImage(UserNameImage, b, c + 0 - 2, UserNameImage.a, 16, 0, 0, UserNameImage.a, 16, a << 24 | 16777215), Ce = 0, showText(LARGE_TEXT, b + 60, c + 40, 1 == VsResult ? "WIN" : "LOSE", 255, 255, 255, a, 1 == VsResult ? 255 : 0, 0, 1 == VsResult ? 0 : 255, a, 32, 48), RequestResult && ("ok" == RequestResponse[0] ? (textOutputM(LARGE_TEXT, b, c + 64, "" + RequestResponse[1] + " win " + RequestResponse[2] + " lose", 255, 255, 255, a, 0, 0, 0, a, 8, 12), textOutputM(LARGE_TEXT, b, c + 80, "Winning per " + RequestResponse[3] + "%", 255, 255, 255, a, 0, 0, 0, a, 8, 12)) : textOutputM(LARGE_TEXT, b, c + 64, " RANKING ERROR", 255, 255, 255, a, 0, 0, 0, a, 8, 12)), b = 332, Ce = 1, drawFromImage(OpponentNameImage, b, c + 0 - 2, OpponentNameImage.a, 16, 0, 0, OpponentNameImage.a, 16, a << 24 | 16777215), Ce = 0, showText(LARGE_TEXT, b + 60, c + 40, 2 == VsResult ? "WIN" : "LOSE", 255, 255, 255, a, 2 == VsResult ? 255 : 0, 0, 2 == VsResult ? 0 : 255, a, 32, 48), RequestResult && ("ok" == RequestResponse[0] ? (textOutputM(LARGE_TEXT, b, c + 64, "" + RequestResponse[4] + " win " + RequestResponse[5] + " lose", 255, 255, 255, a, 0, 0, 0, a, 8, 12), textOutputM(LARGE_TEXT, b, c + 80, "Winning per " + RequestResponse[6] + "%", 255, 255, 255, a, 0, 0, 0, a, 8, 12)) : textOutputM(LARGE_TEXT, b, c + 64, " RANKING ERROR", 255, 255, 255, a, 0, 0, 0, a, 8, 12))), filledRect(0, 257, 512, 126, [13407305, 9480368, 7241784, 10993609, 11302740, 24586, 7297069, 7297069, 10053120][STAGE_DATA[CurrentStage][CurrentArea][0]]), textOutputM(SMALL_TEXT, 10, 374, CHAR_COPYRIGHT1, 0, 0, 0, 0, 0, 0, 0, 128, 5, 7), showText(LARGE_TEXT, 256, 328, "VS", 255, 255, 255, 255, 0, 0, 0, 255, 16, 24), b = 40, c = 268, drawFromImage(UserNameImage, b, c + 0 - 2, UserNameImage.a, 16, 0, 0, UserNameImage.a, 16, 0), textOutputB(LARGE_TEXT, b, c + 16, "LV " + PartyLv[0], 16777215, 0), textOutputB(LARGE_TEXT, b, c + 16, "        FP " + PartyFp[0], 16777215, 0), df(UserPartyNameBracketImage, "\u300c " + UserPartyName + " \u300d"), drawFromImageCentered(UserPartyNameBracketImage, b + 60, c + 88, UserPartyNameBracketImage.a, 16, 0, 0, UserPartyNameBracketImage.a, 16, 0), b = 206, showText(LARGE_TEXT, b, c + 22, "Rank", 0, 0, 0, 0, 0, 0, 0, 128, 8, 12), showText(LARGE_TEXT, b, c + 60, "" + RANK_NAME[PartyRank[0]], 0, 0, 0, 0, 0, 0, 0, 80, 32, 48), b = 352, drawFromImage(OpponentNameImage, b, c + 0 - 2, OpponentNameImage.a, 16, 0, 0, OpponentNameImage.a, 16, 0), textOutputB(LARGE_TEXT, b, c + 16, "LV " + PartyLv[1], 16777215, 0), textOutputB(LARGE_TEXT, b, c + 16, "        FP " + PartyFp[1], 16777215, 0), df(OpponentPartyNameBracketImage, "\u300c " + OpponentPartyName + " \u300d"), drawFromImageCentered(OpponentPartyNameBracketImage, b + 60, c + 88, OpponentPartyNameBracketImage.a, 16, 0, 0, OpponentPartyNameBracketImage.a, 16, 0), b = 306, showText(LARGE_TEXT, b, c + 22, "Rank", 0, 0, 0, 0, 0, 0, 0, 128, 8, 12), showText(LARGE_TEXT, b, c + 60, "" + RANK_NAME[PartyRank[1]], 0, 0, 0, 0, 0, 0, 0, 80, 32, 48), b = 40, c = 316, a = 0; 8 > a; a++)
         TrDraw();
         if (61 == SequenceStep) {
             SR_PLAYER.N = 1;
         }
-        SR_PLAYER.G();
+        SR_PLAYER.plMain();
         InMain();
         PjMain();
         SR_PLAYER.N = 0;
-        SR_PLAYER.B();
+        SR_PLAYER.plDraw();
         PjDraw();
-        cf();
+        InDraw();
         setPlayerStatus();
         if (61 == SequenceStep) {
             TextFadeTime = srClampA(TextFadeTime + 1, 0, 30);
@@ -3553,8 +3553,8 @@ function drawStage(a) {
         }
     }
     if (0 == a) {
-        SR_PLAYER.G();
-        SR_ENEMY.L();
+        SR_PLAYER.plMain();
+        SR_ENEMY.enMain();
         DpMain();
         InMain();
         PjMain();
@@ -3580,9 +3580,9 @@ function drawStage(a) {
             centeredText(SMALL_TEXT, 496, c + 8, "NEXT", 0, -1)
         }
     }
-    SR_ENEMY.K();
+    SR_ENEMY.enDraw();
     DpDraw();
-    SR_PLAYER.B();
+    SR_PLAYER.plDraw();
     PjDraw();
     var d = SR_TERRAIN;
     var e;
@@ -3768,7 +3768,7 @@ function drawStage(a) {
                 }
             }
     }
-    cf();
+    InDraw();
     DisplayMode1 = 1;
     filledRect(4, 4, 8 * (STAGE_NAME[CurrentStage].length + 6) + 8, 20, 2151694400);
     DisplayMode1 = 0;
@@ -4136,7 +4136,7 @@ function drawUi(a) {
                     antiCheatCheck();
                     PlayerCurrentLp[SelectedPanel] += srFloor(PlayerMaxLp[SelectedPanel] / 4);
                     PartyGold -= h;
-                    SR_PLAYER.set(SelectedPanel, srFloor(SR_PLAYER.a[SelectedPanel][0].x / 8), srFloor(SR_PLAYER.a[SelectedPanel][0].y / 8));
+                    SR_PLAYER.plSet(SelectedPanel, srFloor(SR_PLAYER.a[SelectedPanel][0].x / 8), srFloor(SR_PLAYER.a[SelectedPanel][0].y / 8));
                     antiCheatSet();
                 }
                 textOutputB(LARGE_TEXT, e, g + 40, b, 16711680, 0)
@@ -4363,7 +4363,7 @@ function drawUi(a) {
         if (1 == ClickToSell && 0 != InventoryItem[b]) {
             h = srFloor(getItemData(InventoryItem[b], 2) / 8);
             if (Clicked) {
-                SR_DROP.add(40, 200, 1, h, 0);
+                SR_DROP.dpAdd(40, 200, 1, h, 0);
                 InventoryItem[b] = 0;
                 InventoryCompo1[b] = 0;
                 InventoryCompo2[b] = 0;
@@ -4380,7 +4380,7 @@ function drawUi(a) {
             InventoryCompo2[40] = a;
         }
     } else if (-1 == b && 0 != InventoryItem[40] && Clicked && 256 > MouseY1 && 0 == a) {
-        SR_DROP.add(SR_PLAYER.a[SelectedPlayer][0].x, SR_PLAYER.a[SelectedPlayer][0].y, InventoryItem[40], InventoryCompo1[40], InventoryCompo2[40]);
+        SR_DROP.dpAdd(SR_PLAYER.a[SelectedPlayer][0].x, SR_PLAYER.a[SelectedPlayer][0].y, InventoryItem[40], InventoryCompo1[40], InventoryCompo2[40]);
         InventoryItem[40] = 0;
         InventoryCompo1[40] = 0;
         InventoryCompo2[40] = 0;
@@ -4623,7 +4623,7 @@ function SrPlayer() {
 /*
 リセット(棒人間を離す)
 */
-SrPlayer.prototype.o = function () {
+SrPlayer.prototype.plReset = function () {
     this.h = -1;
     this.u = 0
 };
@@ -4631,12 +4631,12 @@ SrPlayer.prototype.o = function () {
 /*
 セット
 */
-SrPlayer.prototype.set = function (a, b, c) {
+SrPlayer.prototype.plSet = function (a, b, c) {
     b *= 8;
     c *= 8;
     for (var d = 0; 21 > d; d++) {
         setVec2(this.a[a][d], b + srRandom(4), c + srRandom(4));
-        this.g[a][d].set(this.a[a][d]);
+        this.g[a][d].vecSet(this.a[a][d]);
     }
     this.f[a] = PlayerClass[a];
     this.K[a] = 0;
@@ -4657,16 +4657,16 @@ SrPlayer.prototype.set = function (a, b, c) {
         this.D[a][d] = 0
     }
 };
-WINDOW.fff = SrPlayer.prototype.Y;
+WINDOW.fff = SrPlayer.prototype.plMove;
 
 /*
 ジョイントの動き
 */
-SrPlayer.prototype.Y = function (a, b) {
+SrPlayer.prototype.plMove = function (a, b) {
     var c = this.a[a][b];
     var d = new SrVec2;
     setDistance(d, c, this.g[a][b]);
-    c.set(this.g[a][b]);
+    c.vecSet(this.g[a][b]);
     var e = (magnitudeOf(d) >> 2) + 1;
     scaleVec2(d, 1 / e);
     var g, h, q;
@@ -4817,7 +4817,7 @@ function plTakeDamage(a, b, c, d, e, g, h, q, m, l) {
             PlayerCurrentLp[l] = srClampA(PlayerCurrentLp[l] - B, 0, PlayerMaxLp[l]);
             antiCheatSet();
             if (2 > PartyDamageEffect) {
-                SR_INDICATOR.add(A.a[l][0].x, A.a[l][0].y, z, B, S);
+                SR_INDICATOR.inAdd(A.a[l][0].x, A.a[l][0].y, z, B, S);
             }
             A.j += B;
             z = l;
@@ -4829,11 +4829,11 @@ function plTakeDamage(a, b, c, d, e, g, h, q, m, l) {
     return z
 }
 
-WINDOW.fff = SrPlayer.prototype.X;
+WINDOW.fff = SrPlayer.prototype.plSetDrag;
 /*
 プレイヤーつかむ
 */
-SrPlayer.prototype.X = function () {
+SrPlayer.prototype.plSetDrag = function () {
     var a = new SrVec2;
     var b;
     var c;
@@ -5214,7 +5214,7 @@ function plProjectileAttack(a, b, c, d, e) {
         if (1 == q) {
             q = c + 10 * g.x;
             a = d + 10 * g.y;
-            SR_PROJECTILE.add(tb, q, a, 0, 0, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
+            SR_PROJECTILE.pjAdd(tb, q, a, 0, 0, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
         } else if (2 == q) {
             g = h - c;
             g /= srAbs(g);
@@ -5222,7 +5222,7 @@ function plProjectileAttack(a, b, c, d, e) {
             a = d;
             var ac = g * Pa * .1;
             for (b = 0; b < ab; b++) {
-                SR_PROJECTILE.add(tb, q, a, ac, 0, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb)
+                SR_PROJECTILE.pjAdd(tb, q, a, ac, 0, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb)
             }
         } else if (3 == q) {
             setVec2(g, h - c, e - d);
@@ -5241,7 +5241,7 @@ function plProjectileAttack(a, b, c, d, e) {
                 a = d + 10 * g.y;
                 var ac = g.x * Pa * .1;
                 var de = g.y * Pa * .1;
-                SR_PROJECTILE.add(tb, q, a, ac, de, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
+                SR_PROJECTILE.pjAdd(tb, q, a, ac, de, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
                 m += Hd
             }
         } else if (4 == q) {
@@ -5262,7 +5262,7 @@ function plProjectileAttack(a, b, c, d, e) {
                 a = d;
                 ac = g.x / Pa;
                 de = (g.y - .5 * Pa * Pa * Ua * .01) / Pa;
-                SR_PROJECTILE.add(tb, q, a, ac, de, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb)
+                SR_PROJECTILE.pjAdd(tb, q, a, ac, de, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb)
             }
         } else if (5 == q) {
             for (b = 0; b < ab; b++) {
@@ -5276,13 +5276,13 @@ function plProjectileAttack(a, b, c, d, e) {
                 setVec2(g, h - q, e - a);
                 normalize(g);
                 scaleVec2(g, Pa);
-                SR_PROJECTILE.add(tb, q, a, g.x, g.y, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
+                SR_PROJECTILE.pjAdd(tb, q, a, g.x, g.y, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
             }
         } else if (6 == q) {
             for (b = 0; b < ab; b++) {
                 q = h + srRandomRange(-Pa, Pa);
                 a = e + srRandomRange(-Pa, Pa);
-                SR_PROJECTILE.add(tb, q, a, 0, 0, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
+                SR_PROJECTILE.pjAdd(tb, q, a, 0, 0, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
             }
         } else if (7 == q || 10 == q) {
             g.x = c - a.a[b][5].x;
@@ -5295,7 +5295,7 @@ function plProjectileAttack(a, b, c, d, e) {
             normalize(g);
             scaleVec2(g, .1 * Pa);
             for (b = 0; b < ab; b++) {
-                SR_PROJECTILE.add(tb, q, a, g.x, g.y, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
+                SR_PROJECTILE.pjAdd(tb, q, a, g.x, g.y, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
             }
         } else if (12 == q) {
             g = c - a.a[b][0].x;
@@ -5304,7 +5304,7 @@ function plProjectileAttack(a, b, c, d, e) {
             a = a.a[b][0].y;
             ac = g * Pa * .1;
             for (b = 0; b < ab; b++) {
-                SR_PROJECTILE.add(tb, q, a, ac, 0, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
+                SR_PROJECTILE.pjAdd(tb, q, a, ac, 0, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
             }
         } else if (8 == q) {
             for (b = 0; b < ab; b++) {
@@ -5314,7 +5314,7 @@ function plProjectileAttack(a, b, c, d, e) {
                     q = h + srRandomRange(-10 * (m - 1), 10 * (m - 1));
                 }
                 a = e + srRandomRange(-30, -60);
-                SR_PROJECTILE.add(tb, q, a, 0, 0, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
+                SR_PROJECTILE.pjAdd(tb, q, a, 0, 0, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
             }
         } else if (9 == q) {
             if (0 == m) {
@@ -5329,7 +5329,7 @@ function plProjectileAttack(a, b, c, d, e) {
             for (b = 0; b < ab; b++) {
                 g.x = AngleArray[ac][0] * Pa;
                 g.y = AngleArray[ac][1] * Pa;
-                SR_PROJECTILE.add(tb, q, a, g.x, g.y, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
+                SR_PROJECTILE.pjAdd(tb, q, a, g.x, g.y, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
                 ac += c;
             }
         } else if (11 == q) {
@@ -5346,7 +5346,7 @@ function plProjectileAttack(a, b, c, d, e) {
                 a = d + g.y * ee / 2 - g.x * ac;
                 ac = Pa * (b + 1) / ab * g.x;
                 de = Pa * (b + 1) / ab * g.y;
-                SR_PROJECTILE.add(tb, q, a, ac, de, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb)
+                SR_PROJECTILE.pjAdd(tb, q, a, ac, de, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb)
             }
         }
     }
@@ -5449,13 +5449,13 @@ function plSwim(a, b) {
     }
 }
 
-WINDOW.fff = SrPlayer.prototype.G;
+WINDOW.fff = SrPlayer.prototype.plMain;
 /*
 メインの動き
 */
-SrPlayer.prototype.G = function () {
+SrPlayer.prototype.plMain = function () {
     var a, b, c;
-    this.X();
+    this.plSetDrag();
     var d;
     if (1 != GameMode) {
         d = 4;
@@ -5554,21 +5554,21 @@ SrPlayer.prototype.G = function () {
                 }
             }
             if (!this.f[a] || 1 == this.f[a]) {
-                this.O(a);
+                this.plBoxer(a);
             } else if (2 == this.f[a]) {
-                this.P(a);
+                this.plGradiator(a);
             } else if (3 == this.f[a]) {
-                this.R(a);
+                this.plSniper(a);
             } else if (4 == this.f[a]) {
-                this.S(a);
+                this.plMagician(a);
             } else if (5 == this.f[a]) {
-                this.T(a);
+                this.plPriest(a);
             } else if (6 == this.f[a]) {
-                this.U(a);
+                this.plGunner(a);
             } else if (7 == this.f[a]) {
-                this.V(a);
+                this.plWhipper(a);
             } else if (8 == this.f[a]) {
-                this.W(a);
+                this.plAngel(a);
             } else if (this.f[a] == PLAYER_CLASS_DEAD) {
                 pullJoints(this.a[a][1], this.a[a][2], 3.6, .5, .5);
                 pullJoints(this.a[a][3], this.a[a][5], 4.8, .5, .5);
@@ -5580,17 +5580,17 @@ SrPlayer.prototype.G = function () {
                 this.K[a] = 0;
             }
             for (b = this.i[a] = 0; 11 > b; b++) {
-                this.Y(a, b)
+                this.plMove(a, b)
             }
         }
     }
 };
 
-WINDOW.fff = SrPlayer.prototype.O;
+WINDOW.fff = SrPlayer.prototype.plBoxer;
 /*
 boxer
 */
-SrPlayer.prototype.O = function (a) {
+SrPlayer.prototype.plBoxer = function (a) {
     var b;
     var c;
     var d = new SrVec2;
@@ -5648,7 +5648,7 @@ SrPlayer.prototype.O = function (a) {
             if (checkInventoryCompo(4 + a, 46)) {
                 h = getInventoryCompo(4 + a, 8);
                 PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + h, 0, PlayerMaxLp[a]);
-                SR_INDICATOR.add(this.a[a][0].x, this.a[a][0].y, 0, h, 65280);
+                SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, h, 65280);
             }
             antiCheatSet()
         }
@@ -5684,10 +5684,10 @@ SrPlayer.prototype.O = function (a) {
                 antiCheatCheck();
                 PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + h, 0, PlayerMaxLp[a]);
                 antiCheatSet();
-                SR_INDICATOR.add(this.a[a][0].x, this.a[a][0].y, 0, h, 65280);
+                SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, h, 65280);
             }
             if (checkInventoryCompo(4 + a, 12) && !GameMode && srRandom(100) < getInventoryCompo(4 + a, 8)) {
-                SR_DROP.add(this.a[a][0].x, this.a[a][0].y, 2, 0, 0);
+                SR_DROP.dpAdd(this.a[a][0].x, this.a[a][0].y, 2, 0, 0);
             }
             if (checkInventoryCompo(4 + a, 37) && !GameMode && srRandom(100) < getInventoryCompo(4 + a, 8)) {
                 g = 100;
@@ -5696,7 +5696,7 @@ SrPlayer.prototype.O = function (a) {
                         g += getInventoryCompo(4 + b, 8);
                     }
                 }
-                SR_DROP.add(this.a[a][0].x, this.a[a][0].y, 1, srFloor(this.j * g / 100), 0)
+                SR_DROP.dpAdd(this.a[a][0].x, this.a[a][0].y, 1, srFloor(this.j * g / 100), 0)
             }
             if (checkInventoryCompo(4 + a, 43) && srRandom(100) < getInventoryCompo(4 + a, 8)) {
                 b = getInventoryCompo(4 + a, 9);
@@ -5713,9 +5713,11 @@ SrPlayer.prototype.O = function (a) {
                     scaleVec2(d, .1);
                 }
                 if (1 != GameMode) {
-                    SR_ENEMY.c[e][0].sub(d)
+                    //vecSub
+                    SR_ENEMY.c[e][0].vecSub(d)
                 } else {
-                    SR_PLAYER.g[e][0].sub(d)
+                    //vecSub
+                    SR_PLAYER.g[e][0].vecSub(d)
                 }
             }
         }
@@ -5733,11 +5735,11 @@ SrPlayer.prototype.O = function (a) {
     pullJoints(this.a[a][7], this.a[a][8], 6, .1, .1)
 };
 
-WINDOW.fff = SrPlayer.prototype.P;
+WINDOW.fff = SrPlayer.prototype.plGradiator;
 /*
 gradiator
 */
-SrPlayer.prototype.P = function (a) {
+SrPlayer.prototype.plGradiator = function (a) {
     var b;
     var c;
     var d = new SrVec2;
@@ -5784,7 +5786,7 @@ SrPlayer.prototype.P = function (a) {
             if (checkInventoryCompo(4 + a, 46)) {
                 h = getInventoryCompo(4 + a, 8);
                 PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + h, 0, PlayerMaxLp[a]);
-                SR_INDICATOR.add(this.a[a][0].x, this.a[a][0].y, 0, h, 65280);
+                SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, h, 65280);
             }
             antiCheatSet();
         }
@@ -5811,10 +5813,10 @@ SrPlayer.prototype.P = function (a) {
                 antiCheatCheck();
                 PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + h, 0, PlayerMaxLp[a]);
                 antiCheatSet();
-                SR_INDICATOR.add(this.a[a][0].x, this.a[a][0].y, 0, h, 65280);
+                SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, h, 65280);
             }
             if (checkInventoryCompo(4 + a, 12) && !GameMode && srRandom(100) < getInventoryCompo(4 + a, 8)) {
-                SR_DROP.add(this.a[a][0].x, this.a[a][0].y, 2, 0, 0)
+                SR_DROP.dpAdd(this.a[a][0].x, this.a[a][0].y, 2, 0, 0)
             }
         }
         if (checkInventoryCompo(4 + a, 37) && !GameMode && srRandom(100) < getInventoryCompo(4 + a, 8)) {
@@ -5824,7 +5826,7 @@ SrPlayer.prototype.P = function (a) {
                     g += getInventoryCompo(4 + b, 8);
                 }
             }
-            SR_DROP.add(this.a[a][0].x, this.a[a][0].y, 1, srFloor(this.j * g / 100), 0)
+            SR_DROP.dpAdd(this.a[a][0].x, this.a[a][0].y, 1, srFloor(this.j * g / 100), 0)
         }
     }
     pullJoints(this.a[a][0], this.a[a][1], 3.6, .5, .5);
@@ -5845,7 +5847,7 @@ SrPlayer.prototype.P = function (a) {
         setDistance(d, this.a[a][5], this.a[a][6]);
         normalize(d);
         scaleVec2(d, q);
-        d.add(this.a[a][6]);
+        d.vecAdd(this.a[a][6]);
         if (1 != GameMode) {
             plProjectileAttack(this, a, d.x, d.y, 0)
         } else {
@@ -5854,11 +5856,11 @@ SrPlayer.prototype.P = function (a) {
     }
 };
 
-WINDOW.fff = SrPlayer.prototype.R;
+WINDOW.fff = SrPlayer.prototype.plSniper;
 /*
 sniper
 */
-SrPlayer.prototype.R = function (a) {
+SrPlayer.prototype.plSniper = function (a) {
     var b;
     b = 1 - (a >> 2) << 2;
     var c = PlayerMinAgi[a] + srRandomInt(PlayerMaxAgi[a] - PlayerMinAgi[a] + 1);
@@ -5900,7 +5902,7 @@ SrPlayer.prototype.R = function (a) {
                     antiCheatCheck();
                     PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + c, 0, PlayerMaxLp[a]);
                     antiCheatSet();
-                    SR_INDICATOR.add(this.a[a][0].x, this.a[a][0].y, 0, c, 65280);
+                    SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, c, 65280);
                 }
             }
         }
@@ -5923,11 +5925,11 @@ SrPlayer.prototype.R = function (a) {
     pullJoints(this.a[a][7], this.a[a][8], 6, .1, .1)
 };
 
-WINDOW.fff = SrPlayer.prototype.S;
+WINDOW.fff = SrPlayer.prototype.plMagician;
 /*
 magician
 */
-SrPlayer.prototype.S = function (a) {
+SrPlayer.prototype.plMagician = function (a) {
     var b;
     b = 1 - (a >> 2) << 2;
     var c = PlayerMinAgi[a] + srRandomInt(PlayerMaxAgi[a] - PlayerMinAgi[a] + 1);
@@ -5973,7 +5975,7 @@ SrPlayer.prototype.S = function (a) {
                     antiCheatCheck();
                     PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + c, 0, PlayerMaxLp[a]);
                     antiCheatSet();
-                    SR_INDICATOR.add(this.a[a][0].x, this.a[a][0].y, 0, c, 65280);
+                    SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, c, 65280);
                 }
             }
         }
@@ -5996,11 +5998,11 @@ SrPlayer.prototype.S = function (a) {
     pullJoints(this.a[a][7], this.a[a][8], 6, .1, .1)
 };
 
-WINDOW.fff = SrPlayer.prototype.T;
+WINDOW.fff = SrPlayer.prototype.plPriest;
 /*
 priest
 */
-SrPlayer.prototype.T = function (a) {
+SrPlayer.prototype.plPriest = function (a) {
     var b;
     var c;
     var d = 1 - (a >> 2) << 2;
@@ -6040,7 +6042,7 @@ SrPlayer.prototype.T = function (a) {
                 for (b = a >> 2 << 2; b < (a >> 2 << 2) + 4; b++) {
                     if (a != b && 0 != PlayerCurrentLp[b]) {
                         PlayerCurrentLp[b] = srClampA(PlayerCurrentLp[b] + d, 0, PlayerMaxLp[b]);
-                        SR_INDICATOR.add(this.a[b][0].x, this.a[b][0].y, 0, d, 65280);
+                        SR_INDICATOR.inAdd(this.a[b][0].x, this.a[b][0].y, 0, d, 65280);
                     }
                 }
                 antiCheatSet()
@@ -6064,11 +6066,11 @@ SrPlayer.prototype.T = function (a) {
     pullJoints(this.a[a][7], this.a[a][8], 6, .1, .1)
 };
 
-WINDOW.fff = SrPlayer.prototype.U;
+WINDOW.fff = SrPlayer.prototype.plGunner;
 /*
 gunner
 */
-SrPlayer.prototype.U = function (a) {
+SrPlayer.prototype.plGunner = function (a) {
     var b;
     var c;
     var d = new SrVec2;
@@ -6124,7 +6126,7 @@ SrPlayer.prototype.U = function (a) {
                     if (e * g <= PartyGold) {
                         PartyGold = srClampA(PartyGold - e * g, 0, 9999999);
                         for (b = 0; b < g; b++) {
-                            SR_INDICATOR.add(this.a[a][6].x, this.a[a][6].y, 0 > d.x ? .5 : -.5, e, 16776960);
+                            SR_INDICATOR.inAdd(this.a[a][6].x, this.a[a][6].y, 0 > d.x ? .5 : -.5, e, 16776960);
                         }
                         e = 0
                     }
@@ -6134,7 +6136,7 @@ SrPlayer.prototype.U = function (a) {
                     if (checkInventoryCompo(4 + a, 46)) {
                         d = getInventoryCompo(4 + a, 8);
                         PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + d, 0, PlayerMaxLp[a]);
-                        SR_INDICATOR.add(this.a[a][0].x, this.a[a][0].y, 0, d, 65280);
+                        SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, d, 65280);
                     }
                 }
                 antiCheatSet();
@@ -6160,11 +6162,11 @@ SrPlayer.prototype.U = function (a) {
     pullJoints(this.a[a][7], this.a[a][8], 6, .1, .1)
 };
 
-WINDOW.fff = SrPlayer.prototype.V;
+WINDOW.fff = SrPlayer.prototype.plWhipper;
 /*
 whipper
 */
-SrPlayer.prototype.V = function (a) {
+SrPlayer.prototype.plWhipper = function (a) {
     var b;
     var c = new SrVec2;
     var d = 1 - (a >> 2) << 2;
@@ -6203,7 +6205,7 @@ SrPlayer.prototype.V = function (a) {
             if (checkInventoryCompo(4 + a, 46)) {
                 h = getInventoryCompo(4 + a, 8);
                 PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + h, 0, PlayerMaxLp[a]);
-                SR_INDICATOR.add(this.a[a][0].x, this.a[a][0].y, 0, h, 65280);
+                SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, h, 65280);
             }
             antiCheatSet();
         }
@@ -6250,10 +6252,10 @@ SrPlayer.prototype.V = function (a) {
                 antiCheatCheck();
                 PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + h, 0, PlayerMaxLp[a]);
                 antiCheatSet();
-                SR_INDICATOR.add(this.a[a][0].x, this.a[a][0].y, 0, h, 65280);
+                SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, h, 65280);
             }
             if (checkInventoryCompo(4 + a, 12) && !GameMode && srRandom(100) < getInventoryCompo(4 + a, 8)) {
-                SR_DROP.add(this.a[a][0].x, this.a[a][0].y, 2, 0, 0);
+                SR_DROP.dpAdd(this.a[a][0].x, this.a[a][0].y, 2, 0, 0);
             }
             if (checkInventoryCompo(4 + a, 37) && !GameMode && srRandom(100) < getInventoryCompo(4 + a, 8)) {
                 e = 100;
@@ -6262,7 +6264,7 @@ SrPlayer.prototype.V = function (a) {
                         e += getInventoryCompo(4 + b, 8);
                     }
                 }
-                SR_DROP.add(this.a[a][0].x, this.a[a][0].y, 1, srFloor(this.j * e / 100), 0)
+                SR_DROP.dpAdd(this.a[a][0].x, this.a[a][0].y, 1, srFloor(this.j * e / 100), 0)
             }
             if (checkInventoryCompo(4 + a, 43) && srRandom(100) < getInventoryCompo(4 + a, 8)) {
                 e = getInventoryCompo(4 + a, 9);
@@ -6279,9 +6281,11 @@ SrPlayer.prototype.V = function (a) {
                     scaleVec2(c, .1);
                 }
                 if (1 != GameMode) {
-                    SR_ENEMY.c[d][0].sub(c)
+                    //vecSub
+                    SR_ENEMY.c[d][0].vecSub(c)
                 } else {
-                    SR_PLAYER.g[d][0].sub(c)
+                    //vecSub
+                    SR_PLAYER.g[d][0].vecSub(c)
                 }
             }
         }
@@ -6304,11 +6308,11 @@ SrPlayer.prototype.V = function (a) {
     pullJoints(this.a[a][7], this.a[a][8], 6, .1, .1)
 };
 
-WINDOW.fff = SrPlayer.prototype.W;
+WINDOW.fff = SrPlayer.prototype.plAngel;
 /*
 angel
 */
-SrPlayer.prototype.W = function (a) {
+SrPlayer.prototype.plAngel = function (a) {
     var b;
     var c;
     var d = new SrVec2;
@@ -6370,9 +6374,9 @@ SrPlayer.prototype.W = function (a) {
             this.a[a][12].x -= 2;
             this.a[a][14].x += 2;
             this.b[a] = 15 + b;
-            this.a[a][this.b[a]].set(this.a[a][0]);
+            this.a[a][this.b[a]].vecSet(this.a[a][0]);
             this.a[a][this.b[a]].y -= 5;
-            this.g[a][this.b[a]].set(this.a[a][this.b[a]]);
+            this.g[a][this.b[a]].vecSet(this.a[a][this.b[a]]);
             if (1 != GameMode) {
                 setDistance(d, SR_ENEMY.a[c][20], this.a[a][this.b[a]]);
             } else {
@@ -6380,7 +6384,8 @@ SrPlayer.prototype.W = function (a) {
             }
             normalize(d);
             scaleVec2(d, 2);
-            this.a[a][this.b[a]].add(d);
+            //vecAdd
+            this.a[a][this.b[a]].vecAdd(d);
         }
         if (-1 == c) {
             plWalk(this, a);
@@ -6394,13 +6399,14 @@ SrPlayer.prototype.W = function (a) {
             if (0 >= this.C[a][b]) {
                 if (1 == this.s[a][b]) {
                     this.s[a][b]++;
-                    d.set(this.a[a][0]);
+                    d.vecSet(this.a[a][0]);
                     d.y -= 5;
-                    this.g[a][this.b[a]].set(this.a[a][this.b[a]]);
+                    this.g[a][this.b[a]].vecSet(this.a[a][this.b[a]]);
                     setDistance(d, d, this.a[a][this.b[a]]);
                     q = normalize(d);
                     scaleVec2(d, 2);
-                    this.a[a][this.b[a]].add(d);
+                    //vecAdd
+                    this.a[a][this.b[a]].vecAdd(d);
                     this.C[a][b] = srFloor(q / 2);
                 } else {
                     this.s[a][b] = 0;
@@ -6436,7 +6442,7 @@ SrPlayer.prototype.W = function (a) {
                     if (checkInventoryCompo(4 + a, 46)) {
                         q = getInventoryCompo(4 + a, 8);
                         PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + q, 0, PlayerMaxLp[a]);
-                        SR_INDICATOR.add(this.a[a][0].x, this.a[a][0].y, 0, q, 65280);
+                        SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, q, 65280);
                     }
                     antiCheatSet();
                     this.D[a][b] = getItemData(InventoryItem[4 + a], 7)
@@ -6463,11 +6469,11 @@ SrPlayer.prototype.W = function (a) {
     pullJoints(this.a[a][13], this.a[a][14], 9.6, .5, .5)
 };
 
-WINDOW.fff = SrPlayer.prototype.B;
+WINDOW.fff = SrPlayer.prototype.plDraw;
 /*
 プレイヤーを描く
 */
-SrPlayer.prototype.B = function () {
+SrPlayer.prototype.plDraw = function () {
     var a;
     var b;
     var c = new SrVec2;
@@ -6576,15 +6582,15 @@ SrPlayer.prototype.B = function () {
             setDistance(c, this.a[a][5], this.a[a][6]);
             normalize(c);
             scaleVec2(c, g);
-            c.add(this.a[a][6]);
+            c.vecAdd(this.a[a][6]);
             drawLine(this.a[a][6].x, this.a[a][6].y, c.x, c.y, h);
         } else if (3 == this.f[a]) {
             setDistance(c, this.a[a][6], this.a[a][5]);
             normalize(c);
-            d.set(c);
+            d.vecSet(c);
             setPerpendicular(d);
             scaleVec2(c, 18);
-            c.add(this.a[a][5]);
+            c.vecAdd(this.a[a][5]);
             drawLine(this.a[a][5].x, this.a[a][5].y, c.x, c.y, h);
             scaleVec2(d, 8);
             setSumVec2(c, this.a[a][6], d);
@@ -7190,14 +7196,14 @@ function SrEnemy() {
 /*
 敵のリセット
 */
-SrEnemy.prototype.o = function () {
+SrEnemy.prototype.enReset = function () {
     this.I = this.i = 0
 };
 
 /*
 敵の召喚
 */
-SrEnemy.prototype.add = function (a, b, c) {
+SrEnemy.prototype.enAdd = function (a, b, c) {
     var d;
     d = srFloor(100 * EnemySpawnScale / 100);
     if (this.i != d && this.I != d) {
@@ -7205,7 +7211,7 @@ SrEnemy.prototype.add = function (a, b, c) {
         b *= 8;
         for (d = 0; 21 > d; d++) {
             setVec2(this.a[this.i][d], a + srRandom(1), b + srRandom(1));
-            this.c[this.i][d].set(this.a[this.i][d]);
+            this.c[this.i][d].vecSet(this.a[this.i][d]);
         }
         this.f[this.i] = c;
         this.v[this.i] = ENEMY_DATA[c][ENEMY_TYPE];
@@ -7229,10 +7235,10 @@ SrEnemy.prototype.add = function (a, b, c) {
 /*
 敵の削除
 */
-SrEnemy.prototype.sub = function (a) {
+SrEnemy.prototype.enDelete = function (a) {
     for (var b = 0; 21 > b; b++) {
-        this.a[a][b].set(this.a[this.i - 1][b]);
-        this.c[a][b].set(this.c[this.i - 1][b]);
+        this.a[a][b].vecSet(this.a[this.i - 1][b]);
+        this.c[a][b].vecSet(this.c[this.i - 1][b]);
     }
     this.f[a] = this.f[this.i - 1];
     this.v[a] = this.v[this.i - 1];
@@ -7257,7 +7263,7 @@ SrEnemy.prototype.sub = function (a) {
 function enGroundCollision(a, b, c, d) {
     var e = new SrVec2;
     setDistance(e, a.a[b][c], a.c[b][c]);
-    a.a[b][c].set(a.c[b][c]);
+    a.a[b][c].vecSet(a.c[b][c]);
     var g = (magnitudeOf(e) >> 2) + 1;
     scaleVec2(e, 1 / g);
     for (var h, q, m, l = 0; l < g; l++) {
@@ -7364,7 +7370,7 @@ function enTakeDamage(a, b, c, d, e, g, h, q, m) {
             }
             l.j[S] = srMax(l.j[S] - B, 0);
             if (!(PartyDamageEffect & 1)) {
-                SR_INDICATOR.add(l.a[S][20].x, l.a[S][20].y - z, 1, B, 12632256);
+                SR_INDICATOR.inAdd(l.a[S][20].x, l.a[S][20].y - z, 1, B, 12632256);
             }
             l.u[S] = B;
         }
@@ -7453,13 +7459,13 @@ function enAttack(a, b, c) {
             } else if (1 == h) {
                 var h = a.a[b][0].x + 10 * d.x;
                 var ca = a.a[b][0].y + 10 * d.y;
-                SR_PROJECTILE.add(1, h, ca, 0, 0, c, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, 0, ua, pa, Ha, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, 0, 0, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, g, Wa, Ca)
+                SR_PROJECTILE.pjAdd(1, h, ca, 0, 0, c, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, 0, ua, pa, Ha, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, 0, 0, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, g, Wa, Ca)
             } else if (2 == h) {
                 d = SR_PLAYER.a[ab][2].x - a.a[b][0].x;
                 d /= srAbs(d);
                 h = a.a[b][0].x + 10 * d;
                 ca = a.a[b][0].y;
-                SR_PROJECTILE.add(1, h, ca, d * Aa * .1, 0, c, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, 0, ua, pa, Ha, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, 0, 0, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, g, Wa, Ca);
+                SR_PROJECTILE.pjAdd(1, h, ca, d * Aa * .1, 0, c, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, 0, ua, pa, Ha, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, 0, 0, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, g, Wa, Ca);
             } else if (3 == h || 6 == h) {
                 //for (3 == h ? setVec2(d, SR_PLAYER.a[ab][2].x - a.a[b][0].x, SR_PLAYER.a[ab][2].y - a.a[b][0].y) : 6 == h && setVec2(d, 0, -1), e = 0 < q ? q : 16, q = srFloor(512 * angleToXAxis(d) / TWOPI), q -= srFloor((rb - 1) * e / 2), ka = 0; ka < rb; ka++) {
                 if (3 == h) {
@@ -7481,7 +7487,7 @@ function enAttack(a, b, c) {
                     var ca = a.a[b][0].y + 10 * d.y;
                     var Pa = d.x * Aa * .1;
                     var Ba = d.y * Aa * .1;
-                    SR_PROJECTILE.add(1, h, ca, Pa, Ba, c, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, 0, ua, pa, Ha, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, 0, 0, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, g, Wa, Ca);
+                    SR_PROJECTILE.pjAdd(1, h, ca, Pa, Ba, c, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, 0, ua, pa, Ha, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, 0, 0, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, g, Wa, Ca);
                     q += e
                 }
             } else if (4 == h) {
@@ -7502,26 +7508,27 @@ function enAttack(a, b, c) {
                     ca = a.a[b][0].y;
                     Pa = d.x / Aa;
                     Ba = (d.y - .5 * Aa * Aa * T * .01) / Aa;
-                    SR_PROJECTILE.add(1, h, ca, Pa, Ba, c, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, 0, ua, pa, Ha, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, 0, 0, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, g, Wa, Ca);
+                    SR_PROJECTILE.pjAdd(1, h, ca, Pa, Ba, c, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, 0, ua, pa, Ha, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, 0, 0, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, g, Wa, Ca);
                 }
             } else if (5 == h) {
                 for (ka = 0; ka < rb; ka++) {
                     h = a.a[b][0].x + srRandomRange(-Pa, Pa);
                     ca = a.a[b][0].y + srRandomRange(-Pa, 0);
-                    SR_PROJECTILE.add(1, h, ca, 0, 0, c, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, 0, ua, pa, Ha, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, 0, 0, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, g, Wa, Ca);
+                    SR_PROJECTILE.pjAdd(1, h, ca, 0, 0, c, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, 0, ua, pa, Ha, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, 0, 0, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, g, Wa, Ca);
                 }
             } else if (7 == h) {
                 for (ka = 0; ka < rb; ka++) {
                     h = srFloor(a.a[b][0].x / 8);
                     ca = srFloor(a.a[b][0].y / 8);
-                    a.add(h, ca, e + pa);
+                    //enAdd
+                    a.enAdd(h, ca, e + pa);
                 }
             } else if (8 == h) {
                 for (ka = 0; ka < rb; ka++) {
                     ca = srRandomInt(4);
                     h = SR_PLAYER.a[ca][2].x;
                     ca = SR_PLAYER.a[ca][2].y;
-                    SR_PROJECTILE.add(1, h, ca, 0, 0, c, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, 0, ua, pa, Ha, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, 0, 0, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, g, Wa, Ca);
+                    SR_PROJECTILE.pjAdd(1, h, ca, 0, 0, c, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, 0, ua, pa, Ha, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, 0, 0, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, g, Wa, Ca);
                 }
             } else if (9 == h) {
                 for (ka = 0; ka < rb; ka++) {
@@ -7532,7 +7539,7 @@ function enAttack(a, b, c) {
                     ca = a.a[b][0].y + 10 * d.y;
                     Pa = d.x * Aa * .1;
                     Ba = d.y * Aa * .1;
-                    SR_PROJECTILE.add(1, h, ca, Pa, Ba, c, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, 0, ua, pa, Ha, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, 0, 0, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, g, Wa, Ca)
+                    SR_PROJECTILE.pjAdd(1, h, ca, Pa, Ba, c, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, 0, ua, pa, Ha, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, 0, 0, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, g, Wa, Ca)
                 }
             }
         }
@@ -7612,7 +7619,7 @@ function enDeath(a, b, c) {
             for (AngerCrownLightningTime = 480, b = 0; 4 > b; b++) {
                 plProjectileAttack(SR_PLAYER, 562, SR_PLAYER.a[b][0].x, SR_PLAYER.a[b][0].y, 0);
                 if (PlayerCurrentLp[b] != PlayerMaxLp[b]) {
-                    SR_INDICATOR.add(SR_PLAYER.a[b][0].x, SR_PLAYER.a[b][0].y, 0, PlayerMaxLp[b] - PlayerCurrentLp[b], 65280);
+                    SR_INDICATOR.inAdd(SR_PLAYER.a[b][0].x, SR_PLAYER.a[b][0].y, 0, PlayerMaxLp[b] - PlayerCurrentLp[b], 65280);
                 }
                 PlayerCurrentLp[b] = PlayerMaxLp[b]
             }
@@ -7646,23 +7653,23 @@ function enDeath(a, b, c) {
     }
     for (d = ENEMY_DROP_FIRST; d < ENEMY_DROP_FIRST + 6; d += 2) {
         if (0 != ENEMY_DATA[a.f[b]][d] && Math.random() * ENEMY_DATA[a.f[b]][d + 1] * 100 < e) {
-            SR_DROP.add(a.a[b][q].x, a.a[b][q].y, ENEMY_DATA[a.f[b]][d], 0, 0);
+            SR_DROP.dpAdd(a.a[b][q].x, a.a[b][q].y, ENEMY_DATA[a.f[b]][d], 0, 0);
         }
     }
     if (1 > 3 * Math.random()) {
-        SR_DROP.add(a.a[b][q].x, a.a[b][q].y, 1, srFloor(c * h / 100), 0);
+        SR_DROP.dpAdd(a.a[b][q].x, a.a[b][q].y, 1, srFloor(c * h / 100), 0);
     }
     if (500 * Math.random() < g) {
-        SR_DROP.add(a.a[b][q].x, a.a[b][q].y, 2, 0, 0);
+        SR_DROP.dpAdd(a.a[b][q].x, a.a[b][q].y, 2, 0, 0);
     }
     return 0
 }
 
-WINDOW.fff = SrEnemy.prototype.L;
+WINDOW.fff = SrEnemy.prototype.enMain;
 /*
 敵が動く
 */
-SrEnemy.prototype.L = function () {
+SrEnemy.prototype.enMain = function () {
     var a;
     for (a = 0; a < this.i; a++) {
         var b = this.v[a];
@@ -7684,53 +7691,53 @@ SrEnemy.prototype.L = function () {
                 }
             }
             if (!b) {// Walker
-                a = this.T(a)
+                a = this.enWalker(a)
             } else if (1 == b) {// Snake
-                a = this.M(a)
+                a = this.enSnake(a)
             } else if (2 == b) {// Bat
-                a = this.N(a)
+                a = this.enBat(a)
             } else if (3 == b) {// Dragon
-                a = this.O(a)
+                a = this.enDragon(a)
             } else if (4 == b) {// StickMan
-                a = this.G(a, b)
+                a = this.enStickMan(a, b)
             } else if (5 == b) {// Tree
-                a = this.H(a, b)
+                a = this.enTree(a, b)
             } else if (6 == b) {// Wheel
-                a = this.P(a)
+                a = this.enWheel(a)
             } else if (7 == b) {// Fish
-                a = this.R(a)
+                a = this.enFish(a)
             } else if (8 == b) {// Mushroom
-                a = this.S(a)
+                a = this.enMushroom(a)
             } else if (9 == b) {// Eel (swimming)
-                a = this.J(a, b)
+                a = this.enEel(a, b)
             } else if (10 == b) {// Spider
-                a = this.U(a)
+                a = this.enSpider(a)
             } else if (11 == b) {// Cactus
-                a = this.V(a)
+                a = this.enCactus(a)
             } else if (12 == b) {// Zombie
-                a = this.G(a, b)
+                a = this.enStickMan(a, b)
             } else if (13 == b) {// Eel (flying)
-                a = this.J(a, b)
+                a = this.enEel(a, b)
             } else if (14 == b) {// Copter
-                a = this.W(a)
+                a = this.enCopter(a)
             } else if (15 == b) {// Bouncer
-                a = this.X(a)
+                a = this.enBouncer(a)
             } else if (16 == b) {// Germ
-                a = this.Y(a)
+                a = this.enGerm(a)
             } else if (17 == b) {// Digger
-                a = this.Z(a)
+                a = this.enDigger(a)
             } else if (18 == b) {// Tree (hanging)
-                a = this.H(a, b)
+                a = this.enTree(a, b)
             }
         }
     }
 };
 
-WINDOW.fff = SrEnemy.prototype.T;
+WINDOW.fff = SrEnemy.prototype.enWalker;
 /*
 敵0
 */
-SrEnemy.prototype.T = function (a) {
+SrEnemy.prototype.enWalker = function (a) {
     var b;
     b = ENEMY_DATA[this.f[a]][ENEMY_SIZE];
     if (this.b[a]) {
@@ -7756,7 +7763,7 @@ SrEnemy.prototype.T = function (a) {
             for (b = this.g[a] = 0; 3 > b; b++) {
                 enGroundCollision(this, a, b, .5);
             }
-            this.a[a][20].set(this.a[a][0]);
+            this.a[a][20].vecSet(this.a[a][0]);
             if (0 >= this.j[a]) {
                 this.b[a] = 3;
                 for (b = 0; 3 > b; b++) {
@@ -7774,7 +7781,7 @@ SrEnemy.prototype.T = function (a) {
             }
             //150 < this.h[a]++ && this.sub(a--)
             if (150 < this.h[a]++) {
-                this.sub(a--)
+                this.enDelete(a--)
             }
         }
     } else {
@@ -7785,18 +7792,18 @@ SrEnemy.prototype.T = function (a) {
         this.a[a][2].x += 2;
         this.a[a][2].y += 2 - 4 * (b - 1);
         for (b = 0; 3 > b; b++) {
-            this.c[a][b].set(this.a[a][b]);
+            this.c[a][b].vecSet(this.a[a][b]);
         }
         this.b[a] = 1
     }
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.M;
+WINDOW.fff = SrEnemy.prototype.enSnake;
 /*
 敵1
 */
-SrEnemy.prototype.M = function (a) {
+SrEnemy.prototype.enSnake = function (a) {
     var b;
     if (this.b[a]) {
         if (1 == this.b[a] || 2 == this.b[a]) {
@@ -7812,7 +7819,7 @@ SrEnemy.prototype.M = function (a) {
                 }
             }
             if (0 < (this.g[a] & 2)) {
-                var c = 0;
+                var c;
                 if (-1 == b) {
                     c = fiftyFifty(-1, 1);
                 } else if (SR_PLAYER.a[b][2].x < this.a[a][0].x) {
@@ -7834,7 +7841,7 @@ SrEnemy.prototype.M = function (a) {
             enGroundCollision(this, a, 1, .5);
             enGroundCollision(this, a, 2, .5);
             this.g[a] = b;
-            this.a[a][20].set(this.a[a][0]);
+            this.a[a][20].vecSet(this.a[a][0]);
             if (0 >= this.j[a]) {
                 this.b[a] = 3;
                 for (b = 0; 3 > b; b++) {
@@ -7851,7 +7858,7 @@ SrEnemy.prototype.M = function (a) {
                 enGroundCollision(this, a, b, .5);
             }
             if (150 < this.h[a]++) {
-                this.sub(a--)
+                this.enDelete(a--)
             }
         }
     } else {
@@ -7859,18 +7866,18 @@ SrEnemy.prototype.M = function (a) {
         this.a[a][1].x += 1;
         this.a[a][2].x += 2;
         for (b = 0; 3 > b; b++) {
-            this.c[a][b].set(this.a[a][b]);
+            this.c[a][b].vecSet(this.a[a][b]);
         }
         this.b[a] = 1
     }
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.N;
+WINDOW.fff = SrEnemy.prototype.enBat;
 /*
 敵2
 */
-SrEnemy.prototype.N = function (a) {
+SrEnemy.prototype.enBat = function (a) {
     var b;
     var c = new SrVec2;
     b = ENEMY_DATA[this.f[a]][ENEMY_SIZE];
@@ -7895,7 +7902,8 @@ SrEnemy.prototype.N = function (a) {
                     scaleVec2(c, .05);
                 }
             }
-            this.a[a][0].add(c);
+            //vecAdd
+            this.a[a][0].vecAdd(c);
             if (10 > srRandom(100)) {
                 this.a[a][0].x += srRandomRange(-1, 1);
                 this.a[a][0].y += srRandomRange(-1, 1);
@@ -7918,7 +7926,7 @@ SrEnemy.prototype.N = function (a) {
             for (b = this.g[a] = 0; 7 > b; b++) {
                 enGroundCollision(this, a, b, 1);
             }
-            this.a[a][20].set(this.a[a][0]);
+            this.a[a][20].vecSet(this.a[a][0]);
             if (0 >= this.j[a]) {
                 this.b[a] = 3;
                 for (b = 0; 7 > b; b++) {
@@ -7943,7 +7951,7 @@ SrEnemy.prototype.N = function (a) {
                 enGroundCollision(this, a, b, .5);
             }
             if (150 < this.h[a]++) {
-                this.sub(a--)
+                this.enDelete(a--)
             }
         }
     } else {
@@ -7962,18 +7970,18 @@ SrEnemy.prototype.N = function (a) {
         this.a[a][6].x += 2;
         this.a[a][6].y += 2;
         for (b = 0; 7 > b; b++) {
-            this.c[a][b].set(this.a[a][b]);
+            this.c[a][b].vecSet(this.a[a][b]);
         }
         this.b[a] = 1
     }
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.O;
+WINDOW.fff = SrEnemy.prototype.enDragon;
 /*
 敵3
 */
-SrEnemy.prototype.O = function (a) {
+SrEnemy.prototype.enDragon = function (a) {
     var b;
     var c = new SrVec2;
     var d = ENEMY_DATA[this.f[a]][ENEMY_SIZE];
@@ -8003,7 +8011,8 @@ SrEnemy.prototype.O = function (a) {
                 c.x += srRandomRange(-.5, .5);
                 c.y += srRandomRange(-.5, .5);
             }
-            this.a[a][0].add(c);
+            //vecAdd
+            this.a[a][0].vecAdd(c);
             c = .02;
             d = 5 * d;
             for (b = 0; 5 > b; b++) {
@@ -8013,7 +8022,7 @@ SrEnemy.prototype.O = function (a) {
             for (b = this.g[a] = 0; 6 > b; b++) {
                 enGroundCollision(this, a, b, .5);
             }
-            this.a[a][20].set(this.a[a][0]);
+            this.a[a][20].vecSet(this.a[a][0]);
             if (0 >= this.j[a]) {
                 this.b[a] = 3;
                 for (b = this.h[a] = 0; 6 > b; b++) {
@@ -8035,7 +8044,7 @@ SrEnemy.prototype.O = function (a) {
                 enGroundCollision(this, a, b, .5);
             }
             if (150 < this.h[a]++) {
-                this.sub(a--)
+                this.enDelete(a--)
             }
         }
     } else {
@@ -8044,11 +8053,11 @@ SrEnemy.prototype.O = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.G;
+WINDOW.fff = SrEnemy.prototype.enStickMan;
 /*
 敵4,12
 */
-SrEnemy.prototype.G = function (a, b) {
+SrEnemy.prototype.enStickMan = function (a, b) {
     var c;
     c = ENEMY_DATA[this.f[a]][ENEMY_SIZE];
     if (this.b[a]) {
@@ -8146,7 +8155,7 @@ SrEnemy.prototype.G = function (a, b) {
             for (c = this.g[a] = 0; 11 > c; c++) {
                 enGroundCollision(this, a, c, .5);
             }
-            this.a[a][20].set(this.a[a][1]);
+            this.a[a][20].vecSet(this.a[a][1]);
             if (0 >= this.j[a]) {
                 this.b[a] = 3;
                 for (c = this.h[a] = 0; 11 > c; c++) {
@@ -8170,7 +8179,7 @@ SrEnemy.prototype.G = function (a, b) {
                 enGroundCollision(this, a, c, .5);
             }
             if (150 < this.h[a]++) {
-                this.sub(a--)
+                this.enDelete(a--)
             }
         }
     } else {
@@ -8179,11 +8188,11 @@ SrEnemy.prototype.G = function (a, b) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.H;
+WINDOW.fff = SrEnemy.prototype.enTree;
 /*
 敵5,18
 */
-SrEnemy.prototype.H = function (a, b) {
+SrEnemy.prototype.enTree = function (a, b) {
     var c;
     var d = ENEMY_DATA[this.f[a]][ENEMY_SIZE];
     if (this.b[a]) {
@@ -8230,7 +8239,7 @@ SrEnemy.prototype.H = function (a, b) {
                 enGroundCollision(this, a, c, .5);
             }
             if (150 < this.h[a]++) {
-                this.sub(a--)
+                this.enDelete(a--)
             }
         }
     } else {
@@ -8239,11 +8248,11 @@ SrEnemy.prototype.H = function (a, b) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.P;
+WINDOW.fff = SrEnemy.prototype.enWheel;
 /*
 敵6
 */
-SrEnemy.prototype.P = function (a) {
+SrEnemy.prototype.enWheel = function (a) {
     var b;
     var c = ENEMY_DATA[this.f[a]][ENEMY_SIZE];
     if (this.b[a]) {
@@ -8281,7 +8290,7 @@ SrEnemy.prototype.P = function (a) {
             for (b = this.g[a] = 0; 7 > b; b++) {
                 enGroundCollision(this, a, b, .5);
             }
-            this.a[a][20].set(this.a[a][0]);
+            this.a[a][20].vecSet(this.a[a][0]);
             if (0 >= this.j[a]) {
                 this.b[a] = 3;
                 for (b = this.h[a] = 0; 7 > b; b++) {
@@ -8303,7 +8312,7 @@ SrEnemy.prototype.P = function (a) {
                 enGroundCollision(this, a, b, .5);
             }
             if (150 < this.h[a]++) {
-                this.sub(a--)
+                this.enDelete(a--)
             }
         }
     } else {
@@ -8322,18 +8331,18 @@ SrEnemy.prototype.P = function (a) {
         this.a[a][6].x += 1 - .85;
         this.a[a][6].y += .5;
         for (b = 0; 7 > b; b++) {
-            this.c[a][b].set(this.a[a][b]);
+            this.c[a][b].vecSet(this.a[a][b]);
         }
         this.b[a] = 1
     }
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.R;
+WINDOW.fff = SrEnemy.prototype.enFish;
 /*
 敵7
 */
-SrEnemy.prototype.R = function (a) {
+SrEnemy.prototype.enFish = function (a) {
     var b;
     var c = new SrVec2;
     var d = ENEMY_DATA[this.f[a]][ENEMY_SIZE];
@@ -8362,7 +8371,8 @@ SrEnemy.prototype.R = function (a) {
                 c.x += srRandomRange(-.5, .5);
                 c.y += srRandomRange(-.5, .5);
             }
-            this.a[a][0].add(c);
+            //vecAdd
+            this.a[a][0].vecAdd(c);
             c = .1;
             pullJoints(this.a[a][0], this.a[a][1], 9 * d, 0, c);
             pullJoints(this.a[a][1], this.a[a][2], 5 * d, 0, c);
@@ -8373,7 +8383,7 @@ SrEnemy.prototype.R = function (a) {
             for (b = this.g[a] = 0; 5 > b; b++) {
                 enGroundCollision(this, a, b, .5);
             }
-            this.a[a][20].set(this.a[a][1]);
+            this.a[a][20].vecSet(this.a[a][1]);
             if (0 >= this.j[a]) {
                 this.b[a] = 3;
                 for (b = this.h[a] = 0; 5 > b; b++) {
@@ -8395,7 +8405,7 @@ SrEnemy.prototype.R = function (a) {
                 enGroundCollision(this, a, b, .5);
             }
             if (150 < this.h[a]++) {
-                this.sub(a--)
+                this.enDelete(a--)
             }
         }
     } else {
@@ -8404,11 +8414,11 @@ SrEnemy.prototype.R = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.S;
+WINDOW.fff = SrEnemy.prototype.enMushroom;
 /*
 敵8
 */
-SrEnemy.prototype.S = function (a) {
+SrEnemy.prototype.enMushroom = function (a) {
     var b;
     var c = ENEMY_DATA[this.f[a]][ENEMY_SIZE];
     if (this.b[a]) {
@@ -8448,7 +8458,7 @@ SrEnemy.prototype.S = function (a) {
                 enGroundCollision(this, a, b, .5);
             }
             if (150 < this.h[a]++) {
-                this.sub(a--)
+                this.enDelete(a--)
             }
         }
     } else {
@@ -8463,11 +8473,11 @@ SrEnemy.prototype.S = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.J;
+WINDOW.fff = SrEnemy.prototype.enEel;
 /*
 敵9,13
 */
-SrEnemy.prototype.J = function (a, b) {
+SrEnemy.prototype.enEel = function (a, b) {
     var c;
     var d = new SrVec2;
     var e = ENEMY_DATA[this.f[a]][ENEMY_SIZE];
@@ -8550,7 +8560,8 @@ SrEnemy.prototype.J = function (a, b) {
                 d.x += srRandomRange(-.5, .5);
                 d.y += srRandomRange(-.5, .5);
             }
-            this.a[a][0].add(d);
+            //vecAdd
+            this.a[a][0].vecAdd(d);
             for (c = 0; 6 > c; c++) {
                 pullJoints(this.a[a][c], this.a[a][c + 1], 6 * e, 0, .5);
             }
@@ -8564,7 +8575,7 @@ SrEnemy.prototype.J = function (a, b) {
             for (c = this.g[a] = 0; 6 > c; c++) {
                 enGroundCollision(this, a, c, .5);
             }
-            this.a[a][20].set(this.a[a][0]);
+            this.a[a][20].vecSet(this.a[a][0]);
             if (0 >= this.j[a]) {
                 this.b[a] = 3;
                 for (c = this.h[a] = 0; 6 > c; c++) {
@@ -8585,7 +8596,7 @@ SrEnemy.prototype.J = function (a, b) {
                 enGroundCollision(this, a, c, .5);
             }
             if (150 < this.h[a]++) {
-                this.sub(a--)
+                this.enDelete(a--)
             }
         }
     } else {
@@ -8598,11 +8609,11 @@ SrEnemy.prototype.J = function (a, b) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.U;
+WINDOW.fff = SrEnemy.prototype.enSpider;
 /*
 敵10
 */
-SrEnemy.prototype.U = function (a) {
+SrEnemy.prototype.enSpider = function (a) {
     var b;
     b = ENEMY_DATA[this.f[a]][ENEMY_SIZE];
     if (this.b[a]) {
@@ -8692,7 +8703,7 @@ SrEnemy.prototype.U = function (a) {
             for (b = this.g[a] = 0; 9 > b; b++) {
                 enGroundCollision(this, a, b, .5);
             }
-            this.a[a][20].set(this.a[a][0]);
+            this.a[a][20].vecSet(this.a[a][0]);
             if (0 >= this.j[a]) {
                 this.b[a] = 3;
                 this.h[a] = 0;
@@ -8716,7 +8727,7 @@ SrEnemy.prototype.U = function (a) {
                 enGroundCollision(this, a, b, .5);
             }
             if (150 < this.h[a]++) {
-                this.sub(a--)
+                this.enDelete(a--)
             }
         }
     } else {
@@ -8739,18 +8750,18 @@ SrEnemy.prototype.U = function (a) {
         this.a[a][8].x += 7.99;
         this.a[a][8].y += 7.99;
         for (b = 0; 9 > b; b++) {
-            this.c[a][b].set(this.a[a][b]);
+            this.c[a][b].vecSet(this.a[a][b]);
         }
         this.b[a] = 1
     }
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.V;
+WINDOW.fff = SrEnemy.prototype.enCactus;
 /*
 敵11
 */
-SrEnemy.prototype.V = function (a) {
+SrEnemy.prototype.enCactus = function (a) {
     var b;
     var c = ENEMY_DATA[this.f[a]][ENEMY_SIZE];
     if (this.b[a]) {
@@ -8795,7 +8806,7 @@ SrEnemy.prototype.V = function (a) {
                 enGroundCollision(this, a, b, .5);
             }
             if (150 < this.h[a]++) {
-                this.sub(a--)
+                this.enDelete(a--)
             }
         }
     } else {
@@ -8812,11 +8823,11 @@ SrEnemy.prototype.V = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.W;
+WINDOW.fff = SrEnemy.prototype.enCopter;
 /*
 敵14
 */
-SrEnemy.prototype.W = function (a) {
+SrEnemy.prototype.enCopter = function (a) {
     var b;
     var c = new SrVec2;
     b = ENEMY_DATA[this.f[a]][ENEMY_SIZE];
@@ -8847,7 +8858,8 @@ SrEnemy.prototype.W = function (a) {
                     c.y = srRandomRange(-.1, .1);
                 }
             }
-            this.a[a][0].add(c);
+            //vecAdd
+            this.a[a][0].vecAdd(c);
             this.a[a][2].x -= srRandom(.8);
             this.a[a][3].x += srRandom(.8);
             c = .3;
@@ -8860,7 +8872,7 @@ SrEnemy.prototype.W = function (a) {
             for (b = this.g[a] = 0; 4 > b; b++) {
                 enGroundCollision(this, a, b, 1);
             }
-            this.a[a][20].set(this.a[a][0]);
+            this.a[a][20].vecSet(this.a[a][0]);
             if (0 >= this.j[a]) {
                 this.b[a] = 3;
                 for (b = 0; 4 > b; b++) {
@@ -8882,7 +8894,7 @@ SrEnemy.prototype.W = function (a) {
                 enGroundCollision(this, a, b, .5);
             }
             if (150 < this.h[a]++) {
-                this.sub(a--)
+                this.enDelete(a--)
             }
         }
     } else {
@@ -8895,18 +8907,18 @@ SrEnemy.prototype.W = function (a) {
         this.a[a][3].x += 4;
         this.a[a][3].y += 0;
         for (b = 0; 4 > b; b++) {
-            this.c[a][b].set(this.a[a][b]);
+            this.c[a][b].vecSet(this.a[a][b]);
         }
         this.b[a] = 1
     }
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.X;
+WINDOW.fff = SrEnemy.prototype.enBouncer;
 /*
 敵15
 */
-SrEnemy.prototype.X = function (a) {
+SrEnemy.prototype.enBouncer = function (a) {
     var b;
     b = ENEMY_DATA[this.f[a]][ENEMY_SIZE];
     if (this.b[a]) {
@@ -8916,7 +8928,7 @@ SrEnemy.prototype.X = function (a) {
             moveJoint(this.a[a][2], this.c[a][2], .1, .99);
             var c = plFindPlayer(this.a[a][0].x - 200, this.a[a][0].y - 50, this.a[a][0].x + 200, this.a[a][0].y + 50, 0);
             if (0 < (this.g[a] & 2) && 5 > srRandom(100)) {
-                var d = 0;
+                var d;
                 if (-1 == c) {
                     d = fiftyFifty(-1, 1);
                 } else if (SR_PLAYER.a[c][2].x < this.a[a][0].x) {
@@ -8932,18 +8944,18 @@ SrEnemy.prototype.X = function (a) {
             pullJoints(this.a[a][0], this.a[a][2], 5 * b, c, c);
             pullJoints(this.a[a][1], this.a[a][2], 6 * b, c, c);
             if (1 < b && 0 < this.u[a] && 10 > srRandom(100)) {
-                this.add(srFloor(this.a[a][0].x / 8), srFloor(this.a[a][0].y / 8), this.f[a] - 1);
+                this.enAdd(srFloor(this.a[a][0].x / 8), srFloor(this.a[a][0].y / 8), this.f[a] - 1);
             }
             this.u[a] = 0;
             enAttack(this, a, 0);
             for (b = this.g[a] = 0; 3 > b; b++) {
                 enGroundCollision(this, a, b, .9);
             }
-            this.a[a][20].set(this.a[a][0]);
+            this.a[a][20].vecSet(this.a[a][0]);
             if (0 >= this.j[a]) {
                 this.b[a]++;
-                this.a[a][3].set(this.a[a][0]);
-                this.c[a][3].set(this.a[a][0]);
+                this.a[a][3].vecSet(this.a[a][0]);
+                this.c[a][3].vecSet(this.a[a][0]);
                 for (b = 0; 4 > b; b++) {
                     this.a[a][b].x += srRandomRange(-.5, .5);
                     this.a[a][b].y -= srRandomRange(2, 3);
@@ -8963,7 +8975,7 @@ SrEnemy.prototype.X = function (a) {
                 enGroundCollision(this, a, b, .5);
             }
             if (150 < this.h[a]++) {
-                this.sub(a--)
+                this.enDelete(a--)
             }
         }
     } else {
@@ -8974,18 +8986,18 @@ SrEnemy.prototype.X = function (a) {
         this.a[a][2].x += 2;
         this.a[a][2].y += 1;
         for (b = 0; 3 > b; b++) {
-            this.c[a][b].set(this.a[a][b]);
+            this.c[a][b].vecSet(this.a[a][b]);
         }
         this.b[a]++
     }
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.Y;
+WINDOW.fff = SrEnemy.prototype.enGerm;
 /*
 敵16
 */
-SrEnemy.prototype.Y = function (a) {
+SrEnemy.prototype.enGerm = function (a) {
     var b;
     var c = new SrVec2;
     var d = ENEMY_DATA[this.f[a]][ENEMY_SIZE];
@@ -9001,13 +9013,15 @@ SrEnemy.prototype.Y = function (a) {
                     c.y = (this.a[a][8].y + this.a[a][9].y) / 2 - this.a[a][7].y;
                     normalize(c);
                     scaleVec2(c, d);
-                    this.a[a][7].add(c);
+                    //vecAdd
+                    this.a[a][7].vecAdd(c);
                 } else if (1 == b) {
                     c.x = (this.a[a][9].x + this.a[a][7].x) / 2 - this.a[a][8].x;
                     c.y = (this.a[a][9].y + this.a[a][7].y) / 2 - this.a[a][8].y;
                     normalize(c);
                     scaleVec2(c, d);
-                    this.a[a][8].add(c);
+                    //vecAdd
+                    this.a[a][8].vecAdd(c);
                 } else {
                     if (2 == b) {
                         c.x = (this.a[a][7].x + this.a[a][8].x) / 2 - this.a[a][9].x;
@@ -9015,7 +9029,8 @@ SrEnemy.prototype.Y = function (a) {
                     c.y = (this.a[a][7].y + this.a[a][8].y) / 2 - this.a[a][9].y;
                     normalize(c);
                     scaleVec2(c, d);
-                    this.a[a][9].add(c);
+                    //vecAdd
+                    this.a[a][9].vecAdd(c);
                 }
                 this.h[a] = 25 * d;
             }
@@ -9049,7 +9064,7 @@ SrEnemy.prototype.Y = function (a) {
             for (b = this.g[a] = 0; 10 > b; b++) {
                 enGroundCollision(this, a, b, .9);
             }
-            this.a[a][20].set(this.a[a][0]);
+            this.a[a][20].vecSet(this.a[a][0]);
             if (0 >= this.j[a]) {
                 this.b[a]++;
                 for (b = this.h[a] = 0; 4 > b; b++) {
@@ -9074,7 +9089,7 @@ SrEnemy.prototype.Y = function (a) {
                 enGroundCollision(this, a, b, .5);
             }
             if (150 < this.h[a]++) {
-                this.sub(a--)
+                this.enDelete(a--)
             }
         }
     } else {
@@ -9083,11 +9098,11 @@ SrEnemy.prototype.Y = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.Z;
+WINDOW.fff = SrEnemy.prototype.enDigger;
 /*
 敵17
 */
-SrEnemy.prototype.Z = function (a) {
+SrEnemy.prototype.enDigger = function (a) {
     var b;
     var c = ENEMY_DATA[this.f[a]][ENEMY_SIZE];
     if (this.b[a]) {
@@ -9119,7 +9134,7 @@ SrEnemy.prototype.Z = function (a) {
             for (b = this.b[a] - 1; b < this.b[a]; b++) {
                 enGroundCollision(this, a, b, .5);
             }
-            this.a[a][20].set(this.a[a][0]);
+            this.a[a][20].vecSet(this.a[a][0]);
             if (0 >= this.j[a]) {
                 for (b = 0; b < this.b[a]; b++) {
                     this.a[a][b].x += srRandomRange(-.5, .5);
@@ -9135,7 +9150,7 @@ SrEnemy.prototype.Z = function (a) {
             }
             this.g[a] = 0;
             if (150 < this.h[a]++) {
-                this.sub(a--)
+                this.enDelete(a--)
             }
         }
     } else {
@@ -9145,11 +9160,11 @@ SrEnemy.prototype.Z = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.K;
+WINDOW.fff = SrEnemy.prototype.enDraw;
 /*
 EnDraw 描画
 */
-SrEnemy.prototype.K = function () {
+SrEnemy.prototype.enDraw = function () {
     var a, b;
     for (a = 0; a < this.i; a++) {
         var c = ENEMY_DATA[this.f[a]][2];
@@ -10654,14 +10669,14 @@ function SrProjectile() {
 /*
 飛び道具のリセット
 */
-SrProjectile.prototype.o = function () {
+SrProjectile.prototype.pjReset = function () {
     this.a = 0
 };
 
 /*
 飛び道具の追加
 */
-SrProjectile.prototype.add = function (a, b, c, d, e, g, h, q, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, ab, Pa, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb) {
+SrProjectile.prototype.pjAdd = function (a, b, c, d, e, g, h, q, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, ab, Pa, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb) {
     if (1E3 != this.a) {
         this.g[this.a] = a;
         setVec2(this.b[this.a], b, c);
@@ -10722,8 +10737,8 @@ SrProjectile.prototype.add = function (a, b, c, d, e, g, h, q, m, l, A, z, Z, B,
 */
 function PjSub(a, b) {
     a.g[b] = a.g[a.a - 1];
-    a.b[b].set(a.b[a.a - 1]);
-    a.c[b].set(a.c[a.a - 1]);
+    a.b[b].vecSet(a.b[a.a - 1]);
+    a.c[b].vecSet(a.c[a.a - 1]);
     a.u[b] = a.u[a.a - 1];
     a.ia[b] = a.ia[a.a - 1];
     a.ka[b] = a.ka[a.a - 1];
@@ -10748,6 +10763,7 @@ function PjSub(a, b) {
     a.A[b] = a.A[a.a - 1];
     a.i[b] = a.i[a.a - 1];
     a.j[b] = a.j[a.a - 1];
+    //what is this sub
     a.sub[b] = a.sub[a.a - 1];
     a.U[b] = a.U[a.a - 1];
     a.ea[b] = a.ea[a.a - 1];
@@ -10839,7 +10855,7 @@ function PjMain() {
                 g = b;
                 c = d;
                 var h = 0;
-                c.set(e.c[g]);
+                c.vecSet(e.c[g]);
                 var q = srFloor(magnitudeOf(c) / 4) + 1;
                 scaleVec2(c, 1 / q);
                 var m;
@@ -10925,18 +10941,22 @@ function PjMain() {
                     }
                     if (a.g[b]) {
                         if (1 != GameMode) {
-                            SR_PLAYER.g[g][0].sub(d);
+                            //vecSub
+                            SR_PLAYER.g[g][0].vecSub(d);
                             a.H[b] = 0;
                         } else {
-                            SR_PLAYER.g[g][0].sub(d);
+                            //vecSub
+                            SR_PLAYER.g[g][0].vecSub(d);
                             a.H[b] = 0;
                         }
                     } else {
                         if (1 != GameMode) {
-                            SR_ENEMY.c[g][0].sub(d);
+                            //vecSub
+                            SR_ENEMY.c[g][0].vecSub(d);
                             a.H[b] = 0;
                         } else {
-                            SR_PLAYER.g[g][0].sub(d);
+                            //vecSub
+                            SR_PLAYER.g[g][0].vecSub(d);
                             a.H[b] = 0;
                         }
                     }
@@ -10980,7 +11000,7 @@ function PjMain() {
                                 d.y = a.c[b].y;
                                 normalize(d);
                             }
-                            SR_PROJECTILE.add(a.g[b], a.b[b].x, a.b[b].y, d.x, d.y, a.U[b], a.ea[b], a.R[b], a.L[b], a.$[b], a.ca[b], a.Y[b], a.Z[b], a.T[b], a.aa[b], a.S[b], a.V[b], a.W[b], a.fa[b], a.ba[b], a.X[b], 0, 0, a.da[b], a.M[b], a.N[b], a.O[b], a.P[b], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+                            SR_PROJECTILE.pjAdd(a.g[b], a.b[b].x, a.b[b].y, d.x, d.y, a.U[b], a.ea[b], a.R[b], a.L[b], a.$[b], a.ca[b], a.Y[b], a.Z[b], a.T[b], a.aa[b], a.S[b], a.V[b], a.W[b], a.fa[b], a.ba[b], a.X[b], 0, 0, a.da[b], a.M[b], a.N[b], a.O[b], a.P[b], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
                         }
                     }
                 }
@@ -10993,7 +11013,7 @@ function PjMain() {
                 if (2 == a.sub[b] && (srRandom(100) < a.f[b] || 1 == e || -1 != g)) {
                     d.x = srRandomRange(-1, 1);
                     d.y = srRandomRange(-1, 1);
-                    SR_PROJECTILE.add(a.g[b], a.b[b].x, a.b[b].y, d.x, d.y, a.U[b], a.ea[b], a.R[b], a.L[b], a.$[b], a.ca[b], a.Y[b], a.Z[b], a.T[b], a.aa[b], a.S[b], a.V[b], a.W[b], a.fa[b], a.ba[b], a.X[b], 0, 0, a.da[b], a.M[b], a.N[b], a.O[b], a.P[b], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+                    SR_PROJECTILE.pjAdd(a.g[b], a.b[b].x, a.b[b].y, d.x, d.y, a.U[b], a.ea[b], a.R[b], a.L[b], a.$[b], a.ca[b], a.Y[b], a.Z[b], a.T[b], a.aa[b], a.S[b], a.V[b], a.W[b], a.fa[b], a.ba[b], a.X[b], 0, 0, a.da[b], a.M[b], a.N[b], a.O[b], a.P[b], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
                 }
             }
         }
@@ -11026,8 +11046,8 @@ function PjDraw() {
             DisplayMode1 = a.la[b];
             DisplayMode2 = 1;
             if (a.ia[b]) {
-                g.set(a.c[b]);
-                e.set(g);
+                g.vecSet(a.c[b]);
+                e.vecSet(g);
                 setPerpendicular(e);
                 normalize(e);
                 normalize(g);
@@ -11183,14 +11203,14 @@ function SrIndicator() {
 /*
 ダメージエフェクト初期化
 */
-SrIndicator.prototype.o = function () {
+SrIndicator.prototype.inReset = function () {
     this.a = 0
 };
 
 /*
 ダメージエフェクト追加
 */
-SrIndicator.prototype.add = function (a, b, c, d, e) {
+SrIndicator.prototype.inAdd = function (a, b, c, d, e) {
     if (1E3 != this.a) {
         a = srClampA(a, 16, 495);
         b = srClampA(b, 8, 247);
@@ -11210,9 +11230,9 @@ SrIndicator.prototype.add = function (a, b, c, d, e) {
 /*
 ダメージエフェクト削除
 */
-SrIndicator.prototype.sub = function (a) {
-    this.b[a].set(this.b[this.a - 1]);
-    this.c[a].set(this.c[this.a - 1]);
+SrIndicator.prototype.inDelete = function (a) {
+    this.b[a].vecSet(this.b[this.a - 1]);
+    this.c[a].vecSet(this.c[this.a - 1]);
     this.value[a] = this.value[this.a - 1];
     this.f[a] = this.f[this.a - 1];
     this.g[a] = this.g[this.a - 1];
@@ -11237,12 +11257,13 @@ function InMain() {
             d.y += .05;
             scaleVec2(d, .99);
         }
-        c.add(d);
+        //vecAdd
+        c.vecAdd(d);
         a.b[b].x = srClampA(a.b[b].x, 16, 495);
         a.b[b].y = srClampA(a.b[b].y, 8, 247);
         a.g[b]++;
         if (100 <= a.g[b]) {
-            a.sub(b--)
+            a.inDelete(b--)
         }
     }
 }
@@ -11250,7 +11271,7 @@ function InMain() {
 /*
 ダメージエフェクト描く
 */
-function cf() {
+function InDraw() {
     var a = SR_INDICATOR;
     var b;
     var c;
@@ -11290,14 +11311,14 @@ function SrDrop() {
 /*
 ドロップアイテム初期化
 */
-SrDrop.prototype.o = function () {
+SrDrop.prototype.dpReset = function () {
     this.f = this.a = 0
 };
 
 /*
 ドロップアイテム追加
 */
-SrDrop.prototype.add = function (a, b, c, d, e) {
+SrDrop.prototype.dpAdd = function (a, b, c, d, e) {
     if (100 != this.a) {
         a = srClampA(a, 16, 495);
         b = srClampA(b, 8, 247);
@@ -11322,9 +11343,9 @@ SrDrop.prototype.add = function (a, b, c, d, e) {
 /*
 ドロップアイテム削除
 */
-SrDrop.prototype.sub = function (a) {
-    this.b[a].set(this.b[this.a - 1]);
-    this.c[a].set(this.c[this.a - 1]);
+SrDrop.prototype.dpDelete = function (a) {
+    this.b[a].vecSet(this.b[this.a - 1]);
+    this.c[a].vecSet(this.c[this.a - 1]);
     this.g[a] = this.g[this.a - 1];
     this.value[a] = this.value[this.a - 1];
     this.i[a] = this.i[this.a - 1];
@@ -11375,7 +11396,7 @@ function DpMain() {
                 antiCheatCheck();
                 if (1 == a.g[b]) {
                     PartyGold = srClampA(PartyGold + a.value[b], 0, 9999999);
-                    SR_INDICATOR.add(a.b[b].x, a.b[b].y, 0, a.value[b], 16776960);
+                    SR_INDICATOR.inAdd(a.b[b].x, a.b[b].y, 0, a.value[b], 16776960);
                 } else if (2 == a.g[b]) {
                     for (d = 0; 4 > d; d++) {
                         if (0 != SR_PLAYER.H[d] && srFloor(100 * PlayerCurrentLp[c] / PlayerMaxLp[c]) > srFloor(100 * PlayerCurrentLp[d] / PlayerMaxLp[d])) {
@@ -11388,7 +11409,7 @@ function DpMain() {
                     antiCheatCheck();
                     PlayerCurrentLp[c] = srClampA(PlayerCurrentLp[c] + srFloor(PlayerMaxLp[c] / 5), 0, PlayerMaxLp[c]);
                     antiCheatSet();
-                    SR_INDICATOR.add(a.b[b].x, a.b[b].y, 0, srFloor(PlayerMaxLp[c] / 5), 65280)
+                    SR_INDICATOR.inAdd(a.b[b].x, a.b[b].y, 0, srFloor(PlayerMaxLp[c] / 5), 65280)
                 } else {
                     for (c = 16; 40 > c; c++) {
                         if (0 == InventoryItem[c]) {
@@ -11406,7 +11427,7 @@ function DpMain() {
                     }
                 }
                 antiCheatSet();
-                a.sub(b--)
+                a.dpDelete(b--)
             }
         }
     }
@@ -11451,13 +11472,13 @@ function SrTerrain() {
 /*
 地形セット
 */
-SrTerrain.prototype.o = function (a) {
+SrTerrain.prototype.trSet = function (a) {
     var b, c;
     this.c = a;
     if (this.j != STAGE_DATA[this.c][CurrentArea][1]) {
         this.j = STAGE_DATA[this.c][CurrentArea][1];
         StageTerrainImage = new SrImage;
-        StageTerrainImage.o("st" + this.j + ".gif");
+        StageTerrainImage.imSet("st" + this.j + ".gif");
     }
     imageToArray(StageTerrainImage);
     if (ImageCounter) {
@@ -11649,7 +11670,7 @@ function SrWorldMap() {
 /*
 マップのセット
 */
-SrWorldMap.prototype.o = function () {
+SrWorldMap.prototype.mpSet = function () {
     var a;
     var b;
     var c;
@@ -11955,7 +11976,7 @@ function createNewPixelArray(a, b, c) {
 /*
 画像セット
 */
-SrImage.prototype.o = function (a) {
+SrImage.prototype.imSet = function (a) {
     if (this.i != a) {
         ImageCounter++;
         this.i = a;
@@ -12051,8 +12072,8 @@ function SrText() {
 /*
 テキストのセット
 */
-SrText.prototype.o = function (a, b, c) {
-    this.f.o(a);
+SrText.prototype.txSet = function (a, b, c) {
+    this.f.imSet(a);
     this.c = b;
     this.g = c;
     this.a = this.b = 0
@@ -12797,10 +12818,11 @@ function pullJoints(a, b, c, d, e) {
 */
 function moveJoint(a, b, c, d) {
     setDistance(VecA, a, b);
-    b.set(a);
+    b.vecSet(a);
     VecA.y += c;
     scaleVec2(VecA, d);
-    a.add(VecA)
+    //vecAdd
+    a.vecAdd(VecA)
 }
 
 var Clicked = !1;
@@ -13125,7 +13147,7 @@ function SrVec2() {
 /*
 aのベクトルを代入
 */
-SrVec2.prototype.set = function (a) {
+SrVec2.prototype.vecSet = function (a) {
     this.x = a.x;
     this.y = a.y;
     return this
@@ -13142,7 +13164,7 @@ function setVec2(a, b, c) {
 /*
 aのベクトルをたす
 */
-SrVec2.prototype.add = function (a) {
+SrVec2.prototype.vecAdd = function (a) {
     this.x += a.x;
     this.y += a.y;
     return this
@@ -13159,7 +13181,7 @@ function setSumVec2(a, b, c) {
 /*
 aのベクトルをひく
 */
-SrVec2.prototype.sub = function (a) {
+SrVec2.prototype.vecSub = function (a) {
     this.x -= a.x;
     this.y -= a.y;
     return this
