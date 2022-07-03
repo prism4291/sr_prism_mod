@@ -7,61 +7,61 @@
 </head>
 
 <body>
-    <script type="text/javascript">
-        function load() {
-            let gameLoadOutput;
-            let gameLoadReturn;
-            let bunValue;
-            document.getElementById('bun').value = document.getElementById('bun').value.replace(/\x0D\x0A|\x0D|\x0A/g, '');
-            bunValue = document.getElementById('bun').value;
-            gameLoadReturn = -1;
-            gameLoadOutput = 'Error';
-            if (bunValue !== '') {
-                if (document.getElementById('cv')) {
-                    gameLoadReturn = setSaveCode(bunValue);
-                }
-            }
-            if (gameLoadReturn !== -1) {
-                gameLoadOutput = 'Set OK';
-            }
-            document.getElementById('pass').innerHTML = gameLoadOutput;
-        }
-
-        function save() {
-            let gameSaveReturn = '';
-            let gameSaveOutput = 'Error';
+<script type="text/javascript">
+    function load() {
+        let gameLoadOutput;
+        let gameLoadReturn;
+        let bunValue;
+        document.getElementById('bun').value = document.getElementById('bun').value.replace(/\x0D\x0A|\x0D|\x0A/g, '');
+        bunValue = document.getElementById('bun').value;
+        gameLoadReturn = -1;
+        gameLoadOutput = 'Error';
+        if (bunValue !== '') {
             if (document.getElementById('cv')) {
-                gameSaveReturn = getSaveCode('0');
+                gameLoadReturn = setSaveCode(bunValue);
             }
-            if (gameSaveReturn !== '') {
-                document.getElementById('bun').value = gameSaveReturn;
-                gameSaveOutput = 'Get OK';
-            }
-            document.getElementById('pass').innerHTML = gameSaveOutput;
         }
-    </script>
-    <table>
-        <tbody>
-            <tr>
-                <th>code</th>
-                <td>
-                    <label for="bun"></label><textarea id="bun" onclick="this.select();"></textarea>
-                </td>
-                <th>
-                    <input type="SUBMIT" value="get" onclick="save()" onmousedown="document.getElementById('bun').value='';document.getElementById('pass').innerHTML='';">
-                    <input type="SUBMIT" value="set" onclick="load()" onmousedown="document.getElementById('pass').value='';">
-                </th>
-            </tr>
-        </tbody>
-    </table>
-    <div id="pass"></div>
-    <canvas ID="cv" style="margin:auto;display:block;width:512px;height:384px; "></canvas>
-    <script async src="./ranger.js" onload="startGame('','',0,'');"></script>
-    random item <input type="submit" value="summon" onclick="SR_DROP.add(100,100,srFloor(srRandomRange(3,ITEM_DATA.length)),0,0);"><br>
-    <label for="custom_fps">fps:</label><input type="number" id="custom_fps" value="60"> <label for="multiple_move"> 処理数:</label><input type="number" id="multiple_move" value="1"><br>
-    <input type="button" value="sp増加" onclick="for(let ii=0;ii<4;ii++){PlayerSp[ii]+=10;}"><br>
-    <input type="button" value="アイテム追加" onclick="ITEM_DATA[ITEM_DATA.length]=eval(document.getElementById('new_item').value);SR_DROP.add(100,100,ITEM_DATA.length-1,0,0);"><textarea id="new_item">['thunder glove', 1, 500, 3, 2, 1, 4294967142, 1, 3, 0, 2, 4, 1, 10, 15, 22, 15, 1, 1, 4294967040, 1, 12, 48, 16, 16, 0, 0, 10, 10, 0, 100, 0, 0, 0, 3, 0, 10, 0, 0, 1, 29, 0]</textarea><br>
-    <input type="button" value="敵追加" onclick="ENEMY_DATA[ENEMY_DATA.length]=eval(document.getElementById('new_enemy').value);SR_ENEMY.add(50,10,ENEMY_DATA.length-1);"><textarea id="new_enemy">[1, 0, 1, 1, 3394611, 10053171, 10, 2, 1, 1, 4294967091, 1, 16, 16, 8, 8, 0, 0, 10, 10, 0, 100, 0, 0, 0, 0, 1, 3, 1, 1, 50, 20, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4278190080, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 1, 7, 40, 189, 40, 19, 80]</textarea><br>
+        if (gameLoadReturn !== -1) {
+            gameLoadOutput = 'Set OK';
+        }
+        document.getElementById('pass').innerHTML = gameLoadOutput;
+    }
+
+    function save() {
+        let gameSaveReturn = '';
+        let gameSaveOutput = 'Error';
+        if (document.getElementById('cv')) {
+            gameSaveReturn = getSaveCode('0');
+        }
+        if (gameSaveReturn !== '') {
+            document.getElementById('bun').value = gameSaveReturn;
+            gameSaveOutput = 'Get OK';
+        }
+        document.getElementById('pass').innerHTML = gameSaveOutput;
+    }
+</script>
+<table>
+    <tbody>
+    <tr>
+        <th>code</th>
+        <td>
+            <label for="bun"></label><textarea id="bun" onclick="this.select();"></textarea>
+        </td>
+        <th>
+            <input type="SUBMIT" value="get" onclick="save()" onmousedown="document.getElementById('bun').value='';document.getElementById('pass').innerHTML='';">
+            <input type="SUBMIT" value="set" onclick="load()" onmousedown="document.getElementById('pass').value='';">
+        </th>
+    </tr>
+    </tbody>
+</table>
+<div id="pass"></div>
+<canvas ID="cv" style="margin:auto;display:block;width:512px;height:384px; "></canvas>
+<script async src="./ranger.js" onload="startGame('','',0,'');"></script>
+random item <input type="submit" value="summon" onclick="SR_DROP.dpAdd(100,100,srFloor(srRandomRange(3,ITEM_DATA.length)),0,0);"><br>
+<label for="custom_fps">fps:</label><input type="number" id="custom_fps" value="60"> <label for="multiple_move"> 処理数:</label><input type="number" id="multiple_move" value="1"><br>
+<input type="button" value="sp増加" onclick="for(let ii=0;ii<4;ii++){PlayerSp[ii]+=10;}"><br>
+<input type="button" value="アイテム追加" onclick="ITEM_DATA[ITEM_DATA.length]=eval(document.getElementById('new_item').value);SR_DROP.dpAdd(100,100,ITEM_DATA.length-1,0,0);"><label for="new_item"></label><textarea id="new_item">['thunder glove', 1, 500, 3, 2, 1, 4294967142, 1, 3, 0, 2, 4, 1, 10, 15, 22, 15, 1, 1, 4294967040, 1, 12, 48, 16, 16, 0, 0, 10, 10, 0, 100, 0, 0, 0, 3, 0, 10, 0, 0, 1, 29, 0]</textarea><br>
+<input type="button" value="敵追加" onclick="ENEMY_DATA[ENEMY_DATA.length]=eval(document.getElementById('new_enemy').value);SR_ENEMY.enAdd(50,10,ENEMY_DATA.length-1);"><label for="new_enemy"></label><textarea id="new_enemy">[1, 0, 1, 1, 3394611, 10053171, 10, 2, 1, 1, 4294967091, 1, 16, 16, 8, 8, 0, 0, 10, 10, 0, 100, 0, 0, 0, 0, 1, 3, 1, 1, 50, 20, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4278190080, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 1, 7, 40, 189, 40, 19, 80]</textarea><br>
 
 </body>
 
