@@ -1119,7 +1119,7 @@ function loadSaveCode(a, b) {
     return 0
 }
 
-WINDOW.fff = vsUploadCode;
+//WINDOW.fff = vsUploadCode;
 
 /*
 vsの勝敗とか含むコード作る
@@ -1163,7 +1163,7 @@ var AntiCheatItemData = [];
 var AntiCheatStageData = 0;
 var AntiCheatEnemyData = 0;
 var AntiCheatShopData = 0;
-WINDOW.fff = antiCheatDataSet;
+//WINDOW.fff = antiCheatDataSet;
 
 /*
 アイテムデータとかの改ざん防止用のやつをセット
@@ -1445,7 +1445,8 @@ function antiCheatCheck() {
             game_cheated++;//GameCanvas = null;
         }
     }
-    if (game_cheated > 0) {
+    if (game_cheated > 0&&game_cheated<9999) {
+        game_cheated=9999;
         console.log("cheated");
     }
 }
@@ -1782,7 +1783,7 @@ function startGame(a, b, c, d, e, g, h, q, m, l, A, z, Z, B) {
     }
 }
 
-WINDOW.fff = playSequence;
+//WINDOW.fff = playSequence;
 
 /*
 ゲームの分岐
@@ -1823,7 +1824,7 @@ function playSequence() {
     }
 }
 
-WINDOW.fff = menuAndMap;
+//WINDOW.fff = menuAndMap;
 
 /*
 メニューとマップ
@@ -2093,7 +2094,7 @@ function menuAndMap() {
         StageOpenData[0] = STAGE_BEATEN | STAGE_UNLOCKED;
         StageOpenData[1] = STAGE_UNLOCKED;
         for (a = 0; 4 > a; a++) {
-            SR_PLAYER.f[a] = 0;
+            SR_PLAYER.pl_class[a] = 0;
         }
         if (300 <= b) {
             InventoryItem[16] = 560;
@@ -2247,7 +2248,7 @@ function menuAndMap() {
     }
 }
 
-WINDOW.fff = pveScreen;
+//WINDOW.fff = pveScreen;
 
 /*
 ステージ画面
@@ -2524,11 +2525,11 @@ function pveScreen() {
         showText(LARGE_TEXT, 256, 144, "Game Clear", 204, 148, 73, 255, 100, 0, 0, 255, 16, 24);
         centeredText(LARGE_TEXT, 256, 256, "(C) 2008-2017 DAN-BALL", 13407305, 6553600);
         for (a = 0; 4 > a; a++) {
-            c = 166 + 60 * a - SR_PLAYER.a[a][2].x;
-            d = 224 - SR_PLAYER.a[a][2].y;
+            c = 166 + 60 * a - SR_PLAYER.pl_current_joint[a][2].x;
+            d = 224 - SR_PLAYER.pl_current_joint[a][2].y;
             for (b = 0; 21 > b; b++) {
-                SR_PLAYER.a[a][b].x += c;
-                SR_PLAYER.a[a][b].y += d;
+                SR_PLAYER.pl_current_joint[a][b].x += c;
+                SR_PLAYER.pl_current_joint[a][b].y += d;
             }
             drawItem(TerrainTextureImageArray[12], 166 + 60 * a - 12, 233, 24, 8, 0, 0, 24, 8)
         }
@@ -2546,7 +2547,7 @@ function pveScreen() {
     }
 }
 
-WINDOW.fff = townScreen;
+//WINDOW.fff = townScreen;
 
 /*
 shopとかいろいろ
@@ -2638,7 +2639,7 @@ function townScreen() {
                     antiCheatCheck();
                     for (a = 0; 4 > a; a++) {
                         if (PlayerCurrentLp[a] != PlayerMaxLp[a]) {
-                            SR_INDICATOR.inAdd(SR_PLAYER.a[a][0].x, SR_PLAYER.a[a][0].y, 0, PlayerMaxLp[a] - PlayerCurrentLp[a], 65280)
+                            SR_INDICATOR.inAdd(SR_PLAYER.pl_current_joint[a][0].x, SR_PLAYER.pl_current_joint[a][0].y, 0, PlayerMaxLp[a] - PlayerCurrentLp[a], 65280)
                         }
 
                         PlayerCurrentLp[a] = PlayerMaxLp[a];
@@ -2665,7 +2666,7 @@ function townScreen() {
                 antiCheatCheck();
                 for (a = 0; 4 > a; a++) {
                     if (PlayerCurrentLp[a] != PlayerMaxLp[a]) {
-                        SR_INDICATOR.inAdd(SR_PLAYER.a[a][0].x, SR_PLAYER.a[a][0].y, 0, PlayerMaxLp[a] - PlayerCurrentLp[a], 65280);
+                        SR_INDICATOR.inAdd(SR_PLAYER.pl_current_joint[a][0].x, SR_PLAYER.pl_current_joint[a][0].y, 0, PlayerMaxLp[a] - PlayerCurrentLp[a], 65280);
                     }
                     PlayerCurrentLp[a] = PlayerMaxLp[a];
                 }
@@ -3141,7 +3142,7 @@ function townScreen() {
     }
 }
 
-WINDOW.fff = pvpScreen;
+//WINDOW.fff = pvpScreen;
 
 /*
 vsとか
@@ -3357,12 +3358,12 @@ function pvpScreen() {
         //for (TrDraw(), 61 == SequenceStep && (SR_PLAYER.N = 1), SR_PLAYER.G(), InMain(), $e(), SR_PLAYER.N = 0, SR_PLAYER.B(), PjDraw(), InDraw(), setPlayerStatus(), 61 == SequenceStep ? (TextFadeTime = srClampA(TextFadeTime + 1, 0, 30), a = srFloor(255 * TextFadeTime / 30), drawLine(0, 110, srFloor(512 * TextFadeTime / 30), 110, 8421504), drawLine(512 - srFloor(512 * TextFadeTime / 30), 143, 512, 143, 8421504), isMouseHoveredCenter(256, 127, 512, 32) && 30 == TextFadeTime ? (Clicked && (SequenceStep++, TextFadeTime = 0), filledRectCentered(256, 127, 512, 32, 8388608), showText(LARGE_TEXT, 256, 128, "FIGHT", 255, 255, 255, 255, 0, 0, 0, 255, 16, 24)) : showText(LARGE_TEXT, 256, 128, "READY", 255, 255, 255, a, 0, 0, 0, a, 16, 24), Ce = 1, b = 110, c = 120, df(UserNameImage, UserName), drawFromImageCentered(UserNameImage, b, c + 0 - 2, UserNameImage.a, 16, 0, 0, UserNameImage.a, 16, a << 24 | 16777215), df(UserPartyNameImage, UserPartyName), drawFromImageCentered(UserPartyNameImage, b, c + 16 - 2, UserPartyNameImage.a, 16, 0, 0, UserPartyNameImage.a, 16, a << 24 | 16777215), b = 402, df(OpponentNameImage, OpponentName), drawFromImageCentered(OpponentNameImage, b, c + 0 - 2, OpponentNameImage.a, 16, 0, 0, OpponentNameImage.a, 16, a << 24 | 16777215), df(OpponentPartyNameImage, OpponentPartyName), drawFromImageCentered(OpponentPartyNameImage, b, c + 16 - 2, OpponentPartyNameImage.a, 16, 0, 0, OpponentPartyNameImage.a, 16, a << 24 | 16777215), Ce = 0) : 62 == SequenceStep ? 0 == PlayerCurrentLp[0] + PlayerCurrentLp[1] + PlayerCurrentLp[2] + PlayerCurrentLp[3] ? (VsResult = 2, SequenceStep++) : 0 == PlayerCurrentLp[4] + PlayerCurrentLp[5] + PlayerCurrentLp[6] + PlayerCurrentLp[7] && (VsResult = 1, SequenceStep++) : 63 == SequenceStep ? (UploadError || (UploadError = 1, c = FROM_CHAR_CODE(47, 115, 99, 111, 114, 101, 47, 114, 97, 110, 103, 101, 114, 95, 118, 115, 46, 112, 104, 112, 63, 97, 61), c += UserCode1, c += CHAR_AND_B_EQUAL + (Language ? "0" : "1"), c += CHAR_AND_C_EQUAL + UserPartyId, c += CHAR_AND_D_EQUAL + OpponentPartyId, 0 != InventoryItem[4] && 0 != InventoryItem[5] && 0 != InventoryItem[6] && 0 != InventoryItem[7] && (c += CHAR_AND_E_EQUAL + vsUploadCode(VsResult)), consoleLog(c), httpRequest(c)), SequenceStep++) : 64 == SequenceStep && (TextFadeTime = srClampA(TextFadeTime + 1, 0, 50), a = srFloor(255 * TextFadeTime / 50), isMouseHoveredCenter(256, 128, 96, 32) && 50 == TextFadeTime && (Clicked && (SequenceStep = 60), filledRectCentered(256, 128, 96, 32, 8388608)), frameRectCentered(256, 128, 96, 32, 0 | srFloor(a / 2) << 16), showText(LARGE_TEXT, 256, 129, "RETRY", 255, 255, 255, a, 0, 0, 0, a, 16, 24), b = 60, c = 72, Ce = 1, drawFromImage(UserNameImage, b, c + 0 - 2, UserNameImage.a, 16, 0, 0, UserNameImage.a, 16, a << 24 | 16777215), Ce = 0, showText(LARGE_TEXT, b + 60, c + 40, 1 == VsResult ? "WIN" : "LOSE", 255, 255, 255, a, 1 == VsResult ? 255 : 0, 0, 1 == VsResult ? 0 : 255, a, 32, 48), RequestResult && ("ok" == RequestResponse[0] ? (textOutputM(LARGE_TEXT, b, c + 64, "" + RequestResponse[1] + " win " + RequestResponse[2] + " lose", 255, 255, 255, a, 0, 0, 0, a, 8, 12), textOutputM(LARGE_TEXT, b, c + 80, "Winning per " + RequestResponse[3] + "%", 255, 255, 255, a, 0, 0, 0, a, 8, 12)) : textOutputM(LARGE_TEXT, b, c + 64, " RANKING ERROR", 255, 255, 255, a, 0, 0, 0, a, 8, 12)), b = 332, Ce = 1, drawFromImage(OpponentNameImage, b, c + 0 - 2, OpponentNameImage.a, 16, 0, 0, OpponentNameImage.a, 16, a << 24 | 16777215), Ce = 0, showText(LARGE_TEXT, b + 60, c + 40, 2 == VsResult ? "WIN" : "LOSE", 255, 255, 255, a, 2 == VsResult ? 255 : 0, 0, 2 == VsResult ? 0 : 255, a, 32, 48), RequestResult && ("ok" == RequestResponse[0] ? (textOutputM(LARGE_TEXT, b, c + 64, "" + RequestResponse[4] + " win " + RequestResponse[5] + " lose", 255, 255, 255, a, 0, 0, 0, a, 8, 12), textOutputM(LARGE_TEXT, b, c + 80, "Winning per " + RequestResponse[6] + "%", 255, 255, 255, a, 0, 0, 0, a, 8, 12)) : textOutputM(LARGE_TEXT, b, c + 64, " RANKING ERROR", 255, 255, 255, a, 0, 0, 0, a, 8, 12))), filledRect(0, 257, 512, 126, [13407305, 9480368, 7241784, 10993609, 11302740, 24586, 7297069, 7297069, 10053120][STAGE_DATA[CurrentStage][CurrentArea][0]]), textOutputM(SMALL_TEXT, 10, 374, CHAR_COPYRIGHT1, 0, 0, 0, 0, 0, 0, 0, 128, 5, 7), showText(LARGE_TEXT, 256, 328, "VS", 255, 255, 255, 255, 0, 0, 0, 255, 16, 24), b = 40, c = 268, drawFromImage(UserNameImage, b, c + 0 - 2, UserNameImage.a, 16, 0, 0, UserNameImage.a, 16, 0), textOutputB(LARGE_TEXT, b, c + 16, "LV " + PartyLv[0], 16777215, 0), textOutputB(LARGE_TEXT, b, c + 16, "        FP " + PartyFp[0], 16777215, 0), df(UserPartyNameBracketImage, "\u300c " + UserPartyName + " \u300d"), drawFromImageCentered(UserPartyNameBracketImage, b + 60, c + 88, UserPartyNameBracketImage.a, 16, 0, 0, UserPartyNameBracketImage.a, 16, 0), b = 206, showText(LARGE_TEXT, b, c + 22, "Rank", 0, 0, 0, 0, 0, 0, 0, 128, 8, 12), showText(LARGE_TEXT, b, c + 60, "" + RANK_NAME[PartyRank[0]], 0, 0, 0, 0, 0, 0, 0, 80, 32, 48), b = 352, drawFromImage(OpponentNameImage, b, c + 0 - 2, OpponentNameImage.a, 16, 0, 0, OpponentNameImage.a, 16, 0), textOutputB(LARGE_TEXT, b, c + 16, "LV " + PartyLv[1], 16777215, 0), textOutputB(LARGE_TEXT, b, c + 16, "        FP " + PartyFp[1], 16777215, 0), df(OpponentPartyNameBracketImage, "\u300c " + OpponentPartyName + " \u300d"), drawFromImageCentered(OpponentPartyNameBracketImage, b + 60, c + 88, OpponentPartyNameBracketImage.a, 16, 0, 0, OpponentPartyNameBracketImage.a, 16, 0), b = 306, showText(LARGE_TEXT, b, c + 22, "Rank", 0, 0, 0, 0, 0, 0, 0, 128, 8, 12), showText(LARGE_TEXT, b, c + 60, "" + RANK_NAME[PartyRank[1]], 0, 0, 0, 0, 0, 0, 0, 80, 32, 48), b = 40, c = 316, a = 0; 8 > a; a++)
         TrDraw();
         if (61 == SequenceStep) {
-            SR_PLAYER.N = 1;
+            SR_PLAYER.pl_vs_ready = 1;
         }
         SR_PLAYER.plMain();
         InMain();
         PjMain();
-        SR_PLAYER.N = 0;
+        SR_PLAYER.pl_vs_ready = 0;
         SR_PLAYER.plDraw();
         PjDraw();
         InDraw();
@@ -3521,7 +3522,7 @@ function drawMenuCopyRight() {
     centeredText(LARGE_TEXT, 256, 376, CHAR_COPYRIGHT2, -1, 6697728)
 }
 
-WINDOW.fff = drawStage;
+//WINDOW.fff = drawStage;
 
 /*
 ステージを描く
@@ -3640,7 +3641,7 @@ function drawStage(a) {
             }
             DisplayMode1 = DisplayMode2 = 3;
             for (b = 0; 4 > b; b++) {
-                drawFromImageCentered(ProjectileImage, SR_PLAYER.a[b][0].x, SR_PLAYER.a[b][0].y, 80, 80, 33, 1, 14, 14, 3238002687);
+                drawFromImageCentered(ProjectileImage, SR_PLAYER.pl_current_joint[b][0].x, SR_PLAYER.pl_current_joint[b][0].y, 80, 80, 33, 1, 14, 14, 3238002687);
             }
             for (b = 0; b < SR_PROJECTILE.a; b++) {
                 if (1 != SR_PROJECTILE.g[b]) {
@@ -3648,10 +3649,10 @@ function drawStage(a) {
                 }
             }
             for (b = 0; 4 > b; b++) {
-                if (8 == SR_PLAYER.f[b]) {
+                if (8 == SR_PLAYER.pl_class[b]) {
                     for (c = 0; 6 > c; c++) {
-                        if (0 != SR_PLAYER.s[b][c]) {
-                            drawFromImageCentered(ProjectileImage, SR_PLAYER.a[b][15 + c].x, SR_PLAYER.a[b][15 + c].y, 32, 32, 33, 1, 14, 14, 2164260863);
+                        if (0 != SR_PLAYER.pl_ring_move_status[b][c]) {
+                            drawFromImageCentered(ProjectileImage, SR_PLAYER.pl_current_joint[b][15 + c].x, SR_PLAYER.pl_current_joint[b][15 + c].y, 32, 32, 33, 1, 14, 14, 2164260863);
                         }
                     }
                 }
@@ -3751,9 +3752,9 @@ function drawStage(a) {
             GameCanvas = StageEffectCanvasImage.l;
             for (b = 0; 4 > b; b++) {
                 if (0 != PlayerCurrentLp[b]) {
-                    filledRectCentered(SR_PLAYER.a[b][0].x, SR_PLAYER.a[b][0].y, 3, 3, 0);
-                    filledRectCentered(SR_PLAYER.a[b][9].x, SR_PLAYER.a[b][9].y, 1, 1, 0);
-                    filledRectCentered(SR_PLAYER.a[b][10].x, SR_PLAYER.a[b][10].y, 1, 1, 0);
+                    filledRectCentered(SR_PLAYER.pl_current_joint[b][0].x, SR_PLAYER.pl_current_joint[b][0].y, 3, 3, 0);
+                    filledRectCentered(SR_PLAYER.pl_current_joint[b][9].x, SR_PLAYER.pl_current_joint[b][9].y, 1, 1, 0);
+                    filledRectCentered(SR_PLAYER.pl_current_joint[b][10].x, SR_PLAYER.pl_current_joint[b][10].y, 1, 1, 0);
                 }
             }
             for (b = 0; b < SR_PROJECTILE.a; b++) {
@@ -3813,7 +3814,7 @@ function drawStage(a) {
     }
 }
 
-WINDOW.fff = setPlayerStatus;
+//WINDOW.fff = setPlayerStatus;
 
 function setPlayerStatus() {
     var a, b;
@@ -4024,12 +4025,12 @@ function setPlayerStatus() {
     for (a = 0; a < c; a++) {
         if (5 == PlayerClass[a] && 5 == getItemData(InventoryItem[4 + a], 5) && 0 != PlayerCurrentLp[a]) {
             //for (d = srFloor(srFloor(SR_PLAYER.a[a][9].x + SR_PLAYER.a[a][10].x) / 2), e = srFloor(srFloor(SR_PLAYER.a[a][9].y + SR_PLAYER.a[a][10].y) / 2), b = a >> 2 << 2; b < (a >> 2 << 2) + 4; b++) {
-            d = srFloor(srFloor(SR_PLAYER.a[a][9].x + SR_PLAYER.a[a][10].x) / 2);
-            e = srFloor(srFloor(SR_PLAYER.a[a][9].y + SR_PLAYER.a[a][10].y) / 2);
+            d = srFloor(srFloor(SR_PLAYER.pl_current_joint[a][9].x + SR_PLAYER.pl_current_joint[a][10].x) / 2);
+            e = srFloor(srFloor(SR_PLAYER.pl_current_joint[a][9].y + SR_PLAYER.pl_current_joint[a][10].y) / 2);
             for (b = a >> 2 << 2; b < (a >> 2 << 2) + 4; b++) {
                 if (0 != PlayerCurrentLp[b]) {
-                    g = srFloor(srFloor(SR_PLAYER.a[b][9].y + SR_PLAYER.a[b][10].y) / 2);
-                    if (srAbs(d - srFloor(srFloor(SR_PLAYER.a[b][9].x + SR_PLAYER.a[b][10].x) / 2)) < PlayerAttackRange[a] && srAbs(e - g) < PlayerAttackRange[a]) {
+                    g = srFloor(srFloor(SR_PLAYER.pl_current_joint[b][9].y + SR_PLAYER.pl_current_joint[b][10].y) / 2);
+                    if (srAbs(d - srFloor(srFloor(SR_PLAYER.pl_current_joint[b][9].x + SR_PLAYER.pl_current_joint[b][10].x) / 2)) < PlayerAttackRange[a] && srAbs(e - g) < PlayerAttackRange[a]) {
                         PlayerStrAura[b] += PlayerStr[a];
                         PlayerDexAura[b] += PlayerDex[a];
                         PlayerMagAura[b] += PlayerMag[a];
@@ -4046,7 +4047,7 @@ function setPlayerStatus() {
     antiCheatSet()
 }
 
-WINDOW.fff = drawUi;
+//WINDOW.fff = drawUi;
 
 /*
 uiをかく
@@ -4088,7 +4089,7 @@ function drawUi(a) {
         var m = "MAG " + PlayerMag[SelectedPanel];
         textOutputB(LARGE_TEXT, e, g + 0, CLASS_NAME[getItemData(InventoryItem[4 + SelectedPanel], 5)], 16777215, 0);
         textOutputB(LARGE_TEXT, e, g + 16, b, 16777215, 0);
-        if (SR_PLAYER.f[SelectedPanel] != PLAYER_CLASS_DEAD) {
+        if (SR_PLAYER.pl_class[SelectedPanel] != PLAYER_CLASS_DEAD) {
             textOutputB(LARGE_TEXT, e, g + 28, d, 16777215, 0);
             textOutputB(LARGE_TEXT, e, g + 40, q, 16777215, 0);
             textOutputB(LARGE_TEXT, e, g + 52, m, 16777215, 0);
@@ -4127,7 +4128,7 @@ function drawUi(a) {
         textOutputB(LARGE_TEXT, e, g + 88, "EXP " + PartyExp + "(" + srFloor(100 * (PartyExp - h) / (c - h)) + "%)", 16777215, 0);
         textOutputB(LARGE_TEXT, e, g + 100, "$$$ " + PartyGold, 16777215, 0);
         textOutputB(SMALL_TEXT, e + 105, g + 102, "FP " + PartyFp[0], -1, 0);
-        if (SR_PLAYER.f[SelectedPanel] == PLAYER_CLASS_DEAD) {
+        if (SR_PLAYER.pl_class[SelectedPanel] == PLAYER_CLASS_DEAD) {
             h = srMax(srFloor(PartyGold / 10), 10 * PartyLv[0]);
             b = "Revival $ " + h;
             textOutputB(LARGE_TEXT, e, g + 40, b, 8421504, 0);
@@ -4136,7 +4137,7 @@ function drawUi(a) {
                     antiCheatCheck();
                     PlayerCurrentLp[SelectedPanel] += srFloor(PlayerMaxLp[SelectedPanel] / 4);
                     PartyGold -= h;
-                    SR_PLAYER.plSet(SelectedPanel, srFloor(SR_PLAYER.a[SelectedPanel][0].x / 8), srFloor(SR_PLAYER.a[SelectedPanel][0].y / 8));
+                    SR_PLAYER.plSet(SelectedPanel, srFloor(SR_PLAYER.pl_current_joint[SelectedPanel][0].x / 8), srFloor(SR_PLAYER.pl_current_joint[SelectedPanel][0].y / 8));
                     antiCheatSet();
                 }
                 textOutputB(LARGE_TEXT, e, g + 40, b, 16711680, 0)
@@ -4341,7 +4342,7 @@ function drawUi(a) {
             InventoryCompo2[b] = InventoryCompo2[40];
             InventoryCompo2[40] = a;
             PlayerMp[b - 4] = 0;
-            SR_PLAYER.I[b - 4] = 0
+            SR_PLAYER.pl_skill_attack_time[b - 4] = 0
         }
     } else if (8 <= b && 11 >= b && Clicked) {
         if (9 == getItemData(InventoryItem[40], 5) && restrictSlot(b - 8, 0)) {
@@ -4380,7 +4381,7 @@ function drawUi(a) {
             InventoryCompo2[40] = a;
         }
     } else if (-1 == b && 0 != InventoryItem[40] && Clicked && 256 > MouseY1 && 0 == a) {
-        SR_DROP.dpAdd(SR_PLAYER.a[SelectedPlayer][0].x, SR_PLAYER.a[SelectedPlayer][0].y, InventoryItem[40], InventoryCompo1[40], InventoryCompo2[40]);
+        SR_DROP.dpAdd(SR_PLAYER.pl_current_joint[SelectedPlayer][0].x, SR_PLAYER.pl_current_joint[SelectedPlayer][0].y, InventoryItem[40], InventoryCompo1[40], InventoryCompo2[40]);
         InventoryItem[40] = 0;
         InventoryCompo1[40] = 0;
         InventoryCompo2[40] = 0;
@@ -4571,51 +4572,53 @@ var SR_PLAYER = new SrPlayer;
 */
 function SrPlayer() {
     var a, b;
-    this.a = Array(8);
+    // 8x21 SrVec2
+    this.pl_current_joint = Array(8);
     for (a = 0; 8 > a; a++) {
-        this.a[a] = Array(21);
+        this.pl_current_joint[a] = Array(21);
     }
-    this.g = Array(8);
+    // 8x21 SrVec2
+    this.pl_last_joint = Array(8);
     for (a = 0; 8 > a; a++) {
-        this.g[a] = Array(21);
+        this.pl_last_joint[a] = Array(21);
     }
-    this.f = new Int32Array(8);
-    this.K = new Int32Array(8);
-    this.i = new Int32Array(8);
-    this.b = new Int32Array(8);
-    this.c = new Int32Array(8);
-    this.J = new Int32Array(8);
-    this.I = new Int32Array(8);
-    this.L = new Int32Array(8);
-    this.h = -1;
-    this.u = 0;
-    this.H = new Int32Array(8);
-    this.j = this.N = 0;
-    this.w = new Int32Array(8);
-    this.M = new Int32Array(8);
-    this.A = new Int32Array(8);
-    this.F = new Int32Array(8);
-    this.v = new Int32Array(8);
-    this.s = Array(8);
+    this.pl_class = new Int32Array(8);
+    this.pl_hover_time = new Int32Array(8);
+    this.pl_on_ground = new Int32Array(8);
+    this.pl_attack_point = new Int32Array(8);
+    this.pl_attack_cooldown = new Int32Array(8);
+    this.pl_damage_effect_time = new Int32Array(8);
+    this.pl_skill_attack_time = new Int32Array(8);
+    this.pl_walk_interval = new Int32Array(8);
+    this.pl_held_player = -1;
+    this.pl_held_joint = 0;
+    this.pl_is_found = new Int32Array(8);
+    this.pl_damage_dealt = this.pl_vs_ready = 0;
+    this.pl_slow_time = new Int32Array(8);
+    this.pl_slow_rate = new Int32Array(8);
+    this.pl_poison_time = new Int32Array(8);
+    this.pl_poison_damage = new Int32Array(8);
+    this.pl_freeze_time = new Int32Array(8);
+    this.pl_ring_move_status = Array(8);
     for (a = 0; 8 > a; a++) {
-        this.s[a] = new Int32Array(6);
+        this.pl_ring_move_status[a] = new Int32Array(6);
     }
-    this.C = Array(8);
+    this.pl_ring_move_time = Array(8);
     for (a = 0; 8 > a; a++) {
-        this.C[a] = new Int32Array(6);
+        this.pl_ring_move_time[a] = new Int32Array(6);
     }
-    this.D = Array(8);
+    this.pl_ring_hit_interval = Array(8);
     for (a = 0; 8 > a; a++) {
-        this.D[a] = new Int32Array(6);
+        this.pl_ring_hit_interval[a] = new Int32Array(6);
     }
     for (a = 0; 8 > a; a++) {
         for (b = 0; 21 > b; b++) {
-            this.a[a][b] = new SrVec2;
+            this.pl_current_joint[a][b] = new SrVec2;
         }
     }
     for (a = 0; 8 > a; a++) {
         for (b = 0; 21 > b; b++) {
-            this.g[a][b] = new SrVec2
+            this.pl_last_joint[a][b] = new SrVec2
         }
     }
 }
@@ -4624,8 +4627,8 @@ function SrPlayer() {
 リセット(棒人間を離す)
 */
 SrPlayer.prototype.plReset = function () {
-    this.h = -1;
-    this.u = 0
+    this.pl_held_player = -1;
+    this.pl_held_joint = 0
 };
 
 /*
@@ -4635,38 +4638,38 @@ SrPlayer.prototype.plSet = function (a, b, c) {
     b *= 8;
     c *= 8;
     for (var d = 0; 21 > d; d++) {
-        setVec2(this.a[a][d], b + srRandom(4), c + srRandom(4));
-        this.g[a][d].vecSet(this.a[a][d]);
+        setVec2(this.pl_current_joint[a][d], b + srRandom(4), c + srRandom(4));
+        this.pl_last_joint[a][d].vecSet(this.pl_current_joint[a][d]);
     }
-    this.f[a] = PlayerClass[a];
-    this.K[a] = 0;
-    this.i[a] = 0;
-    this.b[a] = -1;
-    this.c[a] = 0;
-    this.J[a] = 0;
-    this.I[a] = 0;
-    this.L[a] = 0;
-    this.H[a] = 0;
-    this.w[a] = 0;
-    this.M[a] = 0;
-    this.A[a] = 0;
-    this.F[a] = 0;
-    for (d = this.v[a] = 0; 6 > d; d++) {
-        this.s[a][d] = 0;
-        this.C[a][d] = 0;
-        this.D[a][d] = 0
+    this.pl_class[a] = PlayerClass[a];
+    this.pl_hover_time[a] = 0;
+    this.pl_on_ground[a] = 0;
+    this.pl_attack_point[a] = -1;
+    this.pl_attack_cooldown[a] = 0;
+    this.pl_damage_effect_time[a] = 0;
+    this.pl_skill_attack_time[a] = 0;
+    this.pl_walk_interval[a] = 0;
+    this.pl_is_found[a] = 0;
+    this.pl_slow_time[a] = 0;
+    this.pl_slow_rate[a] = 0;
+    this.pl_poison_time[a] = 0;
+    this.pl_poison_damage[a] = 0;
+    for (d = this.pl_freeze_time[a] = 0; 6 > d; d++) {
+        this.pl_ring_move_status[a][d] = 0;
+        this.pl_ring_move_time[a][d] = 0;
+        this.pl_ring_hit_interval[a][d] = 0
     }
 };
-WINDOW.fff = SrPlayer.prototype.plMove;
+//WINDOW.fff = SrPlayer.prototype.plMove;
 
 /*
 ジョイントの動き
 */
 SrPlayer.prototype.plMove = function (a, b) {
-    var c = this.a[a][b];
+    var c = this.pl_current_joint[a][b];
     var d = new SrVec2;
-    setDistance(d, c, this.g[a][b]);
-    c.vecSet(this.g[a][b]);
+    setDistance(d, c, this.pl_last_joint[a][b]);
+    c.vecSet(this.pl_last_joint[a][b]);
     var e = (magnitudeOf(d) >> 2) + 1;
     scaleVec2(d, 1 / e);
     var g, h, q;
@@ -4675,7 +4678,7 @@ SrPlayer.prototype.plMove = function (a, b) {
     h = SR_TERRAIN.a[q][h];
     if (9 == h) {
         scaleVec2(d, .95);
-        this.i[a] |= 2;
+        this.pl_on_ground[a] |= 2;
     }
     var m = .5;
     if (8 == STAGE_DATA[SR_TERRAIN.c][CurrentArea][0]) {
@@ -4690,7 +4693,7 @@ SrPlayer.prototype.plMove = function (a, b) {
             if (0 <= h && 8 >= h) {
                 d.x *= m;
                 d.y = -d.y;
-                this.i[a] |= 1;
+                this.pl_on_ground[a] |= 1;
             } else {
                 c.y = g;
             }
@@ -4703,7 +4706,7 @@ SrPlayer.prototype.plMove = function (a, b) {
             if (0 <= h && 8 >= h) {
                 d.y *= m;
                 d.x = -d.x;
-                this.i[a] |= 1
+                this.pl_on_ground[a] |= 1
             } else {
                 c.x = g
             }
@@ -4720,14 +4723,14 @@ function plFindPlayer(a, b, c, d, e) {
     var h = .5 * (a + c);
     var q = 1E3;
     var m = -1;
-    if (1 == g.N) {
+    if (1 == g.pl_vs_ready) {
         return m;
     }
     for (var l = e + 4; e < l; e++) {
-        g.H[e] = 0;
-        var A = g.a[e][2];
-        if (g.f[e] != PLAYER_CLASS_DEAD && A.x - 5 <= c && A.x + 5 >= a && A.y - 10 <= d && A.y + 10 >= b) {
-            g.H[e] = 1;
+        g.pl_is_found[e] = 0;
+        var A = g.pl_current_joint[e][2];
+        if (g.pl_class[e] != PLAYER_CLASS_DEAD && A.x - 5 <= c && A.x + 5 >= a && A.y - 10 <= d && A.y + 10 >= b) {
+            g.pl_is_found[e] = 1;
             if (srAbs(A.x - h) < q) {
                 q = srAbs(A.x - h);
                 m = e
@@ -4740,17 +4743,17 @@ function plFindPlayer(a, b, c, d, e) {
 /*
 プレイヤーがダメージをうける
 */
-function plTakeDamage(a, b, c, d, e, g, h, q, m, l) {
+function plGetDamage(a, b, c, d, e, g, h, q, m, l) {
     var A = SR_PLAYER;
     var z = -1;
-    A.j = 0;
+    A.pl_damage_dealt = 0;
     q *= .5;
     m *= .5;
     for (var Z = l + 4; l < Z; l++) {
-        if (A.f[l] != PLAYER_CLASS_DEAD && !(A.a[l][2].x - 5 > g + q || A.a[l][2].x + 5 < g - q || A.a[l][2].y - 10 > h + m || A.a[l][2].y + 10 < h - m)) {
+        if (A.pl_class[l] != PLAYER_CLASS_DEAD && !(A.pl_current_joint[l][2].x - 5 > g + q || A.pl_current_joint[l][2].x + 5 < g - q || A.pl_current_joint[l][2].y - 10 > h + m || A.pl_current_joint[l][2].y + 10 < h - m)) {
             var z = -1;
             var B = d + srFloor(srRandom(e - d + 1));
-            A.J[l] = 2;
+            A.pl_damage_effect_time[l] = 2;
             var S = 16711680;
             if (4 <= l) {
                 z = 1;
@@ -4768,10 +4771,10 @@ function plTakeDamage(a, b, c, d, e, g, h, q, m, l) {
                     ia = 1;
                 }
                 if (!ia) {
-                    A.w[l] = 500;
-                    A.M[l] = c;
+                    A.pl_slow_time[l] = 500;
+                    A.pl_slow_rate[l] = c;
                     if (checkInventoryCompo(4 + l, 9)) {
-                        A.w[l] -= srFloor(A.w[l] * getInventoryCompo(4 + l, 8) / 100);
+                        A.pl_slow_time[l] -= srFloor(A.pl_slow_time[l] * getInventoryCompo(4 + l, 8) / 100);
                     }
                 }
             } else if (4 == b) {
@@ -4779,11 +4782,11 @@ function plTakeDamage(a, b, c, d, e, g, h, q, m, l) {
                     ia = 1;
                 }
                 if (!ia) {
-                    A.A[l] = c;
-                    A.F[l] = B;
+                    A.pl_poison_time[l] = c;
+                    A.pl_poison_damage[l] = B;
                     if (checkInventoryCompo(4 + l, 9)) {
-                        A.A[l] -= srFloor(A.A[l] * getInventoryCompo(4 + l, 8) / 100);
-                        A.F[l] -= srFloor(A.F[l] * getInventoryCompo(4 + l, 8) / 100);
+                        A.pl_poison_time[l] -= srFloor(A.pl_poison_time[l] * getInventoryCompo(4 + l, 8) / 100);
+                        A.pl_poison_damage[l] -= srFloor(A.pl_poison_damage[l] * getInventoryCompo(4 + l, 8) / 100);
                     }
                 }
                 z = l;
@@ -4793,9 +4796,9 @@ function plTakeDamage(a, b, c, d, e, g, h, q, m, l) {
                     ia = 1;
                 }
                 if (!ia) {
-                    A.v[l] = srFloor(c / 10);
+                    A.pl_freeze_time[l] = srFloor(c / 10);
                     if (checkInventoryCompo(4 + l, 9)) {
-                        A.v[l] -= srFloor(A.v[l] * getInventoryCompo(4 + l, 8) / 100);
+                        A.pl_freeze_time[l] -= srFloor(A.pl_freeze_time[l] * getInventoryCompo(4 + l, 8) / 100);
                     }
                 }
             }
@@ -4810,16 +4813,16 @@ function plTakeDamage(a, b, c, d, e, g, h, q, m, l) {
             }
             if (checkInventoryCompo(4 + l, 10) && srRandom(100) < getInventoryCompo(4 + l, 8)) {
                 B = 0;
-                A.J[l] = 0;
+                A.pl_damage_effect_time[l] = 0;
                 S = 16744576;
             }
             antiCheatCheck();
             PlayerCurrentLp[l] = srClampA(PlayerCurrentLp[l] - B, 0, PlayerMaxLp[l]);
             antiCheatSet();
             if (2 > PartyDamageEffect) {
-                SR_INDICATOR.inAdd(A.a[l][0].x, A.a[l][0].y, z, B, S);
+                SR_INDICATOR.inAdd(A.pl_current_joint[l][0].x, A.pl_current_joint[l][0].y, z, B, S);
             }
-            A.j += B;
+            A.pl_damage_dealt += B;
             z = l;
             if (0 == a) {
                 break
@@ -4829,7 +4832,7 @@ function plTakeDamage(a, b, c, d, e, g, h, q, m, l) {
     return z
 }
 
-WINDOW.fff = SrPlayer.prototype.plSetDrag;
+//WINDOW.fff = SrPlayer.prototype.plSetDrag;
 /*
 プレイヤーつかむ
 */
@@ -4837,27 +4840,27 @@ SrPlayer.prototype.plSetDrag = function () {
     var a = new SrVec2;
     var b;
     var c;
-    if (-1 == this.h && 1 != GameMode) {
+    if (-1 == this.pl_held_player && 1 != GameMode) {
         if (Clicked) {
             b = 20;
-            a.x = MouseX1 - this.g[SelectedPlayer][0].x;
-            a.y = MouseY1 - (this.g[SelectedPlayer][0].y - 8);
+            a.x = MouseX1 - this.pl_last_joint[SelectedPlayer][0].x;
+            a.y = MouseY1 - (this.pl_last_joint[SelectedPlayer][0].y - 8);
             c = magnitudeOf(a);
             if (20 > c && c < b && (0 != PlayerCurrentLp[SelectedPlayer] || 0 != PartyDragDeadBody)) {
                 b = c;
-                this.h = SelectedPlayer;
-                this.u = 0;
+                this.pl_held_player = SelectedPlayer;
+                this.pl_held_joint = 0;
             }
             for (var d = 0; 4 > d; d++) {
                 if (0 != PlayerCurrentLp[d] || 0 != PartyDragDeadBody) {
                     for (var e = 0; 10 > e; e++) {
-                        a.x = MouseX1 - this.g[d][e].x;
-                        a.y = MouseY1 - this.g[d][e].y;
+                        a.x = MouseX1 - this.pl_last_joint[d][e].x;
+                        a.y = MouseY1 - this.pl_last_joint[d][e].y;
                         c = magnitudeOf(a);
                         if (20 > c && c < b) {
                             b = c;
-                            this.h = d;
-                            this.u = e;
+                            this.pl_held_player = d;
+                            this.pl_held_joint = e;
                             SelectedPlayer = d
                         }
                     }
@@ -4865,13 +4868,14 @@ SrPlayer.prototype.plSetDrag = function () {
             }
         }
     } else if (!LeftClickWasDown) {
-        this.h = -1;
-        this.u = 0
+        this.pl_held_player = -1;
+        this.pl_held_joint = 0
     }
 };
 
 /*
 飛び道具の攻撃
+a:SrPlayer
 */
 function plProjectileAttack(a, b, c, d, e) {
     var g = new SrVec2;
@@ -5207,8 +5211,8 @@ function plProjectileAttack(a, b, c, d, e) {
         }
     } else {
         tb = 1 - (e >> 2);
-        h = a.a[e][2].x;
-        e = a.a[e][2].y;
+        h = a.pl_current_joint[e][2].x;
+        e = a.pl_current_joint[e][2].y;
     }
     if (q) {
         if (1 == q) {
@@ -5285,23 +5289,23 @@ function plProjectileAttack(a, b, c, d, e) {
                 SR_PROJECTILE.pjAdd(tb, q, a, 0, 0, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
             }
         } else if (7 == q || 10 == q) {
-            g.x = c - a.a[b][5].x;
-            g.y = d - a.a[b][5].y;
+            g.x = c - a.pl_current_joint[b][5].x;
+            g.y = d - a.pl_current_joint[b][5].y;
             if (10 == q && 0 < g.y) {
                 g.y = -g.y;
             }
-            q = a.a[b][5].x + .5 * g.x;
-            a = a.a[b][5].y + .5 * g.y;
+            q = a.pl_current_joint[b][5].x + .5 * g.x;
+            a = a.pl_current_joint[b][5].y + .5 * g.y;
             normalize(g);
             scaleVec2(g, .1 * Pa);
             for (b = 0; b < ab; b++) {
                 SR_PROJECTILE.pjAdd(tb, q, a, g.x, g.y, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
             }
         } else if (12 == q) {
-            g = c - a.a[b][0].x;
+            g = c - a.pl_current_joint[b][0].x;
             g /= srAbs(g);
-            q = a.a[b][0].x;
-            a = a.a[b][0].y;
+            q = a.pl_current_joint[b][0].x;
+            a = a.pl_current_joint[b][0].y;
             ac = g * Pa * .1;
             for (b = 0; b < ab; b++) {
                 SR_PROJECTILE.pjAdd(tb, q, a, ac, 0, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, ca, Ba, Oc, Pc, zb);
@@ -5357,11 +5361,11 @@ function plProjectileAttack(a, b, c, d, e) {
 */
 function plWalk(a, b) {
     if (0 != PlayerAutoMove[b] || 1 == GameMode) {
-        if (0 < a.L[b]) {
-            a.L[b]--;
+        if (0 < a.pl_walk_interval[b]) {
+            a.pl_walk_interval[b]--;
         } else if (!(20 > srFloor(100 * PlayerCurrentLp[b] / PlayerMaxLp[b]) && 1 != GameMode && 0 == PartyMoveIfDying)) {
-            var c = .5 * (a.a[b][9].x + a.a[b][10].x);
-            var d = .5 * (a.a[b][9].y + a.a[b][10].y);
+            var c = .5 * (a.pl_current_joint[b][9].x + a.pl_current_joint[b][10].x);
+            var d = .5 * (a.pl_current_joint[b][9].y + a.pl_current_joint[b][10].y);
             var e = PlayerAttackRange[b];
             var g;
             if (1 != GameMode) {
@@ -5370,10 +5374,10 @@ function plWalk(a, b) {
                 g = plFindPlayer(c - 600, d - 300, c + 600, d + 300, 1 - (b >> 2) << 2);
             }
             if (-1 != g) {
-                a.L[b] = 15;
+                a.pl_walk_interval[b] = 15;
                 e = .6;
                 //if (c < (1 != GameMode ? SR_ENEMY.a[g][20].x : a.a[g][2].x)) {
-                if (1 != GameMode && c < SR_ENEMY.a[g][20].x || 1 == GameMode && c < a.a[g][2].x) {
+                if (1 != GameMode && c < SR_ENEMY.a[g][20].x || 1 == GameMode && c < a.pl_current_joint[g][2].x) {
                     c = srFloor(srClampA(c + 14, 0, 511) / 8);
                     d = srFloor(srClampA(d - 6, 8, 383) / 8);
                     if (0 <= SR_TERRAIN.a[d][c] && 8 >= SR_TERRAIN.a[d][c]) {
@@ -5382,12 +5386,12 @@ function plWalk(a, b) {
                     if (0 <= SR_TERRAIN.a[d - 1][c] && 8 >= SR_TERRAIN.a[d - 1][c]) {
                         e = 4;
                     }
-                    if (a.a[b][9].x < a.a[b][10].x) {
-                        a.a[b][7].x += 4;
-                        a.a[b][7].y -= 3 * e
+                    if (a.pl_current_joint[b][9].x < a.pl_current_joint[b][10].x) {
+                        a.pl_current_joint[b][7].x += 4;
+                        a.pl_current_joint[b][7].y -= 3 * e
                     } else {
-                        a.a[b][8].x += 4;
-                        a.a[b][8].y -= 3 * e
+                        a.pl_current_joint[b][8].x += 4;
+                        a.pl_current_joint[b][8].y -= 3 * e
                     }
                 } else {
                     c = srFloor(srClampA(c - 14, 0, 511) / 8);
@@ -5398,12 +5402,12 @@ function plWalk(a, b) {
                     if (0 <= SR_TERRAIN.a[d - 1][c] && 8 >= SR_TERRAIN.a[d - 1][c]) {
                         e = 4;
                     }
-                    if (a.a[b][9].x > a.a[b][10].x) {
-                        a.a[b][7].x -= 4;
-                        a.a[b][7].y -= 3 * e
+                    if (a.pl_current_joint[b][9].x > a.pl_current_joint[b][10].x) {
+                        a.pl_current_joint[b][7].x -= 4;
+                        a.pl_current_joint[b][7].y -= 3 * e
                     } else {
-                        a.a[b][8].x -= 4;
-                        a.a[b][8].y -= 3 * e
+                        a.pl_current_joint[b][8].x -= 4;
+                        a.pl_current_joint[b][8].y -= 3 * e
                     }
                 }
             }
@@ -5416,8 +5420,8 @@ function plWalk(a, b) {
 */
 function plSwim(a, b) {
     if (0 != PlayerAutoMove[b] && !(20 > srFloor(100 * PlayerCurrentLp[b] / PlayerMaxLp[b]) && 0 == PartyMoveIfDying)) {
-        var c = .5 * (a.a[b][9].x + a.a[b][10].x);
-        var d = .5 * (a.a[b][9].y + a.a[b][10].y);
+        var c = .5 * (a.pl_current_joint[b][9].x + a.pl_current_joint[b][10].x);
+        var d = .5 * (a.pl_current_joint[b][9].y + a.pl_current_joint[b][10].y);
         var e = PlayerAttackRange[b];
         if (1 != GameMode) {
             e = findEnemy(c - 200 - e, d - 100 - e, c + 200 + e, d + 100 + e);
@@ -5426,30 +5430,30 @@ function plSwim(a, b) {
         }
         if (-1 != e && 9 == SR_TERRAIN.a[srFloor(srClampA(d, 8, 383) / 8)][srFloor(srClampA(c, 0, 511) / 8)]) {
             //if (c < (1 != GameMode ? SR_ENEMY.a[e][20].x : a.a[e][2].x)) {
-            if (1 != GameMode && c < SR_ENEMY.a[e][20].x || 1 == GameMode && c < a.a[e][2].x) {
-                a.a[b][0].x += .25;
-                a.a[b][1].x += .25;
+            if (1 != GameMode && c < SR_ENEMY.a[e][20].x || 1 == GameMode && c < a.pl_current_joint[e][2].x) {
+                a.pl_current_joint[b][0].x += .25;
+                a.pl_current_joint[b][1].x += .25;
             } else {
-                a.a[b][0].x -= .25;
-                a.a[b][1].x -= .25;
+                a.pl_current_joint[b][0].x -= .25;
+                a.pl_current_joint[b][1].x -= .25;
             }
             //if (d < (1 != GameMode ? SR_ENEMY.a[e][20].y : a.a[e][2].y)) {
-            if (1 != GameMode && d < SR_ENEMY.a[e][20].y || 1 == GameMode && d < a.a[e][2].y) {
-                a.a[b][0].y += .25;
-                a.a[b][1].y += .25;
+            if (1 != GameMode && d < SR_ENEMY.a[e][20].y || 1 == GameMode && d < a.pl_current_joint[e][2].y) {
+                a.pl_current_joint[b][0].y += .25;
+                a.pl_current_joint[b][1].y += .25;
             } else {
-                a.a[b][0].y -= .25;
-                a.a[b][1].y -= .25;
+                a.pl_current_joint[b][0].y -= .25;
+                a.pl_current_joint[b][1].y -= .25;
             }
-            a.a[b][0].x += srRandomRange(-.25, .25);
-            a.a[b][0].y += srRandomRange(-.25, .25);
-            a.a[b][1].x += srRandomRange(-.25, .25);
-            a.a[b][1].y += srRandomRange(-.25, .25)
+            a.pl_current_joint[b][0].x += srRandomRange(-.25, .25);
+            a.pl_current_joint[b][0].y += srRandomRange(-.25, .25);
+            a.pl_current_joint[b][1].x += srRandomRange(-.25, .25);
+            a.pl_current_joint[b][1].y += srRandomRange(-.25, .25)
         }
     }
 }
 
-WINDOW.fff = SrPlayer.prototype.plMain;
+//WINDOW.fff = SrPlayer.prototype.plMain;
 /*
 メインの動き
 */
@@ -5463,31 +5467,31 @@ SrPlayer.prototype.plMain = function () {
         d = 8;
     }
     for (a = 0; a < d; a++) {
-        if (0 < this.A[a] && 0 < PlayerCurrentLp[a]) {
-            this.A[a]--;
+        if (0 < this.pl_poison_time[a] && 0 < PlayerCurrentLp[a]) {
+            this.pl_poison_time[a]--;
             antiCheatCheck();
-            PlayerCurrentLp[a] = srMax(PlayerCurrentLp[a] - this.F[a], 0);
+            PlayerCurrentLp[a] = srMax(PlayerCurrentLp[a] - this.pl_poison_damage[a], 0);
             antiCheatSet()
         }
-        if (0 < this.v[a] && 0 < PlayerCurrentLp[a]) {
-            this.v[a]--;
+        if (0 < this.pl_freeze_time[a] && 0 < PlayerCurrentLp[a]) {
+            this.pl_freeze_time[a]--;
         } else {
-            if (0 < this.w[a] && 0 < PlayerCurrentLp[a]) {
-                this.w[a]--;
-                if (srRandom(100) < this.M[a]) {
+            if (0 < this.pl_slow_time[a] && 0 < PlayerCurrentLp[a]) {
+                this.pl_slow_time[a]--;
+                if (srRandom(100) < this.pl_slow_rate[a]) {
                     continue;
                 }
             }
             if (0 != PlayerCurrentLp[a]) {
                 if (0 == InventoryItem[4 + a]) {
-                    this.f[a] = 0;
+                    this.pl_class[a] = 0;
                 } else {
-                    this.f[a] = PlayerClass[a];
+                    this.pl_class[a] = PlayerClass[a];
                 }
             }
-            if ((55 != CurrentStage && 89 != CurrentStage && CurrentArea != STAGE_DATA[CurrentStage].length - 1 || 0 == SR_ENEMY.i) && 0 < (this.i[a] & 1) && 0 != PlayerCurrentLp[a]) {
-                b = (this.a[a][9].x + this.a[a][10].x) / 2;
-                c = (this.a[a][9].y + this.a[a][10].y) / 2;
+            if ((55 != CurrentStage && 89 != CurrentStage && CurrentArea != STAGE_DATA[CurrentStage].length - 1 || 0 == SR_ENEMY.i) && 0 < (this.pl_on_ground[a] & 1) && 0 != PlayerCurrentLp[a]) {
+                b = (this.pl_current_joint[a][9].x + this.pl_current_joint[a][10].x) / 2;
+                c = (this.pl_current_joint[a][9].y + this.pl_current_joint[a][10].y) / 2;
                 var e = SR_TERRAIN.g[63];
                 if (7 == STAGE_DATA[CurrentStage][CurrentArea][1]) {
                     e = SR_TERRAIN.b[63];
@@ -5500,93 +5504,93 @@ SrPlayer.prototype.plMain = function () {
                     }
                 }
             }
-            this.K[a]++;
+            this.pl_hover_time[a]++;
             if (0 == PlayerCurrentLp[a]) {
                 for (b = 0; 11 > b; b++) {
-                    moveJoint(this.a[a][b], this.g[a][b], .05, .99);
+                    moveJoint(this.pl_current_joint[a][b], this.pl_last_joint[a][b], .05, .99);
                 }
-            } else if (2 == this.i[a]) {
+            } else if (2 == this.pl_on_ground[a]) {
                 for (b = 0; 11 > b; b++) {
-                    moveJoint(this.a[a][b], this.g[a][b], .01, .99);
+                    moveJoint(this.pl_current_joint[a][b], this.pl_last_joint[a][b], .01, .99);
                 }
-            } else if (10 > this.K[a]) {
-                moveJoint(this.a[a][0], this.g[a][0], -.2, .99);
-                moveJoint(this.a[a][1], this.g[a][1], 0, .99);
-                moveJoint(this.a[a][2], this.g[a][2], -.1, .99);
-                moveJoint(this.a[a][3], this.g[a][3], 0, .99);
-                moveJoint(this.a[a][4], this.g[a][4], 0, .99);
-                moveJoint(this.a[a][5], this.g[a][5], 0, .99);
-                moveJoint(this.a[a][6], this.g[a][6], 0, .99);
-                moveJoint(this.a[a][7], this.g[a][7], 0, .99);
-                moveJoint(this.a[a][8], this.g[a][8], 0, .99);
-                moveJoint(this.a[a][9], this.g[a][9], .3, .99);
-                moveJoint(this.a[a][10], this.g[a][10], .3, .99);
+            } else if (10 > this.pl_hover_time[a]) {
+                moveJoint(this.pl_current_joint[a][0], this.pl_last_joint[a][0], -.2, .99);
+                moveJoint(this.pl_current_joint[a][1], this.pl_last_joint[a][1], 0, .99);
+                moveJoint(this.pl_current_joint[a][2], this.pl_last_joint[a][2], -.1, .99);
+                moveJoint(this.pl_current_joint[a][3], this.pl_last_joint[a][3], 0, .99);
+                moveJoint(this.pl_current_joint[a][4], this.pl_last_joint[a][4], 0, .99);
+                moveJoint(this.pl_current_joint[a][5], this.pl_last_joint[a][5], 0, .99);
+                moveJoint(this.pl_current_joint[a][6], this.pl_last_joint[a][6], 0, .99);
+                moveJoint(this.pl_current_joint[a][7], this.pl_last_joint[a][7], 0, .99);
+                moveJoint(this.pl_current_joint[a][8], this.pl_last_joint[a][8], 0, .99);
+                moveJoint(this.pl_current_joint[a][9], this.pl_last_joint[a][9], .3, .99);
+                moveJoint(this.pl_current_joint[a][10], this.pl_last_joint[a][10], .3, .99);
             } else {
                 for (b = 0; 11 > b; b++) {
-                    moveJoint(this.a[a][b], this.g[a][b], .05, .99);
+                    moveJoint(this.pl_current_joint[a][b], this.pl_last_joint[a][b], .05, .99);
                 }
             }
-            if (0 == PlayerCurrentLp[a] && this.f[a] != PLAYER_CLASS_DEAD) {
-                this.f[a] = PLAYER_CLASS_DEAD;
+            if (0 == PlayerCurrentLp[a] && this.pl_class[a] != PLAYER_CLASS_DEAD) {
+                this.pl_class[a] = PLAYER_CLASS_DEAD;
                 for (b = 0; 11 > b; b++) {
-                    this.a[a][b].x += srRandomRange(-2, 2);
-                    this.a[a][b].y += srRandomRange(-1, -3);
+                    this.pl_current_joint[a][b].x += srRandomRange(-2, 2);
+                    this.pl_current_joint[a][b].y += srRandomRange(-1, -3);
                 }
                 if (1 == GameMode) {
                     e = 1 - (a >> 2) << 2;
                     for (b = 0; 4 > b; b++) {
                         if (checkInventoryCompo(4 + e + b, 41) && srRandom(100) < getInventoryCompo(4 + e + b, 8)) {
-                            c = plFindPlayer(this.a[a][0].x - 600, this.a[a][0].y - 300, this.a[a][0].x + 600, this.a[a][0].y + 300, a >> 2 << 2);
+                            c = plFindPlayer(this.pl_current_joint[a][0].x - 600, this.pl_current_joint[a][0].y - 300, this.pl_current_joint[a][0].x + 600, this.pl_current_joint[a][0].y + 300, a >> 2 << 2);
                             if (-1 != c) {
-                                plProjectileAttack(SR_PLAYER, getInventoryCompo(4 + e + b, 9), this.a[a][0].x, this.a[a][0].y, c)
+                                plProjectileAttack(SR_PLAYER, getInventoryCompo(4 + e + b, 9), this.pl_current_joint[a][0].x, this.pl_current_joint[a][0].y, c)
                             }
                         }
                     }
                 }
             }
-            if (this.h == a && 1 != GameMode) {
+            if (this.pl_held_player == a && 1 != GameMode) {
                 if (0 == PlayerCurrentLp[a]) {
-                    this.a[this.h][this.u].x += (MouseX1 - this.a[this.h][this.u].x) * .04;
-                    this.a[this.h][this.u].y += (MouseY1 - this.a[this.h][this.u].y) * .04;
+                    this.pl_current_joint[this.pl_held_player][this.pl_held_joint].x += (MouseX1 - this.pl_current_joint[this.pl_held_player][this.pl_held_joint].x) * .04;
+                    this.pl_current_joint[this.pl_held_player][this.pl_held_joint].y += (MouseY1 - this.pl_current_joint[this.pl_held_player][this.pl_held_joint].y) * .04;
                 } else {
-                    this.a[this.h][this.u].x += (MouseX1 - this.a[this.h][this.u].x) * .2;
-                    this.a[this.h][this.u].y += (MouseY1 - this.a[this.h][this.u].y) * .2;
+                    this.pl_current_joint[this.pl_held_player][this.pl_held_joint].x += (MouseX1 - this.pl_current_joint[this.pl_held_player][this.pl_held_joint].x) * .2;
+                    this.pl_current_joint[this.pl_held_player][this.pl_held_joint].y += (MouseY1 - this.pl_current_joint[this.pl_held_player][this.pl_held_joint].y) * .2;
                 }
             }
-            if (!this.f[a] || 1 == this.f[a]) {
+            if (!this.pl_class[a] || 1 == this.pl_class[a]) {
                 this.plBoxer(a);
-            } else if (2 == this.f[a]) {
+            } else if (2 == this.pl_class[a]) {
                 this.plGradiator(a);
-            } else if (3 == this.f[a]) {
+            } else if (3 == this.pl_class[a]) {
                 this.plSniper(a);
-            } else if (4 == this.f[a]) {
+            } else if (4 == this.pl_class[a]) {
                 this.plMagician(a);
-            } else if (5 == this.f[a]) {
+            } else if (5 == this.pl_class[a]) {
                 this.plPriest(a);
-            } else if (6 == this.f[a]) {
+            } else if (6 == this.pl_class[a]) {
                 this.plGunner(a);
-            } else if (7 == this.f[a]) {
+            } else if (7 == this.pl_class[a]) {
                 this.plWhipper(a);
-            } else if (8 == this.f[a]) {
+            } else if (8 == this.pl_class[a]) {
                 this.plAngel(a);
-            } else if (this.f[a] == PLAYER_CLASS_DEAD) {
-                pullJoints(this.a[a][1], this.a[a][2], 3.6, .5, .5);
-                pullJoints(this.a[a][3], this.a[a][5], 4.8, .5, .5);
-                pullJoints(this.a[a][4], this.a[a][6], 4.8, .5, .5);
-                pullJoints(this.a[a][7], this.a[a][9], 4.8, .5, .5);
-                pullJoints(this.a[a][8], this.a[a][10], 4.8, .5, .5);
+            } else if (this.pl_class[a] == PLAYER_CLASS_DEAD) {
+                pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][2], 3.6, .5, .5);
+                pullJoints(this.pl_current_joint[a][3], this.pl_current_joint[a][5], 4.8, .5, .5);
+                pullJoints(this.pl_current_joint[a][4], this.pl_current_joint[a][6], 4.8, .5, .5);
+                pullJoints(this.pl_current_joint[a][7], this.pl_current_joint[a][9], 4.8, .5, .5);
+                pullJoints(this.pl_current_joint[a][8], this.pl_current_joint[a][10], 4.8, .5, .5);
             }
-            if (0 < (this.i[a] & 1)) {
-                this.K[a] = 0;
+            if (0 < (this.pl_on_ground[a] & 1)) {
+                this.pl_hover_time[a] = 0;
             }
-            for (b = this.i[a] = 0; 11 > b; b++) {
+            for (b = this.pl_on_ground[a] = 0; 11 > b; b++) {
                 this.plMove(a, b)
             }
         }
     }
 };
 
-WINDOW.fff = SrPlayer.prototype.plBoxer;
+//WINDOW.fff = SrPlayer.prototype.plBoxer;
 /*
 boxer
 */
@@ -5599,43 +5603,43 @@ SrPlayer.prototype.plBoxer = function (a) {
     var g = PlayerMaxAt[a];
     var h = PlayerMinAgi[a] + srRandomInt(PlayerMaxAgi[a] - PlayerMinAgi[a] + 1);
     c = PlayerAttackRange[a];
-    if (this.i[a] && this.f[a] && this.h != a) {
-        if (0 < this.c[a]) {
-            this.c[a]--;
+    if (this.pl_on_ground[a] && this.pl_class[a] && this.pl_held_player != a) {
+        if (0 < this.pl_attack_cooldown[a]) {
+            this.pl_attack_cooldown[a]--;
         }
-        var q = .5 * (this.a[a][9].x + this.a[a][10].x);
-        var m = .5 * (this.a[a][9].y + this.a[a][10].y);
+        var q = .5 * (this.pl_current_joint[a][9].x + this.pl_current_joint[a][10].x);
+        var m = .5 * (this.pl_current_joint[a][9].y + this.pl_current_joint[a][10].y);
         if (1 != GameMode) {
             c = findEnemy(q - c, m - c, q + c, m);
         } else {
             c = plFindPlayer(q - c, m - c, q + c, m, e);
         }
-        if (!this.c[a] && -1 != c) {
-            this.c[a] = h;
+        if (!this.pl_attack_cooldown[a] && -1 != c) {
+            this.pl_attack_cooldown[a] = h;
             //q < (1 != GameMode ? SR_ENEMY.a[c][20].x : this.a[c][2].x)  ? this.a[a][5].x < this.a[a][6].x  ? (this.a[a][5].x += 4, this.a[a][4].x -= 4, this.a[a][2].y += 1, this.b[a] = 5)  : (this.a[a][6].x += 4, this.a[a][3].x -= 4, this.a[a][2].y += 1, this.b[a] = 6): this.a[a][5].x > this.a[a][6].x ? (this.a[a][5].x -= 4, this.a[a][4].x += 4, this.a[a][2].y += 1, this.b[a] = 5): (this.a[a][6].x -= 4, this.a[a][3].x += 4, this.a[a][2].y += 1, this.b[a] = 6);
-            if (1 != GameMode && q < SR_ENEMY.a[c][20].x || 1 == GameMode && q < this.a[c][2].x) {
-                if (this.a[a][5].x < this.a[a][6].x) {
-                    this.a[a][5].x += 4;
-                    this.a[a][4].x -= 4;
-                    this.a[a][2].y += 1;
-                    this.b[a] = 5
+            if (1 != GameMode && q < SR_ENEMY.a[c][20].x || 1 == GameMode && q < this.pl_current_joint[c][2].x) {
+                if (this.pl_current_joint[a][5].x < this.pl_current_joint[a][6].x) {
+                    this.pl_current_joint[a][5].x += 4;
+                    this.pl_current_joint[a][4].x -= 4;
+                    this.pl_current_joint[a][2].y += 1;
+                    this.pl_attack_point[a] = 5
                 } else {
-                    this.a[a][6].x += 4;
-                    this.a[a][3].x -= 4;
-                    this.a[a][2].y += 1;
-                    this.b[a] = 6
+                    this.pl_current_joint[a][6].x += 4;
+                    this.pl_current_joint[a][3].x -= 4;
+                    this.pl_current_joint[a][2].y += 1;
+                    this.pl_attack_point[a] = 6
                 }
             } else {
-                if (this.a[a][5].x > this.a[a][6].x) {
-                    this.a[a][5].x -= 4;
-                    this.a[a][4].x += 4;
-                    this.a[a][2].y += 1;
-                    this.b[a] = 5;
+                if (this.pl_current_joint[a][5].x > this.pl_current_joint[a][6].x) {
+                    this.pl_current_joint[a][5].x -= 4;
+                    this.pl_current_joint[a][4].x += 4;
+                    this.pl_current_joint[a][2].y += 1;
+                    this.pl_attack_point[a] = 5;
                 } else {
-                    this.a[a][6].x -= 4;
-                    this.a[a][3].x += 4;
-                    this.a[a][2].y += 1;
-                    this.b[a] = 6;
+                    this.pl_current_joint[a][6].x -= 4;
+                    this.pl_current_joint[a][3].x += 4;
+                    this.pl_current_joint[a][2].y += 1;
+                    this.pl_attack_point[a] = 6;
                 }
             }
             antiCheatCheck();
@@ -5643,12 +5647,12 @@ SrPlayer.prototype.plBoxer = function (a) {
             PlayerMp[a] = srMin(PlayerMp[a] + PlayerMag[a], h);
             if (PlayerMp[a] == h && 0 < h || -1 == h) {
                 PlayerMp[a] = 0;
-                plProjectileAttack(this, a, this.a[a][this.b[a]].x, this.a[a][this.b[a]].y, c);
+                plProjectileAttack(this, a, this.pl_current_joint[a][this.pl_attack_point[a]].x, this.pl_current_joint[a][this.pl_attack_point[a]].y, c);
             }
             if (checkInventoryCompo(4 + a, 46)) {
                 h = getInventoryCompo(4 + a, 8);
                 PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + h, 0, PlayerMaxLp[a]);
-                SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, h, 65280);
+                SR_INDICATOR.inAdd(this.pl_current_joint[a][0].x, this.pl_current_joint[a][0].y, 0, h, 65280);
             }
             antiCheatSet()
         }
@@ -5657,7 +5661,7 @@ SrPlayer.prototype.plBoxer = function (a) {
         }
         plSwim(this, a)
     }
-    if (-1 != this.b[a] && this.f[a] && this.h != a) {
+    if (-1 != this.pl_attack_point[a] && this.pl_class[a] && this.pl_held_player != a) {
         c = getItemData(InventoryItem[4 + a], 9);
         if (checkInventoryCompo(4 + a, 27) && srRandom(100) < getInventoryCompo(4 + a, 8)) {
             c = 1;
@@ -5673,21 +5677,21 @@ SrPlayer.prototype.plBoxer = function (a) {
             q += srFloor(8 * getInventoryCompo(4 + a, 8) / 100);
         }
         if (1 != GameMode) {
-            e = enTakeDamage(c, 0, 0, b, g, this.a[a][this.b[a]].x, this.a[a][this.b[a]].y, h, q)
+            e = enGetDamage(c, 0, 0, b, g, this.pl_current_joint[a][this.pl_attack_point[a]].x, this.pl_current_joint[a][this.pl_attack_point[a]].y, h, q)
         } else {
-            e = plTakeDamage(c, 0, 0, b, g, this.a[a][this.b[a]].x, this.a[a][this.b[a]].y, h, q, e)
+            e = plGetDamage(c, 0, 0, b, g, this.pl_current_joint[a][this.pl_attack_point[a]].x, this.pl_current_joint[a][this.pl_attack_point[a]].y, h, q, e)
         }
         if (-1 != e) {
-            this.b[a] = -1;
+            this.pl_attack_point[a] = -1;
             if (checkInventoryCompo(4 + a, 11)) {
-                h = srMax(1, srFloor(this.j * getInventoryCompo(4 + a, 8) / 100));
+                h = srMax(1, srFloor(this.pl_damage_dealt * getInventoryCompo(4 + a, 8) / 100));
                 antiCheatCheck();
                 PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + h, 0, PlayerMaxLp[a]);
                 antiCheatSet();
-                SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, h, 65280);
+                SR_INDICATOR.inAdd(this.pl_current_joint[a][0].x, this.pl_current_joint[a][0].y, 0, h, 65280);
             }
             if (checkInventoryCompo(4 + a, 12) && !GameMode && srRandom(100) < getInventoryCompo(4 + a, 8)) {
-                SR_DROP.dpAdd(this.a[a][0].x, this.a[a][0].y, 2, 0, 0);
+                SR_DROP.dpAdd(this.pl_current_joint[a][0].x, this.pl_current_joint[a][0].y, 2, 0, 0);
             }
             if (checkInventoryCompo(4 + a, 37) && !GameMode && srRandom(100) < getInventoryCompo(4 + a, 8)) {
                 g = 100;
@@ -5696,14 +5700,14 @@ SrPlayer.prototype.plBoxer = function (a) {
                         g += getInventoryCompo(4 + b, 8);
                     }
                 }
-                SR_DROP.dpAdd(this.a[a][0].x, this.a[a][0].y, 1, srFloor(this.j * g / 100), 0)
+                SR_DROP.dpAdd(this.pl_current_joint[a][0].x, this.pl_current_joint[a][0].y, 1, srFloor(this.pl_damage_dealt * g / 100), 0)
             }
             if (checkInventoryCompo(4 + a, 43) && srRandom(100) < getInventoryCompo(4 + a, 8)) {
                 b = getInventoryCompo(4 + a, 9);
                 if (1 != GameMode) {
-                    setDistance(d, SR_ENEMY.a[e][0], this.a[a][1]);
+                    setDistance(d, SR_ENEMY.a[e][0], this.pl_current_joint[a][1]);
                 } else {
-                    setDistance(d, SR_PLAYER.a[e][1], this.a[a][1]);
+                    setDistance(d, SR_PLAYER.pl_current_joint[e][1], this.pl_current_joint[a][1]);
                 }
                 normalize(d);
                 scaleVec2(d, .2 * b);
@@ -5717,25 +5721,25 @@ SrPlayer.prototype.plBoxer = function (a) {
                     SR_ENEMY.c[e][0].vecSub(d)
                 } else {
                     //vecSub
-                    SR_PLAYER.g[e][0].vecSub(d)
+                    SR_PLAYER.pl_last_joint[e][0].vecSub(d)
                 }
             }
         }
     }
-    pullJoints(this.a[a][0], this.a[a][1], 3.6, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][2], 3.6, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][3], 4.8, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][4], 4.8, .5, .5);
-    pullJoints(this.a[a][3], this.a[a][5], 4.8, .5, .5);
-    pullJoints(this.a[a][4], this.a[a][6], 4.8, .5, .5);
-    pullJoints(this.a[a][2], this.a[a][7], 4.8, .5, .5);
-    pullJoints(this.a[a][2], this.a[a][8], 4.8, .5, .5);
-    pullJoints(this.a[a][7], this.a[a][9], 4.8, .5, .5);
-    pullJoints(this.a[a][8], this.a[a][10], 4.8, .5, .5);
-    pullJoints(this.a[a][7], this.a[a][8], 6, .1, .1)
+    pullJoints(this.pl_current_joint[a][0], this.pl_current_joint[a][1], 3.6, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][2], 3.6, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][3], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][4], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][3], this.pl_current_joint[a][5], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][4], this.pl_current_joint[a][6], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][2], this.pl_current_joint[a][7], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][2], this.pl_current_joint[a][8], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][7], this.pl_current_joint[a][9], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][8], this.pl_current_joint[a][10], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][7], this.pl_current_joint[a][8], 6, .1, .1)
 };
 
-WINDOW.fff = SrPlayer.prototype.plGradiator;
+//WINDOW.fff = SrPlayer.prototype.plGradiator;
 /*
 gradiator
 */
@@ -5748,45 +5752,45 @@ SrPlayer.prototype.plGradiator = function (a) {
     var g = PlayerMaxAt[a];
     var h = PlayerMinAgi[a] + srRandomInt(PlayerMaxAgi[a] - PlayerMinAgi[a] + 1);
     var q = PlayerAttackRange[a];
-    if (this.i[a] && this.h != a) {
-        if (0 < this.c[a]) {
-            this.c[a]--;
+    if (this.pl_on_ground[a] && this.pl_held_player != a) {
+        if (0 < this.pl_attack_cooldown[a]) {
+            this.pl_attack_cooldown[a]--;
         }
-        var m = .5 * (this.a[a][9].x + this.a[a][10].x);
-        var l = .5 * (this.a[a][9].y + this.a[a][10].y);
+        var m = .5 * (this.pl_current_joint[a][9].x + this.pl_current_joint[a][10].x);
+        var l = .5 * (this.pl_current_joint[a][9].y + this.pl_current_joint[a][10].y);
         if (1 != GameMode) {
             c = findEnemy(m - q, l - q, m + q, l);
         } else {
             c = plFindPlayer(m - q, l - q, m + q, l, e);
         }
-        if (!this.c[a] && -1 != c) {
-            this.c[a] = h;
+        if (!this.pl_attack_cooldown[a] && -1 != c) {
+            this.pl_attack_cooldown[a] = h;
             //if (m < (1 != GameMode ? SR_ENEMY.a[c][20].x : this.a[c][2].x)) {
-            if (1 != GameMode && m < SR_ENEMY.a[c][20].x || 1 == GameMode && m < this.a[c][2].x) {
-                this.a[a][5].x += 3;
-                this.a[a][5].y += .2 * (l - 2 - this.a[a][5].y);
-                this.a[a][6].x = this.a[a][5].x - 2;
-                this.a[a][6].y = this.a[a][5].y;
-                this.a[a][1].x -= 3;
+            if (1 != GameMode && m < SR_ENEMY.a[c][20].x || 1 == GameMode && m < this.pl_current_joint[c][2].x) {
+                this.pl_current_joint[a][5].x += 3;
+                this.pl_current_joint[a][5].y += .2 * (l - 2 - this.pl_current_joint[a][5].y);
+                this.pl_current_joint[a][6].x = this.pl_current_joint[a][5].x - 2;
+                this.pl_current_joint[a][6].y = this.pl_current_joint[a][5].y;
+                this.pl_current_joint[a][1].x -= 3;
             } else {
-                this.a[a][5].x -= 3;
-                this.a[a][5].y += .2 * (l - 2 - this.a[a][5].y);
-                this.a[a][6].x = this.a[a][5].x + 2;
-                this.a[a][6].y = this.a[a][5].y;
-                this.a[a][1].x += 3;
+                this.pl_current_joint[a][5].x -= 3;
+                this.pl_current_joint[a][5].y += .2 * (l - 2 - this.pl_current_joint[a][5].y);
+                this.pl_current_joint[a][6].x = this.pl_current_joint[a][5].x + 2;
+                this.pl_current_joint[a][6].y = this.pl_current_joint[a][5].y;
+                this.pl_current_joint[a][1].x += 3;
             }
-            this.b[a] = 5;
+            this.pl_attack_point[a] = 5;
             antiCheatCheck();
             h = getItemData(InventoryItem[4 + a], 36);
             PlayerMp[a] = srMin(PlayerMp[a] + PlayerMag[a], h);
             if (PlayerMp[a] == h && 0 < h) {
                 PlayerMp[a] = 0;
-                this.I[a] = getItemData(InventoryItem[4 + a], 41);
+                this.pl_skill_attack_time[a] = getItemData(InventoryItem[4 + a], 41);
             }
             if (checkInventoryCompo(4 + a, 46)) {
                 h = getInventoryCompo(4 + a, 8);
                 PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + h, 0, PlayerMaxLp[a]);
-                SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, h, 65280);
+                SR_INDICATOR.inAdd(this.pl_current_joint[a][0].x, this.pl_current_joint[a][0].y, 0, h, 65280);
             }
             antiCheatSet();
         }
@@ -5795,28 +5799,28 @@ SrPlayer.prototype.plGradiator = function (a) {
         }
         plSwim(this, a)
     }
-    if (-1 != this.b[a]) {
+    if (-1 != this.pl_attack_point[a]) {
         if (checkInventoryCompo(4 + a, 29) && srRandom(100) < getInventoryCompo(4 + a, 8)) {
             b += srFloor(getInventoryCompo(4 + a, 9) * b / 100);
             g += srFloor(getInventoryCompo(4 + a, 9) * g / 100);
         }
-        setDistance(d, this.a[a][5], this.a[a][6]);
+        setDistance(d, this.pl_current_joint[a][5], this.pl_current_joint[a][6]);
         normalize(d);
         scaleVec2(d, q);
-        c = this.a[a][6].x + d.x / 2;
-        h = this.a[a][6].y + d.y / 2;
-        //if(-1 != (1 != GameMode ? enTakeDamage(1, 0, 0, b, g, c, h, srAbs(d.x), srAbs(d.y)) : plTakeDamage(1, 0, 0, b, g, c, h, srAbs(d.x), srAbs(d.y), e)) ) {
-        if (1 != GameMode && -1 != enTakeDamage(1, 0, 0, b, g, c, h, srAbs(d.x), srAbs(d.y)) || 1 == GameMode && -1 != plTakeDamage(1, 0, 0, b, g, c, h, srAbs(d.x), srAbs(d.y), e)) {
-            this.b[a] = -1;
+        c = this.pl_current_joint[a][6].x + d.x / 2;
+        h = this.pl_current_joint[a][6].y + d.y / 2;
+        //if(-1 != (1 != GameMode ? enGetDamage(1, 0, 0, b, g, c, h, srAbs(d.x), srAbs(d.y)) : plGetDamage(1, 0, 0, b, g, c, h, srAbs(d.x), srAbs(d.y), e)) ) {
+        if (1 != GameMode && -1 != enGetDamage(1, 0, 0, b, g, c, h, srAbs(d.x), srAbs(d.y)) || 1 == GameMode && -1 != plGetDamage(1, 0, 0, b, g, c, h, srAbs(d.x), srAbs(d.y), e)) {
+            this.pl_attack_point[a] = -1;
             if (checkInventoryCompo(4 + a, 11)) {
-                h = srMax(1, srFloor(this.j * getInventoryCompo(4 + a, 8) / 100));
+                h = srMax(1, srFloor(this.pl_damage_dealt * getInventoryCompo(4 + a, 8) / 100));
                 antiCheatCheck();
                 PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + h, 0, PlayerMaxLp[a]);
                 antiCheatSet();
-                SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, h, 65280);
+                SR_INDICATOR.inAdd(this.pl_current_joint[a][0].x, this.pl_current_joint[a][0].y, 0, h, 65280);
             }
             if (checkInventoryCompo(4 + a, 12) && !GameMode && srRandom(100) < getInventoryCompo(4 + a, 8)) {
-                SR_DROP.dpAdd(this.a[a][0].x, this.a[a][0].y, 2, 0, 0)
+                SR_DROP.dpAdd(this.pl_current_joint[a][0].x, this.pl_current_joint[a][0].y, 2, 0, 0)
             }
         }
         if (checkInventoryCompo(4 + a, 37) && !GameMode && srRandom(100) < getInventoryCompo(4 + a, 8)) {
@@ -5826,28 +5830,28 @@ SrPlayer.prototype.plGradiator = function (a) {
                     g += getInventoryCompo(4 + b, 8);
                 }
             }
-            SR_DROP.dpAdd(this.a[a][0].x, this.a[a][0].y, 1, srFloor(this.j * g / 100), 0)
+            SR_DROP.dpAdd(this.pl_current_joint[a][0].x, this.pl_current_joint[a][0].y, 1, srFloor(this.pl_damage_dealt * g / 100), 0)
         }
     }
-    pullJoints(this.a[a][0], this.a[a][1], 3.6, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][2], 3.6, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][3], 4.8, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][4], 4.8, .5, .5);
-    pullJoints(this.a[a][3], this.a[a][5], 4.8, .5, .5);
-    pullJoints(this.a[a][4], this.a[a][6], 4.8, .5, .5);
-    pullJoints(this.a[a][3], this.a[a][4], 4.8, .01, .01);
-    pullJoints(this.a[a][5], this.a[a][6], 2.4, .5, .5);
-    pullJoints(this.a[a][2], this.a[a][7], 4.8, .5, .5);
-    pullJoints(this.a[a][2], this.a[a][8], 4.8, .5, .5);
-    pullJoints(this.a[a][7], this.a[a][9], 4.8, .5, .5);
-    pullJoints(this.a[a][8], this.a[a][10], 4.8, .5, .5);
-    pullJoints(this.a[a][7], this.a[a][8], 6, .1, .1);
-    if (0 < this.I[a]) {
-        this.I[a]--;
-        setDistance(d, this.a[a][5], this.a[a][6]);
+    pullJoints(this.pl_current_joint[a][0], this.pl_current_joint[a][1], 3.6, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][2], 3.6, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][3], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][4], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][3], this.pl_current_joint[a][5], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][4], this.pl_current_joint[a][6], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][3], this.pl_current_joint[a][4], 4.8, .01, .01);
+    pullJoints(this.pl_current_joint[a][5], this.pl_current_joint[a][6], 2.4, .5, .5);
+    pullJoints(this.pl_current_joint[a][2], this.pl_current_joint[a][7], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][2], this.pl_current_joint[a][8], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][7], this.pl_current_joint[a][9], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][8], this.pl_current_joint[a][10], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][7], this.pl_current_joint[a][8], 6, .1, .1);
+    if (0 < this.pl_skill_attack_time[a]) {
+        this.pl_skill_attack_time[a]--;
+        setDistance(d, this.pl_current_joint[a][5], this.pl_current_joint[a][6]);
         normalize(d);
         scaleVec2(d, q);
-        d.vecAdd(this.a[a][6]);
+        d.vecAdd(this.pl_current_joint[a][6]);
         if (1 != GameMode) {
             plProjectileAttack(this, a, d.x, d.y, 0)
         } else {
@@ -5856,7 +5860,7 @@ SrPlayer.prototype.plGradiator = function (a) {
     }
 };
 
-WINDOW.fff = SrPlayer.prototype.plSniper;
+//WINDOW.fff = SrPlayer.prototype.plSniper;
 /*
 sniper
 */
@@ -5865,44 +5869,44 @@ SrPlayer.prototype.plSniper = function (a) {
     b = 1 - (a >> 2) << 2;
     var c = PlayerMinAgi[a] + srRandomInt(PlayerMaxAgi[a] - PlayerMinAgi[a] + 1);
     var d = PlayerAttackRange[a];
-    var e = .5 * (this.a[a][9].x + this.a[a][10].x);
-    var g = .5 * (this.a[a][9].y + this.a[a][10].y);
+    var e = .5 * (this.pl_current_joint[a][9].x + this.pl_current_joint[a][10].x);
+    var g = .5 * (this.pl_current_joint[a][9].y + this.pl_current_joint[a][10].y);
     if (1 != GameMode) {
         b = findEnemy(e - d, g - d, e + d, g + d);
     } else {
         b = plFindPlayer(e - d, g - d, e + d, g + d, b);
     }
     if (-1 != b) {
-        if (1 != GameMode && e < SR_ENEMY.a[b][20].x || 1 == GameMode && e < this.a[b][2].x) {
-            this.a[a][6].x += .2;
-            this.a[a][6].y -= .2;
-            this.a[a][5].x -= .2
+        if (1 != GameMode && e < SR_ENEMY.a[b][20].x || 1 == GameMode && e < this.pl_current_joint[b][2].x) {
+            this.pl_current_joint[a][6].x += .2;
+            this.pl_current_joint[a][6].y -= .2;
+            this.pl_current_joint[a][5].x -= .2
         } else {
-            this.a[a][6].x -= .2;
-            this.a[a][6].y -= .2;
-            this.a[a][5].x += .2;
+            this.pl_current_joint[a][6].x -= .2;
+            this.pl_current_joint[a][6].y -= .2;
+            this.pl_current_joint[a][5].x += .2;
         }
-        this.a[a][5].y += .2;
+        this.pl_current_joint[a][5].y += .2;
     }
-    if (this.i[a] && this.h != a) {
-        if (0 < this.c[a]) {
-            this.c[a]--;
+    if (this.pl_on_ground[a] && this.pl_held_player != a) {
+        if (0 < this.pl_attack_cooldown[a]) {
+            this.pl_attack_cooldown[a]--;
         }
-        if (!this.c[a]) {
+        if (!this.pl_attack_cooldown[a]) {
             if (-1 != b) {
-                this.c[a] = c;
-                pullJoints(this.a[a][5], this.a[a][6], 2, .2, .2);
-                this.b[a] = 6;
+                this.pl_attack_cooldown[a] = c;
+                pullJoints(this.pl_current_joint[a][5], this.pl_current_joint[a][6], 2, .2, .2);
+                this.pl_attack_point[a] = 6;
             }
-            if (-1 != this.b[a]) {
-                plProjectileAttack(this, a, this.a[a][6].x, this.a[a][6].y, b);
-                this.b[a] = -1;
+            if (-1 != this.pl_attack_point[a]) {
+                plProjectileAttack(this, a, this.pl_current_joint[a][6].x, this.pl_current_joint[a][6].y, b);
+                this.pl_attack_point[a] = -1;
                 if (checkInventoryCompo(4 + a, 46)) {
                     c = getInventoryCompo(4 + a, 8);
                     antiCheatCheck();
                     PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + c, 0, PlayerMaxLp[a]);
                     antiCheatSet();
-                    SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, c, 65280);
+                    SR_INDICATOR.inAdd(this.pl_current_joint[a][0].x, this.pl_current_joint[a][0].y, 0, c, 65280);
                 }
             }
         }
@@ -5911,21 +5915,21 @@ SrPlayer.prototype.plSniper = function (a) {
             plSwim(this, a);
         }
     }
-    pullJoints(this.a[a][0], this.a[a][1], 3.6, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][2], 3.6, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][3], 4.8, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][4], 4.8, .5, .5);
-    pullJoints(this.a[a][3], this.a[a][5], 4.8, .5, .5);
-    pullJoints(this.a[a][4], this.a[a][6], 4.8, .5, .5);
-    pullJoints(this.a[a][5], this.a[a][6], 9.6, .02, .02);
-    pullJoints(this.a[a][2], this.a[a][7], 4.8, .5, .5);
-    pullJoints(this.a[a][2], this.a[a][8], 4.8, .5, .5);
-    pullJoints(this.a[a][7], this.a[a][9], 4.8, .5, .5);
-    pullJoints(this.a[a][8], this.a[a][10], 4.8, .5, .5);
-    pullJoints(this.a[a][7], this.a[a][8], 6, .1, .1)
+    pullJoints(this.pl_current_joint[a][0], this.pl_current_joint[a][1], 3.6, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][2], 3.6, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][3], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][4], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][3], this.pl_current_joint[a][5], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][4], this.pl_current_joint[a][6], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][5], this.pl_current_joint[a][6], 9.6, .02, .02);
+    pullJoints(this.pl_current_joint[a][2], this.pl_current_joint[a][7], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][2], this.pl_current_joint[a][8], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][7], this.pl_current_joint[a][9], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][8], this.pl_current_joint[a][10], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][7], this.pl_current_joint[a][8], 6, .1, .1)
 };
 
-WINDOW.fff = SrPlayer.prototype.plMagician;
+//WINDOW.fff = SrPlayer.prototype.plMagician;
 /*
 magician
 */
@@ -5934,48 +5938,48 @@ SrPlayer.prototype.plMagician = function (a) {
     b = 1 - (a >> 2) << 2;
     var c = PlayerMinAgi[a] + srRandomInt(PlayerMaxAgi[a] - PlayerMinAgi[a] + 1);
     var d = PlayerAttackRange[a];
-    var e = .5 * (this.a[a][9].x + this.a[a][10].x);
-    var g = .5 * (this.a[a][9].y + this.a[a][10].y);
+    var e = .5 * (this.pl_current_joint[a][9].x + this.pl_current_joint[a][10].x);
+    var g = .5 * (this.pl_current_joint[a][9].y + this.pl_current_joint[a][10].y);
     if (1 != GameMode) {
         b = findEnemy(e - d, g - d, e + d, g + d);
     } else {
         b = plFindPlayer(e - d, g - d, e + d, g + d, b);
     }
     if (-1 != b) {
-        if (1 != GameMode && e < SR_ENEMY.a[b][20].x || 1 == GameMode && e < this.a[b][2].x) {
-            this.a[a][5].x += .1;
-            this.a[a][6].x += .1;
-            this.a[a][1].x -= .2;
+        if (1 != GameMode && e < SR_ENEMY.a[b][20].x || 1 == GameMode && e < this.pl_current_joint[b][2].x) {
+            this.pl_current_joint[a][5].x += .1;
+            this.pl_current_joint[a][6].x += .1;
+            this.pl_current_joint[a][1].x -= .2;
         } else {
-            this.a[a][5].x -= .1;
-            this.a[a][6].x -= .1;
-            this.a[a][1].x += .2;
+            this.pl_current_joint[a][5].x -= .1;
+            this.pl_current_joint[a][6].x -= .1;
+            this.pl_current_joint[a][1].x += .2;
         }
     }
-    if (this.i[a] && this.h != a) {
-        if (0 < this.c[a]) {
-            this.c[a]--;
+    if (this.pl_on_ground[a] && this.pl_held_player != a) {
+        if (0 < this.pl_attack_cooldown[a]) {
+            this.pl_attack_cooldown[a]--;
         }
-        if (!this.c[a]) {
+        if (!this.pl_attack_cooldown[a]) {
             if (-1 != b) {
-                this.c[a] = c;
-                if (1 != GameMode && e < SR_ENEMY.a[b][20].x || 1 == GameMode && e < this.a[b][2].x) {
-                    pullJoints(this.a[a][5], this.a[a][6], 0, .1, .1);
-                    this.b[a] = 6;
+                this.pl_attack_cooldown[a] = c;
+                if (1 != GameMode && e < SR_ENEMY.a[b][20].x || 1 == GameMode && e < this.pl_current_joint[b][2].x) {
+                    pullJoints(this.pl_current_joint[a][5], this.pl_current_joint[a][6], 0, .1, .1);
+                    this.pl_attack_point[a] = 6;
                 } else {
-                    pullJoints(this.a[a][5], this.a[a][6], 0, .1, .1);
-                    this.b[a] = 5;
+                    pullJoints(this.pl_current_joint[a][5], this.pl_current_joint[a][6], 0, .1, .1);
+                    this.pl_attack_point[a] = 5;
                 }
             }
-            if (-1 != this.b[a]) {
-                plProjectileAttack(this, a, this.a[a][6].x, this.a[a][6].y, b);
-                this.b[a] = -1;
+            if (-1 != this.pl_attack_point[a]) {
+                plProjectileAttack(this, a, this.pl_current_joint[a][6].x, this.pl_current_joint[a][6].y, b);
+                this.pl_attack_point[a] = -1;
                 if (checkInventoryCompo(4 + a, 46)) {
                     c = getInventoryCompo(4 + a, 8);
                     antiCheatCheck();
                     PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + c, 0, PlayerMaxLp[a]);
                     antiCheatSet();
-                    SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, c, 65280);
+                    SR_INDICATOR.inAdd(this.pl_current_joint[a][0].x, this.pl_current_joint[a][0].y, 0, c, 65280);
                 }
             }
         }
@@ -5984,21 +5988,21 @@ SrPlayer.prototype.plMagician = function (a) {
             plSwim(this, a);
         }
     }
-    pullJoints(this.a[a][0], this.a[a][1], 3.6, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][2], 3.6, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][3], 4.8, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][4], 4.8, .5, .5);
-    pullJoints(this.a[a][3], this.a[a][5], 4.8, .5, .5);
-    pullJoints(this.a[a][4], this.a[a][6], 4.8, .5, .5);
-    pullJoints(this.a[a][5], this.a[a][6], 10.8, .01, .01);
-    pullJoints(this.a[a][2], this.a[a][7], 4.8, .5, .5);
-    pullJoints(this.a[a][2], this.a[a][8], 4.8, .5, .5);
-    pullJoints(this.a[a][7], this.a[a][9], 4.8, .5, .5);
-    pullJoints(this.a[a][8], this.a[a][10], 4.8, .5, .5);
-    pullJoints(this.a[a][7], this.a[a][8], 6, .1, .1)
+    pullJoints(this.pl_current_joint[a][0], this.pl_current_joint[a][1], 3.6, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][2], 3.6, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][3], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][4], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][3], this.pl_current_joint[a][5], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][4], this.pl_current_joint[a][6], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][5], this.pl_current_joint[a][6], 10.8, .01, .01);
+    pullJoints(this.pl_current_joint[a][2], this.pl_current_joint[a][7], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][2], this.pl_current_joint[a][8], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][7], this.pl_current_joint[a][9], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][8], this.pl_current_joint[a][10], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][7], this.pl_current_joint[a][8], 6, .1, .1)
 };
 
-WINDOW.fff = SrPlayer.prototype.plPriest;
+//WINDOW.fff = SrPlayer.prototype.plPriest;
 /*
 priest
 */
@@ -6008,31 +6012,32 @@ SrPlayer.prototype.plPriest = function (a) {
     var d = 1 - (a >> 2) << 2;
     b = PlayerMinAgi[a] + srRandomInt(PlayerMaxAgi[a] - PlayerMinAgi[a] + 1);
     c = PlayerAttackRange[a];
-    var e = .5 * (this.a[a][9].x + this.a[a][10].x);
-    var g = .5 * (this.a[a][9].y + this.a[a][10].y);
+    var e = .5 * (this.pl_current_joint[a][9].x + this.pl_current_joint[a][10].x);
+    var g = .5 * (this.pl_current_joint[a][9].y + this.pl_current_joint[a][10].y);
     if (1 != GameMode) {
         c = findEnemy(e - c, g - c / 2, e + c, g + c / 2);
     } else {
         c = plFindPlayer(e - c, g - c / 2, e + c, g + c / 2, d);
     }
-    if (this.i[a] && this.h != a) {
-        if (0 < this.c[a]) {
-            this.c[a]--;
+    if (this.pl_on_ground[a] && this.pl_held_player != a) {
+        if (0 < this.pl_attack_cooldown[a]) {
+            this.pl_attack_cooldown[a]--;
         }
-        if (!this.c[a] && -1 != c) {
-            this.c[a] = b;
-            this.a[a][6].y -= 2;
-            this.a[a][5].y += 2;
+        if (!this.pl_attack_cooldown[a] && -1 != c) {
+            this.pl_attack_cooldown[a] = b;
+            this.pl_current_joint[a][6].y -= 2;
+            this.pl_current_joint[a][5].y += 2;
+            //priestは直近の敵だけでなく範囲内のすべての敵に攻撃する
             if (1 != GameMode) {
                 for (b = 0; b < SR_ENEMY.i; b++) {
                     if (0 != SR_ENEMY.D[b]) {
-                        plProjectileAttack(this, a, this.a[a][6].x, this.a[a][6].y, b);
+                        plProjectileAttack(this, a, this.pl_current_joint[a][6].x, this.pl_current_joint[a][6].y, b);
                     }
                 }
             } else {
                 for (b = d; b < d + 4; b++) {
-                    if (0 != SR_PLAYER.H[b]) {
-                        plProjectileAttack(this, a, this.a[a][6].x, this.a[a][6].y, b);
+                    if (0 != SR_PLAYER.pl_is_found[b]) {
+                        plProjectileAttack(this, a, this.pl_current_joint[a][6].x, this.pl_current_joint[a][6].y, b);
                     }
                 }
             }
@@ -6042,7 +6047,7 @@ SrPlayer.prototype.plPriest = function (a) {
                 for (b = a >> 2 << 2; b < (a >> 2 << 2) + 4; b++) {
                     if (a != b && 0 != PlayerCurrentLp[b]) {
                         PlayerCurrentLp[b] = srClampA(PlayerCurrentLp[b] + d, 0, PlayerMaxLp[b]);
-                        SR_INDICATOR.inAdd(this.a[b][0].x, this.a[b][0].y, 0, d, 65280);
+                        SR_INDICATOR.inAdd(this.pl_current_joint[b][0].x, this.pl_current_joint[b][0].y, 0, d, 65280);
                     }
                 }
                 antiCheatSet()
@@ -6053,20 +6058,20 @@ SrPlayer.prototype.plPriest = function (a) {
             plSwim(this, a)
         }
     }
-    pullJoints(this.a[a][0], this.a[a][1], 3.6, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][2], 3.6, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][3], 4.8, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][4], 4.8, .5, .5);
-    pullJoints(this.a[a][3], this.a[a][5], 4.8, .5, .5);
-    pullJoints(this.a[a][4], this.a[a][6], 4.8, .5, .5);
-    pullJoints(this.a[a][2], this.a[a][7], 4.8, .5, .5);
-    pullJoints(this.a[a][2], this.a[a][8], 4.8, .5, .5);
-    pullJoints(this.a[a][7], this.a[a][9], 4.8, .5, .5);
-    pullJoints(this.a[a][8], this.a[a][10], 4.8, .5, .5);
-    pullJoints(this.a[a][7], this.a[a][8], 6, .1, .1)
+    pullJoints(this.pl_current_joint[a][0], this.pl_current_joint[a][1], 3.6, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][2], 3.6, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][3], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][4], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][3], this.pl_current_joint[a][5], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][4], this.pl_current_joint[a][6], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][2], this.pl_current_joint[a][7], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][2], this.pl_current_joint[a][8], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][7], this.pl_current_joint[a][9], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][8], this.pl_current_joint[a][10], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][7], this.pl_current_joint[a][8], 6, .1, .1)
 };
 
-WINDOW.fff = SrPlayer.prototype.plGunner;
+//WINDOW.fff = SrPlayer.prototype.plGunner;
 /*
 gunner
 */
@@ -6077,41 +6082,41 @@ SrPlayer.prototype.plGunner = function (a) {
     c = 1 - (a >> 2) << 2;
     b = PlayerMinAgi[a] + srRandomInt(PlayerMaxAgi[a] - PlayerMinAgi[a] + 1);
     var e = PlayerAttackRange[a];
-    var g = .5 * (this.a[a][9].x + this.a[a][10].x);
-    var h = .5 * (this.a[a][9].y + this.a[a][10].y);
+    var g = .5 * (this.pl_current_joint[a][9].x + this.pl_current_joint[a][10].x);
+    var h = .5 * (this.pl_current_joint[a][9].y + this.pl_current_joint[a][10].y);
     if (1 != GameMode) {
         c = findEnemy(g - e, h - e, g + e, h + e);
     } else {
         c = plFindPlayer(g - e, h - e, g + e, h + e, c);
     }
-    if (-1 != c && this.h != a) {
+    if (-1 != c && this.pl_held_player != a) {
         if (1 != GameMode) {
-            setDistance(d, SR_ENEMY.a[c][20], this.a[a][6]);
+            setDistance(d, SR_ENEMY.a[c][20], this.pl_current_joint[a][6]);
         } else {
-            setDistance(d, this.a[c][2], this.a[a][6]);
+            setDistance(d, this.pl_current_joint[c][2], this.pl_current_joint[a][6]);
         }
         normalize(d);
-        this.a[a][5].x += .2 * d.x;
-        this.a[a][5].y += .2 * d.y;
-        this.a[a][6].x += .2 * d.x;
-        this.a[a][6].y += .2 * d.y;
-        this.a[a][1].x -= .4 * d.x;
-        this.a[a][1].y -= .4 * d.y;
+        this.pl_current_joint[a][5].x += .2 * d.x;
+        this.pl_current_joint[a][5].y += .2 * d.y;
+        this.pl_current_joint[a][6].x += .2 * d.x;
+        this.pl_current_joint[a][6].y += .2 * d.y;
+        this.pl_current_joint[a][1].x -= .4 * d.x;
+        this.pl_current_joint[a][1].y -= .4 * d.y;
     }
-    if (this.i[a] && this.h != a) {
-        if (0 < this.c[a]) {
-            this.c[a]--;
+    if (this.pl_on_ground[a] && this.pl_held_player != a) {
+        if (0 < this.pl_attack_cooldown[a]) {
+            this.pl_attack_cooldown[a]--;
         }
-        if (!this.c[a]) {
+        if (!this.pl_attack_cooldown[a]) {
             if (-1 != c) {
-                this.c[a] = b;
-                this.a[a][5].y -= 1.5;
-                this.a[a][6].y -= 1.5;
-                this.a[a][3].y += 1.6;
-                this.a[a][4].y += 1.6;
-                this.b[a] = 6
+                this.pl_attack_cooldown[a] = b;
+                this.pl_current_joint[a][5].y -= 1.5;
+                this.pl_current_joint[a][6].y -= 1.5;
+                this.pl_current_joint[a][3].y += 1.6;
+                this.pl_current_joint[a][4].y += 1.6;
+                this.pl_attack_point[a] = 6
             }
-            if (-1 != this.b[a]) {
+            if (-1 != this.pl_attack_point[a]) {
                 e = getItemData(InventoryItem[4 + a], 36);
                 g = 1;
                 if (258 == InventoryItem[4 + a]) {
@@ -6126,21 +6131,21 @@ SrPlayer.prototype.plGunner = function (a) {
                     if (e * g <= PartyGold) {
                         PartyGold = srClampA(PartyGold - e * g, 0, 9999999);
                         for (b = 0; b < g; b++) {
-                            SR_INDICATOR.inAdd(this.a[a][6].x, this.a[a][6].y, 0 > d.x ? .5 : -.5, e, 16776960);
+                            SR_INDICATOR.inAdd(this.pl_current_joint[a][6].x, this.pl_current_joint[a][6].y, 0 > d.x ? .5 : -.5, e, 16776960);
                         }
                         e = 0
                     }
                 }
                 if (0 == e) {
-                    plProjectileAttack(this, a, this.a[a][6].x, this.a[a][6].y, c);
+                    plProjectileAttack(this, a, this.pl_current_joint[a][6].x, this.pl_current_joint[a][6].y, c);
                     if (checkInventoryCompo(4 + a, 46)) {
                         d = getInventoryCompo(4 + a, 8);
                         PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + d, 0, PlayerMaxLp[a]);
-                        SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, d, 65280);
+                        SR_INDICATOR.inAdd(this.pl_current_joint[a][0].x, this.pl_current_joint[a][0].y, 0, d, 65280);
                     }
                 }
                 antiCheatSet();
-                this.b[a] = -1
+                this.pl_attack_point[a] = -1
             }
         }
         if (-1 == c) {
@@ -6148,21 +6153,21 @@ SrPlayer.prototype.plGunner = function (a) {
             plSwim(this, a)
         }
     }
-    pullJoints(this.a[a][0], this.a[a][1], 3.6, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][2], 3.6, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][3], 4.8, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][4], 4.8, .5, .5);
-    pullJoints(this.a[a][3], this.a[a][5], 4.8, .5, .5);
-    pullJoints(this.a[a][4], this.a[a][6], 4.8, .5, .5);
-    pullJoints(this.a[a][5], this.a[a][6], 1.2, .5, .5);
-    pullJoints(this.a[a][2], this.a[a][7], 4.8, .5, .5);
-    pullJoints(this.a[a][2], this.a[a][8], 4.8, .5, .5);
-    pullJoints(this.a[a][7], this.a[a][9], 4.8, .5, .5);
-    pullJoints(this.a[a][8], this.a[a][10], 4.8, .5, .5);
-    pullJoints(this.a[a][7], this.a[a][8], 6, .1, .1)
+    pullJoints(this.pl_current_joint[a][0], this.pl_current_joint[a][1], 3.6, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][2], 3.6, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][3], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][4], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][3], this.pl_current_joint[a][5], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][4], this.pl_current_joint[a][6], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][5], this.pl_current_joint[a][6], 1.2, .5, .5);
+    pullJoints(this.pl_current_joint[a][2], this.pl_current_joint[a][7], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][2], this.pl_current_joint[a][8], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][7], this.pl_current_joint[a][9], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][8], this.pl_current_joint[a][10], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][7], this.pl_current_joint[a][8], 6, .1, .1)
 };
 
-WINDOW.fff = SrPlayer.prototype.plWhipper;
+//WINDOW.fff = SrPlayer.prototype.plWhipper;
 /*
 whipper
 */
@@ -6175,37 +6180,37 @@ SrPlayer.prototype.plWhipper = function (a) {
     var h = PlayerMinAgi[a] + srRandomInt(PlayerMaxAgi[a] - PlayerMinAgi[a] + 1);
     var q = PlayerAttackRange[a];
     for (b = 11; 14 >= b; b++) {
-        moveJoint(this.a[a][b], this.g[a][b], .05, .95);
+        moveJoint(this.pl_current_joint[a][b], this.pl_last_joint[a][b], .05, .95);
     }
-    if (this.i[a] && this.h != a) {
-        if (0 < this.c[a]) {
-            this.c[a]--;
+    if (this.pl_on_ground[a] && this.pl_held_player != a) {
+        if (0 < this.pl_attack_cooldown[a]) {
+            this.pl_attack_cooldown[a]--;
         }
-        b = .5 * (this.a[a][9].x + this.a[a][10].x);
-        var m = .5 * (this.a[a][9].y + this.a[a][10].y);
+        b = .5 * (this.pl_current_joint[a][9].x + this.pl_current_joint[a][10].x);
+        var m = .5 * (this.pl_current_joint[a][9].y + this.pl_current_joint[a][10].y);
         if (1 != GameMode) {
             b = findEnemy(b - q, m - q - 20, b + q, m + 20);
         } else {
             b = plFindPlayer(b - q, m - q - 20, b + q, m + 20, d);
         }
-        if (!this.c[a] && -1 != b) {
-            this.c[a] = h;
-            if (this.a[a][5].x < this.a[a][6].x) {
-                this.a[a][5].x += 4;
-                this.a[a][4].x -= 4;
+        if (!this.pl_attack_cooldown[a] && -1 != b) {
+            this.pl_attack_cooldown[a] = h;
+            if (this.pl_current_joint[a][5].x < this.pl_current_joint[a][6].x) {
+                this.pl_current_joint[a][5].x += 4;
+                this.pl_current_joint[a][4].x -= 4;
             } else {
-                this.a[a][6].x += 4;
-                this.a[a][3].x -= 4;
+                this.pl_current_joint[a][6].x += 4;
+                this.pl_current_joint[a][3].x -= 4;
             }
-            this.a[a][2].y += 1;
-            this.b[a] = 14;
+            this.pl_current_joint[a][2].y += 1;
+            this.pl_attack_point[a] = 14;
             antiCheatCheck();
             h = getItemData(InventoryItem[4 + a], 36);
             PlayerMp[a] = srMin(PlayerMp[a] + PlayerMag[a], h);
             if (checkInventoryCompo(4 + a, 46)) {
                 h = getInventoryCompo(4 + a, 8);
                 PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + h, 0, PlayerMaxLp[a]);
-                SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, h, 65280);
+                SR_INDICATOR.inAdd(this.pl_current_joint[a][0].x, this.pl_current_joint[a][0].y, 0, h, 65280);
             }
             antiCheatSet();
         }
@@ -6214,7 +6219,7 @@ SrPlayer.prototype.plWhipper = function (a) {
         }
         plSwim(this, a)
     }
-    if (-1 != this.b[a]) {
+    if (-1 != this.pl_attack_point[a]) {
         if (checkInventoryCompo(4 + a, 29) && srRandom(100) < getInventoryCompo(4 + a, 8)) {
             e += srFloor(getInventoryCompo(4 + a, 9) * e / 100);
             g += srFloor(getInventoryCompo(4 + a, 9) * g / 100);
@@ -6224,18 +6229,18 @@ SrPlayer.prototype.plWhipper = function (a) {
             h += srFloor(20 * getInventoryCompo(4 + a, 8) / 100);
         }
         if (1 != GameMode) {
-            d = enTakeDamage(1, 0, 0, e, g, this.a[a][this.b[a]].x, this.a[a][this.b[a]].y, h, h);
+            d = enGetDamage(1, 0, 0, e, g, this.pl_current_joint[a][this.pl_attack_point[a]].x, this.pl_current_joint[a][this.pl_attack_point[a]].y, h, h);
         } else {
-            d = plTakeDamage(1, 0, 0, e, g, this.a[a][this.b[a]].x, this.a[a][this.b[a]].y, h, h, d);
+            d = plGetDamage(1, 0, 0, e, g, this.pl_current_joint[a][this.pl_attack_point[a]].x, this.pl_current_joint[a][this.pl_attack_point[a]].y, h, h, d);
         }
         if (-1 != d) {
             antiCheatCheck();
             h = getItemData(InventoryItem[4 + a], 36);
             if (PlayerMp[a] == h && 0 < h || -1 == h) {
                 PlayerMp[a] = 0;
-                e = this.a[a][this.b[a]].y;
-                g = srFloor(srClampA(this.a[a][this.b[a]].x, 0, 511) / 8);
-                h = srFloor(srClampA(this.a[a][this.b[a]].y, 0, 255) / 8);
+                e = this.pl_current_joint[a][this.pl_attack_point[a]].y;
+                g = srFloor(srClampA(this.pl_current_joint[a][this.pl_attack_point[a]].x, 0, 511) / 8);
+                h = srFloor(srClampA(this.pl_current_joint[a][this.pl_attack_point[a]].y, 0, 255) / 8);
                 if (0 <= h - SR_TERRAIN.b[g]) {
                     e = 8 * SR_TERRAIN.b[g] + 7;
                 } else {
@@ -6243,19 +6248,19 @@ SrPlayer.prototype.plWhipper = function (a) {
                         e = 8 * SR_TERRAIN.g[g] + 7;
                     }
                 }
-                plProjectileAttack(this, a, this.a[a][this.b[a]].x, e, d);
+                plProjectileAttack(this, a, this.pl_current_joint[a][this.pl_attack_point[a]].x, e, d);
             }
             antiCheatSet();
-            this.b[a] = -1;
+            this.pl_attack_point[a] = -1;
             if (checkInventoryCompo(4 + a, 11)) {
-                h = srMax(1, srFloor(this.j * getInventoryCompo(4 + a, 8) / 100));
+                h = srMax(1, srFloor(this.pl_damage_dealt * getInventoryCompo(4 + a, 8) / 100));
                 antiCheatCheck();
                 PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + h, 0, PlayerMaxLp[a]);
                 antiCheatSet();
-                SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, h, 65280);
+                SR_INDICATOR.inAdd(this.pl_current_joint[a][0].x, this.pl_current_joint[a][0].y, 0, h, 65280);
             }
             if (checkInventoryCompo(4 + a, 12) && !GameMode && srRandom(100) < getInventoryCompo(4 + a, 8)) {
-                SR_DROP.dpAdd(this.a[a][0].x, this.a[a][0].y, 2, 0, 0);
+                SR_DROP.dpAdd(this.pl_current_joint[a][0].x, this.pl_current_joint[a][0].y, 2, 0, 0);
             }
             if (checkInventoryCompo(4 + a, 37) && !GameMode && srRandom(100) < getInventoryCompo(4 + a, 8)) {
                 e = 100;
@@ -6264,14 +6269,14 @@ SrPlayer.prototype.plWhipper = function (a) {
                         e += getInventoryCompo(4 + b, 8);
                     }
                 }
-                SR_DROP.dpAdd(this.a[a][0].x, this.a[a][0].y, 1, srFloor(this.j * e / 100), 0)
+                SR_DROP.dpAdd(this.pl_current_joint[a][0].x, this.pl_current_joint[a][0].y, 1, srFloor(this.pl_damage_dealt * e / 100), 0)
             }
             if (checkInventoryCompo(4 + a, 43) && srRandom(100) < getInventoryCompo(4 + a, 8)) {
                 e = getInventoryCompo(4 + a, 9);
                 if (1 != GameMode) {
-                    setDistance(c, SR_ENEMY.a[d][0], this.a[a][1]);
+                    setDistance(c, SR_ENEMY.a[d][0], this.pl_current_joint[a][1]);
                 } else {
-                    setDistance(c, SR_PLAYER.a[d][1], this.a[a][1]);
+                    setDistance(c, SR_PLAYER.pl_current_joint[d][1], this.pl_current_joint[a][1]);
                 }
                 normalize(c);
                 scaleVec2(c, .2 * e);
@@ -6285,30 +6290,30 @@ SrPlayer.prototype.plWhipper = function (a) {
                     SR_ENEMY.c[d][0].vecSub(c)
                 } else {
                     //vecSub
-                    SR_PLAYER.g[d][0].vecSub(c)
+                    SR_PLAYER.pl_last_joint[d][0].vecSub(c)
                 }
             }
         }
     }
-    pullJoints(this.a[a][0], this.a[a][1], 3.6, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][2], 3.6, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][3], 4.8, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][4], 4.8, .5, .5);
-    pullJoints(this.a[a][3], this.a[a][5], 4.8, .5, .5);
-    pullJoints(this.a[a][4], this.a[a][6], 4.8, .5, .5);
-    pullJoints(this.a[a][5], this.a[a][6], 14.4, .02, .02);
-    pullJoints(this.a[a][5], this.a[a][11], 4.8, 0, .3);
-    pullJoints(this.a[a][11], this.a[a][12], 4.8, 0, .3);
-    pullJoints(this.a[a][12], this.a[a][13], 4.8, 0, .3);
-    pullJoints(this.a[a][13], this.a[a][14], 4.8, 0, .3);
-    pullJoints(this.a[a][2], this.a[a][7], 4.8, .5, .5);
-    pullJoints(this.a[a][2], this.a[a][8], 4.8, .5, .5);
-    pullJoints(this.a[a][7], this.a[a][9], 4.8, .5, .5);
-    pullJoints(this.a[a][8], this.a[a][10], 4.8, .5, .5);
-    pullJoints(this.a[a][7], this.a[a][8], 6, .1, .1)
+    pullJoints(this.pl_current_joint[a][0], this.pl_current_joint[a][1], 3.6, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][2], 3.6, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][3], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][4], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][3], this.pl_current_joint[a][5], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][4], this.pl_current_joint[a][6], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][5], this.pl_current_joint[a][6], 14.4, .02, .02);
+    pullJoints(this.pl_current_joint[a][5], this.pl_current_joint[a][11], 4.8, 0, .3);
+    pullJoints(this.pl_current_joint[a][11], this.pl_current_joint[a][12], 4.8, 0, .3);
+    pullJoints(this.pl_current_joint[a][12], this.pl_current_joint[a][13], 4.8, 0, .3);
+    pullJoints(this.pl_current_joint[a][13], this.pl_current_joint[a][14], 4.8, 0, .3);
+    pullJoints(this.pl_current_joint[a][2], this.pl_current_joint[a][7], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][2], this.pl_current_joint[a][8], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][7], this.pl_current_joint[a][9], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][8], this.pl_current_joint[a][10], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][7], this.pl_current_joint[a][8], 6, .1, .1)
 };
 
-WINDOW.fff = SrPlayer.prototype.plAngel;
+//WINDOW.fff = SrPlayer.prototype.plAngel;
 /*
 angel
 */
@@ -6337,25 +6342,25 @@ SrPlayer.prototype.plAngel = function (a) {
         l += 1;
     }
     for (b = 11; 14 >= b; b++) {
-        moveJoint(this.a[a][b], this.g[a][b], .05, .95);
+        moveJoint(this.pl_current_joint[a][b], this.pl_last_joint[a][b], .05, .95);
     }
     for (b = 15; 20 >= b; b++) {
-        moveJoint(this.a[a][b], this.g[a][b], 0, 1);
+        moveJoint(this.pl_current_joint[a][b], this.pl_last_joint[a][b], 0, 1);
     }
-    this.a[a][11].x -= .1;
-    this.a[a][11].y -= .1;
-    this.a[a][12].x -= .1;
-    this.a[a][12].y += .1;
-    this.a[a][13].x += .1;
-    this.a[a][13].y -= .1;
-    this.a[a][14].x += .1;
-    this.a[a][14].y += .1;
-    if (this.i[a] && this.h != a) {
-        if (0 < this.c[a]) {
-            this.c[a]--;
+    this.pl_current_joint[a][11].x -= .1;
+    this.pl_current_joint[a][11].y -= .1;
+    this.pl_current_joint[a][12].x -= .1;
+    this.pl_current_joint[a][12].y += .1;
+    this.pl_current_joint[a][13].x += .1;
+    this.pl_current_joint[a][13].y -= .1;
+    this.pl_current_joint[a][14].x += .1;
+    this.pl_current_joint[a][14].y += .1;
+    if (this.pl_on_ground[a] && this.pl_held_player != a) {
+        if (0 < this.pl_attack_cooldown[a]) {
+            this.pl_attack_cooldown[a]--;
         }
-        b = .5 * (this.a[a][9].x + this.a[a][10].x);
-        c = .5 * (this.a[a][9].y + this.a[a][10].y);
+        b = .5 * (this.pl_current_joint[a][9].x + this.pl_current_joint[a][10].x);
+        c = .5 * (this.pl_current_joint[a][9].y + this.pl_current_joint[a][10].y);
         if (1 != GameMode) {
             c = findEnemy(b - m, c - m, b + m, c + m);
         } else {
@@ -6363,29 +6368,29 @@ SrPlayer.prototype.plAngel = function (a) {
         }
         //for (b = 0; b < l && 0 != this.s[a][b]; b++) ;
         b = 0;
-        while (b < l && 0 != this.s[a][b]) {
+        while (b < l && 0 != this.pl_ring_move_status[a][b]) {
             b++;
         }
-        if (!this.c[a] && -1 != c && b != l) {
-            this.c[a] = q;
-            this.s[a][b] = 1;
-            this.C[a][b] = srFloor(m / 2) + 20;
-            this.D[a][b] = 0;
-            this.a[a][12].x -= 2;
-            this.a[a][14].x += 2;
-            this.b[a] = 15 + b;
-            this.a[a][this.b[a]].vecSet(this.a[a][0]);
-            this.a[a][this.b[a]].y -= 5;
-            this.g[a][this.b[a]].vecSet(this.a[a][this.b[a]]);
+        if (!this.pl_attack_cooldown[a] && -1 != c && b != l) {
+            this.pl_attack_cooldown[a] = q;
+            this.pl_ring_move_status[a][b] = 1;
+            this.pl_ring_move_time[a][b] = srFloor(m / 2) + 20;
+            this.pl_ring_hit_interval[a][b] = 0;
+            this.pl_current_joint[a][12].x -= 2;
+            this.pl_current_joint[a][14].x += 2;
+            this.pl_attack_point[a] = 15 + b;
+            this.pl_current_joint[a][this.pl_attack_point[a]].vecSet(this.pl_current_joint[a][0]);
+            this.pl_current_joint[a][this.pl_attack_point[a]].y -= 5;
+            this.pl_last_joint[a][this.pl_attack_point[a]].vecSet(this.pl_current_joint[a][this.pl_attack_point[a]]);
             if (1 != GameMode) {
-                setDistance(d, SR_ENEMY.a[c][20], this.a[a][this.b[a]]);
+                setDistance(d, SR_ENEMY.a[c][20], this.pl_current_joint[a][this.pl_attack_point[a]]);
             } else {
-                setDistance(d, this.a[c][1], this.a[a][this.b[a]]);
+                setDistance(d, this.pl_current_joint[c][1], this.pl_current_joint[a][this.pl_attack_point[a]]);
             }
             normalize(d);
             scaleVec2(d, 2);
             //vecAdd
-            this.a[a][this.b[a]].vecAdd(d);
+            this.pl_current_joint[a][this.pl_attack_point[a]].vecAdd(d);
         }
         if (-1 == c) {
             plWalk(this, a);
@@ -6393,29 +6398,29 @@ SrPlayer.prototype.plAngel = function (a) {
         }
     }
     for (b = 0; b < l; b++) {
-        if (0 != this.s[a][b]) {
-            this.b[a] = 15 + b;
-            this.C[a][b]--;
-            if (0 >= this.C[a][b]) {
-                if (1 == this.s[a][b]) {
-                    this.s[a][b]++;
-                    d.vecSet(this.a[a][0]);
+        if (0 != this.pl_ring_move_status[a][b]) {
+            this.pl_attack_point[a] = 15 + b;
+            this.pl_ring_move_time[a][b]--;
+            if (0 >= this.pl_ring_move_time[a][b]) {
+                if (1 == this.pl_ring_move_status[a][b]) {
+                    this.pl_ring_move_status[a][b]++;
+                    d.vecSet(this.pl_current_joint[a][0]);
                     d.y -= 5;
-                    this.g[a][this.b[a]].vecSet(this.a[a][this.b[a]]);
-                    setDistance(d, d, this.a[a][this.b[a]]);
+                    this.pl_last_joint[a][this.pl_attack_point[a]].vecSet(this.pl_current_joint[a][this.pl_attack_point[a]]);
+                    setDistance(d, d, this.pl_current_joint[a][this.pl_attack_point[a]]);
                     q = normalize(d);
                     scaleVec2(d, 2);
                     //vecAdd
-                    this.a[a][this.b[a]].vecAdd(d);
-                    this.C[a][b] = srFloor(q / 2);
+                    this.pl_current_joint[a][this.pl_attack_point[a]].vecAdd(d);
+                    this.pl_ring_move_time[a][b] = srFloor(q / 2);
                 } else {
-                    this.s[a][b] = 0;
-                    this.C[a][b] = 0;
-                    this.D[a][b] = 0;
+                    this.pl_ring_move_status[a][b] = 0;
+                    this.pl_ring_move_time[a][b] = 0;
+                    this.pl_ring_hit_interval[a][b] = 0;
                 }
             }
-            this.D[a][b]--;
-            if (0 >= this.D[a][b]) {
+            this.pl_ring_hit_interval[a][b]--;
+            if (0 >= this.pl_ring_hit_interval[a][b]) {
                 q = 0;
                 if (checkInventoryCompo(4 + a, 27) && srRandom(100) < getInventoryCompo(4 + a, 8)) {
                     q = 1;
@@ -6427,9 +6432,9 @@ SrPlayer.prototype.plAngel = function (a) {
                     h += srFloor(getInventoryCompo(4 + a, 9) * h / 100);
                 }
                 if (1 != GameMode) {
-                    q = enTakeDamage(q, 0, 0, g, h, this.a[a][this.b[a]].x, this.a[a][this.b[a]].y, 10, 10);
+                    q = enGetDamage(q, 0, 0, g, h, this.pl_current_joint[a][this.pl_attack_point[a]].x, this.pl_current_joint[a][this.pl_attack_point[a]].y, 10, 10);
                 } else {
-                    q = plTakeDamage(q, 0, 0, g, h, this.a[a][this.b[a]].x, this.a[a][this.b[a]].y, 10, 10, e);
+                    q = plGetDamage(q, 0, 0, g, h, this.pl_current_joint[a][this.pl_attack_point[a]].x, this.pl_current_joint[a][this.pl_attack_point[a]].y, 10, 10, e);
                 }
                 if (-1 != q) {
                     antiCheatCheck();
@@ -6437,39 +6442,39 @@ SrPlayer.prototype.plAngel = function (a) {
                     PlayerMp[a] = srMin(PlayerMp[a] + PlayerMag[a], m);
                     if (PlayerMp[a] == m && 0 < m || -1 == m) {
                         PlayerMp[a] = 0;
-                        plProjectileAttack(this, a, this.a[a][this.b[a]].x, this.a[a][this.b[a]].y, q);
+                        plProjectileAttack(this, a, this.pl_current_joint[a][this.pl_attack_point[a]].x, this.pl_current_joint[a][this.pl_attack_point[a]].y, q);
                     }
                     if (checkInventoryCompo(4 + a, 46)) {
                         q = getInventoryCompo(4 + a, 8);
                         PlayerCurrentLp[a] = srClampA(PlayerCurrentLp[a] + q, 0, PlayerMaxLp[a]);
-                        SR_INDICATOR.inAdd(this.a[a][0].x, this.a[a][0].y, 0, q, 65280);
+                        SR_INDICATOR.inAdd(this.pl_current_joint[a][0].x, this.pl_current_joint[a][0].y, 0, q, 65280);
                     }
                     antiCheatSet();
-                    this.D[a][b] = getItemData(InventoryItem[4 + a], 7)
+                    this.pl_ring_hit_interval[a][b] = getItemData(InventoryItem[4 + a], 7)
                 }
             }
         }
     }
-    pullJoints(this.a[a][0], this.a[a][1], 3.6, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][2], 3.6, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][3], 4.8, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][4], 4.8, .5, .5);
-    pullJoints(this.a[a][3], this.a[a][5], 4.8, .5, .5);
-    pullJoints(this.a[a][4], this.a[a][6], 4.8, .5, .5);
-    pullJoints(this.a[a][2], this.a[a][7], 4.8, .5, .5);
-    pullJoints(this.a[a][2], this.a[a][8], 4.8, .5, .5);
-    pullJoints(this.a[a][7], this.a[a][9], 4.8, .5, .5);
-    pullJoints(this.a[a][8], this.a[a][10], 4.8, .5, .5);
-    pullJoints(this.a[a][7], this.a[a][8], 6, .1, .1);
-    pullJoints(this.a[a][1], this.a[a][11], 3.6, 0, .1);
-    pullJoints(this.a[a][1], this.a[a][12], 12, 0, .1);
-    pullJoints(this.a[a][11], this.a[a][12], 9.6, .5, .5);
-    pullJoints(this.a[a][1], this.a[a][13], 3.6, 0, .1);
-    pullJoints(this.a[a][1], this.a[a][14], 12, 0, .1);
-    pullJoints(this.a[a][13], this.a[a][14], 9.6, .5, .5)
+    pullJoints(this.pl_current_joint[a][0], this.pl_current_joint[a][1], 3.6, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][2], 3.6, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][3], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][4], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][3], this.pl_current_joint[a][5], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][4], this.pl_current_joint[a][6], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][2], this.pl_current_joint[a][7], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][2], this.pl_current_joint[a][8], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][7], this.pl_current_joint[a][9], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][8], this.pl_current_joint[a][10], 4.8, .5, .5);
+    pullJoints(this.pl_current_joint[a][7], this.pl_current_joint[a][8], 6, .1, .1);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][11], 3.6, 0, .1);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][12], 12, 0, .1);
+    pullJoints(this.pl_current_joint[a][11], this.pl_current_joint[a][12], 9.6, .5, .5);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][13], 3.6, 0, .1);
+    pullJoints(this.pl_current_joint[a][1], this.pl_current_joint[a][14], 12, 0, .1);
+    pullJoints(this.pl_current_joint[a][13], this.pl_current_joint[a][14], 9.6, .5, .5)
 };
 
-WINDOW.fff = SrPlayer.prototype.plDraw;
+//WINDOW.fff = SrPlayer.prototype.plDraw;
 /*
 プレイヤーを描く
 */
@@ -6493,22 +6498,22 @@ SrPlayer.prototype.plDraw = function () {
             q = 13421772;
             m = 3342438;
         }
-        if (0 < this.v[a]) {
+        if (0 < this.pl_freeze_time[a]) {
             q = 1989840;
             m = 5934817;
         } else {
-            if (0 < this.w[a]) {
+            if (0 < this.pl_slow_time[a]) {
                 q = 9840;
                 m = 1989840;
             } else {
-                if (0 < this.A[a]) {
+                if (0 < this.pl_poison_time[a]) {
                     q = 3381504;
                     m = 3407616;
                 }
             }
         }
-        if (0 < this.J[a]) {
-            this.J[a]--;
+        if (0 < this.pl_damage_effect_time[a]) {
+            this.pl_damage_effect_time[a]--;
             m = 16711680;
         }
         DisplayMode2 = DisplayMode1 = 1;
@@ -6517,134 +6522,156 @@ SrPlayer.prototype.plDraw = function () {
                 AngerCrownLightningTime--;
                 var l = srMin(AngerCrownLightningTime, 64);
                 for (b = 0; 11 > b; b++) {
-                    drawFromImageCentered(StageEffectImage, srFloor(this.a[a][b].x), srFloor(this.a[a][b].y), 24, 24, 0, 0, 12, 12, l << 24 | 16777062);
+                    drawFromImageCentered(StageEffectImage, srFloor(this.pl_current_joint[a][b].x), srFloor(this.pl_current_joint[a][b].y), 24, 24, 0, 0, 12, 12, l << 24 | 16777062);
                 }
                 if (120 < AngerCrownLightningTime) {
                     b = srRandomInt(11);
-                    plProjectileAttack(SR_PLAYER, 563, SR_PLAYER.a[a][b].x, SR_PLAYER.a[a][b].y, 0)
+                    plProjectileAttack(SR_PLAYER, 563, SR_PLAYER.pl_current_joint[a][b].x, SR_PLAYER.pl_current_joint[a][b].y, 0)
                 }
             } else {
                 for (b = 0; 11 > b; b++) {
-                    drawFromImageCentered(StageEffectImage, srFloor(this.a[a][b].x), srFloor(this.a[a][b].y), 12, 12, 0, 0, 12, 12, 1073741824);
+                    drawFromImageCentered(StageEffectImage, srFloor(this.pl_current_joint[a][b].x), srFloor(this.pl_current_joint[a][b].y), 12, 12, 0, 0, 12, 12, 1073741824);
                 }
             }
         } else {
             for (b = 0; 11 > b; b++) {
-                drawFromImageCentered(StageEffectImage, srFloor(this.a[a][b].x), srFloor(this.a[a][b].y), 12, 12, 0, 0, 12, 12, 1358888960);
+                drawFromImageCentered(StageEffectImage, srFloor(this.pl_current_joint[a][b].x), srFloor(this.pl_current_joint[a][b].y), 12, 12, 0, 0, 12, 12, 1358888960);
             }
         }
         DisplayMode1 = DisplayMode2 = 0;
-        if (8 == this.f[a]) {
+        if (8 == this.pl_class[a]) {
             b = (h & 16711680) >> 17 << 16 | (h & 65280) >> 9 << 8 | (h & 255) >> 1;
-            drawLine(this.a[a][1].x, this.a[a][1].y, this.a[a][11].x, this.a[a][11].y, b);
-            drawLine(this.a[a][1].x, this.a[a][1].y, this.a[a][12].x, this.a[a][12].y, b);
-            drawLine(this.a[a][11].x, this.a[a][11].y, this.a[a][12].x, this.a[a][12].y, b);
-            drawLine(this.a[a][1].x, this.a[a][1].y, this.a[a][13].x, this.a[a][13].y, b);
-            drawLine(this.a[a][1].x, this.a[a][1].y, this.a[a][14].x, this.a[a][14].y, b);
-            drawLine(this.a[a][13].x, this.a[a][13].y, this.a[a][14].x, this.a[a][14].y, b);
+            drawLine(this.pl_current_joint[a][1].x, this.pl_current_joint[a][1].y, this.pl_current_joint[a][11].x, this.pl_current_joint[a][11].y, b);
+            drawLine(this.pl_current_joint[a][1].x, this.pl_current_joint[a][1].y, this.pl_current_joint[a][12].x, this.pl_current_joint[a][12].y, b);
+            drawLine(this.pl_current_joint[a][11].x, this.pl_current_joint[a][11].y, this.pl_current_joint[a][12].x, this.pl_current_joint[a][12].y, b);
+            drawLine(this.pl_current_joint[a][1].x, this.pl_current_joint[a][1].y, this.pl_current_joint[a][13].x, this.pl_current_joint[a][13].y, b);
+            drawLine(this.pl_current_joint[a][1].x, this.pl_current_joint[a][1].y, this.pl_current_joint[a][14].x, this.pl_current_joint[a][14].y, b);
+            drawLine(this.pl_current_joint[a][13].x, this.pl_current_joint[a][13].y, this.pl_current_joint[a][14].x, this.pl_current_joint[a][14].y, b);
         }
-        drawLine(this.a[a][1].x, this.a[a][1].y, this.a[a][2].x, this.a[a][2].y, m);
+
+
+        drawLine(this.pl_current_joint[a][1].x, this.pl_current_joint[a][1].y, this.pl_current_joint[a][2].x, this.pl_current_joint[a][2].y, m);
+        if (this.pl_class[a] != PLAYER_CLASS_DEAD) {
+            drawLine(this.pl_current_joint[a][1].x, this.pl_current_joint[a][1].y, this.pl_current_joint[a][3].x, this.pl_current_joint[a][3].y, m);
+            drawLine(this.pl_current_joint[a][1].x, this.pl_current_joint[a][1].y, this.pl_current_joint[a][4].x, this.pl_current_joint[a][4].y, m);
+        }
+        drawLine(this.pl_current_joint[a][3].x, this.pl_current_joint[a][3].y, this.pl_current_joint[a][5].x, this.pl_current_joint[a][5].y, m);
+        drawLine(this.pl_current_joint[a][4].x, this.pl_current_joint[a][4].y, this.pl_current_joint[a][6].x, this.pl_current_joint[a][6].y, m);
+        if (this.pl_class[a] != PLAYER_CLASS_DEAD) {
+            drawLine(this.pl_current_joint[a][2].x, this.pl_current_joint[a][2].y, this.pl_current_joint[a][7].x, this.pl_current_joint[a][7].y, m);
+            drawLine(this.pl_current_joint[a][2].x, this.pl_current_joint[a][2].y, this.pl_current_joint[a][8].x, this.pl_current_joint[a][8].y, m);
+        }
+        drawLine(this.pl_current_joint[a][7].x, this.pl_current_joint[a][7].y, this.pl_current_joint[a][9].x, this.pl_current_joint[a][9].y, m);
+        drawLine(this.pl_current_joint[a][8].x, this.pl_current_joint[a][8].y, this.pl_current_joint[a][10].x, this.pl_current_joint[a][10].y, m);
+
+        /*
+
+        drawLine(this.g[a][1].x, this.g[a][1].y, this.g[a][2].x, this.g[a][2].y, 65535);
         if (this.f[a] != PLAYER_CLASS_DEAD) {
-            drawLine(this.a[a][1].x, this.a[a][1].y, this.a[a][3].x, this.a[a][3].y, m);
-            drawLine(this.a[a][1].x, this.a[a][1].y, this.a[a][4].x, this.a[a][4].y, m);
+            drawLine(this.g[a][1].x, this.g[a][1].y, this.g[a][3].x, this.g[a][3].y, 65535);
+            drawLine(this.g[a][1].x, this.g[a][1].y, this.g[a][4].x, this.g[a][4].y, 65535);
         }
-        drawLine(this.a[a][3].x, this.a[a][3].y, this.a[a][5].x, this.a[a][5].y, m);
-        drawLine(this.a[a][4].x, this.a[a][4].y, this.a[a][6].x, this.a[a][6].y, m);
+        drawLine(this.g[a][3].x, this.g[a][3].y, this.g[a][5].x, this.g[a][5].y, 65535);
+        drawLine(this.g[a][4].x, this.g[a][4].y, this.g[a][6].x, this.g[a][6].y, 65535);
         if (this.f[a] != PLAYER_CLASS_DEAD) {
-            drawLine(this.a[a][2].x, this.a[a][2].y, this.a[a][7].x, this.a[a][7].y, m);
-            drawLine(this.a[a][2].x, this.a[a][2].y, this.a[a][8].x, this.a[a][8].y, m);
+            drawLine(this.g[a][2].x, this.g[a][2].y, this.g[a][7].x, this.g[a][7].y, 65535);
+            drawLine(this.g[a][2].x, this.g[a][2].y, this.g[a][8].x, this.g[a][8].y, 65535);
         }
-        drawLine(this.a[a][7].x, this.a[a][7].y, this.a[a][9].x, this.a[a][9].y, m);
-        drawLine(this.a[a][8].x, this.a[a][8].y, this.a[a][10].x, this.a[a][10].y, m);
-        frameRect(srFloor(this.a[a][0].x) - 2, srFloor(this.a[a][0].y) - 2, 5, 5, q);
+        drawLine(this.g[a][7].x, this.g[a][7].y, this.g[a][9].x, this.g[a][9].y, 65535);
+        drawLine(this.g[a][8].x, this.g[a][8].y, this.g[a][10].x, this.g[a][10].y, 65535);
+
+
+        //*/
+
+        frameRect(srFloor(this.pl_current_joint[a][0].x) - 2, srFloor(this.pl_current_joint[a][0].y) - 2, 5, 5, q);
         DisplayMode2 = 2;
         if (checkInventoryCompo(4 + a, 48)) {
-            drawFromImage(SmallItemImage, srFloor(this.a[a][0].x) - 6, srFloor(this.a[a][0].y) - 6 - 6, 12, 12, 228, 0, 12, 12, 16766720);
+            drawFromImage(SmallItemImage, srFloor(this.pl_current_joint[a][0].x) - 6, srFloor(this.pl_current_joint[a][0].y) - 6 - 6, 12, 12, 228, 0, 12, 12, 16766720);
         }
         if (checkInventoryCompo(4 + a, 49)) {
-            drawFromImage(SmallItemImage, srFloor(this.a[a][0].x) - 6, srFloor(this.a[a][0].y) - 6 - 6, 12, 12, 228, 0, 12, 12, 14540253);
+            drawFromImage(SmallItemImage, srFloor(this.pl_current_joint[a][0].x) - 6, srFloor(this.pl_current_joint[a][0].y) - 6 - 6, 12, 12, 228, 0, 12, 12, 14540253);
         }
         DisplayMode2 = 0;
-        if (1 == this.f[a]) {
+        if (1 == this.pl_class[a]) {
             g = 3;
             if (checkInventoryCompo(4 + a, 42)) {
                 g = 5;
             }
-            filledRect(srFloor(this.a[a][5].x) - 1, srFloor(this.a[a][5].y) - 1, g, g, h);
-            filledRect(srFloor(this.a[a][6].x) - 1, srFloor(this.a[a][6].y) - 1, g, g, h);
-        } else if (2 == this.f[a]) {
+            filledRect(srFloor(this.pl_current_joint[a][5].x) - 1, srFloor(this.pl_current_joint[a][5].y) - 1, g, g, h);
+            filledRect(srFloor(this.pl_current_joint[a][6].x) - 1, srFloor(this.pl_current_joint[a][6].y) - 1, g, g, h);
+        } else if (2 == this.pl_class[a]) {
             if (checkInventoryCompo(4 + a, 22)) {
                 g += getInventoryCompo(4 + a, 8);
             }
             if (checkInventoryCompo(4 + a, 45)) {
                 g += getInventoryCompo(4 + a, 9);
             }
-            setDistance(c, this.a[a][5], this.a[a][6]);
+            setDistance(c, this.pl_current_joint[a][5], this.pl_current_joint[a][6]);
             normalize(c);
             scaleVec2(c, g);
-            c.vecAdd(this.a[a][6]);
-            drawLine(this.a[a][6].x, this.a[a][6].y, c.x, c.y, h);
-        } else if (3 == this.f[a]) {
-            setDistance(c, this.a[a][6], this.a[a][5]);
+            c.vecAdd(this.pl_current_joint[a][6]);
+            drawLine(this.pl_current_joint[a][6].x, this.pl_current_joint[a][6].y, c.x, c.y, h);
+        } else if (3 == this.pl_class[a]) {
+            setDistance(c, this.pl_current_joint[a][6], this.pl_current_joint[a][5]);
             normalize(c);
             d.vecSet(c);
             setPerpendicular(d);
             scaleVec2(c, 18);
-            c.vecAdd(this.a[a][5]);
-            drawLine(this.a[a][5].x, this.a[a][5].y, c.x, c.y, h);
+            c.vecAdd(this.pl_current_joint[a][5]);
+            drawLine(this.pl_current_joint[a][5].x, this.pl_current_joint[a][5].y, c.x, c.y, h);
             scaleVec2(d, 8);
-            setSumVec2(c, this.a[a][6], d);
-            drawLine(this.a[a][5].x, this.a[a][5].y, c.x, c.y, 8421504);
-            setDistance(d, this.a[a][6], d);
-            drawLine(this.a[a][5].x, this.a[a][5].y, d.x, d.y, 8421504);
+            setSumVec2(c, this.pl_current_joint[a][6], d);
+            drawLine(this.pl_current_joint[a][5].x, this.pl_current_joint[a][5].y, c.x, c.y, 8421504);
+            setDistance(d, this.pl_current_joint[a][6], d);
+            drawLine(this.pl_current_joint[a][5].x, this.pl_current_joint[a][5].y, d.x, d.y, 8421504);
             drawLine(c.x, c.y, d.x, d.y, 12632256);
-        } else if (4 == this.f[a]) {
-            setSumVec2(c, this.a[a][5], this.a[a][6]);
+        } else if (4 == this.pl_class[a]) {
+            setSumVec2(c, this.pl_current_joint[a][5], this.pl_current_joint[a][6]);
             scaleVec2(c, .5);
             filledRect(srFloor(c.x) - 1, srFloor(c.y) - 1, 3, 3, h);
-        } else if (5 == this.f[a]) {
-            c.x = this.a[a][0].x + srRandomRange(-10, 10);
-            c.y = this.a[a][0].y + srRandomRange(-10, 0);
-            setDistance(c, this.a[a][6], this.a[a][4]);
+        } else if (5 == this.pl_class[a]) {
+            c.x = this.pl_current_joint[a][0].x + srRandomRange(-10, 10);
+            c.y = this.pl_current_joint[a][0].y + srRandomRange(-10, 0);
+            setDistance(c, this.pl_current_joint[a][6], this.pl_current_joint[a][4]);
             normalize(c);
             setPerpendicular(c);
             scaleVec2(c, 8);
-            drawLine(this.a[a][6].x - c.x, this.a[a][6].y - c.y, this.a[a][6].x + c.x, this.a[a][6].y + c.y, 8421504);
-            filledRect(srFloor(this.a[a][6].x + c.x) - 1, srFloor(this.a[a][6].y + c.y) - 1, 3, 3, h);
-        } else if (6 == this.f[a]) {
-            g = srFloor(srClampA(srFloor(this.a[a][6].x) - srFloor(this.a[a][1].x), -8, 8) / 2);
+            drawLine(this.pl_current_joint[a][6].x - c.x, this.pl_current_joint[a][6].y - c.y, this.pl_current_joint[a][6].x + c.x, this.pl_current_joint[a][6].y + c.y, 8421504);
+            filledRect(srFloor(this.pl_current_joint[a][6].x + c.x) - 1, srFloor(this.pl_current_joint[a][6].y + c.y) - 1, 3, 3, h);
+        } else if (6 == this.pl_class[a]) {
+            g = srFloor(srClampA(srFloor(this.pl_current_joint[a][6].x) - srFloor(this.pl_current_joint[a][1].x), -8, 8) / 2);
             if (-4 == g) {
-                filledRect(srFloor(this.a[a][6].x) - 5, srFloor(this.a[a][6].y) - 2, 7, 2, h);
+                filledRect(srFloor(this.pl_current_joint[a][6].x) - 5, srFloor(this.pl_current_joint[a][6].y) - 2, 7, 2, h);
             } else if (-3 == g) {
-                filledRect(srFloor(this.a[a][6].x) - 4, srFloor(this.a[a][6].y) - 2, 6, 2, h);
+                filledRect(srFloor(this.pl_current_joint[a][6].x) - 4, srFloor(this.pl_current_joint[a][6].y) - 2, 6, 2, h);
             } else if (-2 == g) {
-                filledRect(srFloor(this.a[a][6].x) - 3, srFloor(this.a[a][6].y) - 2, 5, 2, h);
+                filledRect(srFloor(this.pl_current_joint[a][6].x) - 3, srFloor(this.pl_current_joint[a][6].y) - 2, 5, 2, h);
             } else if (-1 == g) {
-                filledRect(srFloor(this.a[a][6].x) - 2, srFloor(this.a[a][6].y) - 2, 3, 2, h);
+                filledRect(srFloor(this.pl_current_joint[a][6].x) - 2, srFloor(this.pl_current_joint[a][6].y) - 2, 3, 2, h);
             } else if (0 == g) {
-                filledRect(srFloor(this.a[a][6].x) - 1, srFloor(this.a[a][6].y) - 3, 2, 2, h);
+                filledRect(srFloor(this.pl_current_joint[a][6].x) - 1, srFloor(this.pl_current_joint[a][6].y) - 3, 2, 2, h);
             } else if (1 == g) {
-                filledRect(srFloor(this.a[a][6].x) - 1, srFloor(this.a[a][6].y) - 2, 3, 2, h);
+                filledRect(srFloor(this.pl_current_joint[a][6].x) - 1, srFloor(this.pl_current_joint[a][6].y) - 2, 3, 2, h);
             } else if (2 == g) {
-                filledRect(srFloor(this.a[a][6].x) - 2, srFloor(this.a[a][6].y) - 2, 5, 2, h);
+                filledRect(srFloor(this.pl_current_joint[a][6].x) - 2, srFloor(this.pl_current_joint[a][6].y) - 2, 5, 2, h);
             } else if (3 == g) {
-                filledRect(srFloor(this.a[a][6].x) - 2, srFloor(this.a[a][6].y) - 2, 6, 2, h);
+                filledRect(srFloor(this.pl_current_joint[a][6].x) - 2, srFloor(this.pl_current_joint[a][6].y) - 2, 6, 2, h);
             } else if (4 == g) {
-                filledRect(srFloor(this.a[a][6].x) - 2, srFloor(this.a[a][6].y) - 2, 7, 2, h);
+                filledRect(srFloor(this.pl_current_joint[a][6].x) - 2, srFloor(this.pl_current_joint[a][6].y) - 2, 7, 2, h);
             }
-            filledRect(srFloor(this.a[a][6].x) - 1, srFloor(this.a[a][6].y) - 2, 2, 4, h);
-        } else if (7 == this.f[a]) {
+            filledRect(srFloor(this.pl_current_joint[a][6].x) - 1, srFloor(this.pl_current_joint[a][6].y) - 2, 2, 4, h);
+        } else if (7 == this.pl_class[a]) {
             g = 3;
             if (checkInventoryCompo(4 + a, 42)) {
                 g = 5;
             }
             b = (h & 16711680) >> 17 << 16 | (h & 65280) >> 9 << 8 | (h & 255) >> 1;
-            drawLine(this.a[a][5].x, this.a[a][5].y, this.a[a][11].x, this.a[a][11].y, b);
-            drawLine(this.a[a][11].x, this.a[a][11].y, this.a[a][12].x, this.a[a][12].y, b);
-            drawLine(this.a[a][12].x, this.a[a][12].y, this.a[a][13].x, this.a[a][13].y, b);
-            drawLine(this.a[a][13].x, this.a[a][13].y, this.a[a][14].x, this.a[a][14].y, b);
-            filledRect(srFloor(this.a[a][14].x) - 1, srFloor(this.a[a][14].y) - 1, g, g, h);
-        } else if (8 == this.f[a]) {
+            drawLine(this.pl_current_joint[a][5].x, this.pl_current_joint[a][5].y, this.pl_current_joint[a][11].x, this.pl_current_joint[a][11].y, b);
+            drawLine(this.pl_current_joint[a][11].x, this.pl_current_joint[a][11].y, this.pl_current_joint[a][12].x, this.pl_current_joint[a][12].y, b);
+            drawLine(this.pl_current_joint[a][12].x, this.pl_current_joint[a][12].y, this.pl_current_joint[a][13].x, this.pl_current_joint[a][13].y, b);
+            drawLine(this.pl_current_joint[a][13].x, this.pl_current_joint[a][13].y, this.pl_current_joint[a][14].x, this.pl_current_joint[a][14].y, b);
+            filledRect(srFloor(this.pl_current_joint[a][14].x) - 1, srFloor(this.pl_current_joint[a][14].y) - 1, g, g, h);
+        } else if (8 == this.pl_class[a]) {
             if (10 > PlayerDex[a]) {
                 g = 1;
             } else if (30 > PlayerDex[a]) {
@@ -6661,15 +6688,15 @@ SrPlayer.prototype.plDraw = function () {
             }
             //for (b = 0; b < g && 0 != this.s[a][b]; b++) ;
             b = 0;
-            while (b < g && 0 != this.s[a][b]) {
+            while (b < g && 0 != this.pl_ring_move_status[a][b]) {
                 b++;
             }
             if (b != g) {
-                drawFromImageCentered(StageEffectImage, srFloor(this.a[a][0].x), srFloor(this.a[a][0].y) - 5, 7, 3, 33, 0, 7, 3, h);
+                drawFromImageCentered(StageEffectImage, srFloor(this.pl_current_joint[a][0].x), srFloor(this.pl_current_joint[a][0].y) - 5, 7, 3, 33, 0, 7, 3, h);
             }
             for (b = 0; b < g; b++) {
-                if (0 != this.s[a][b]) {
-                    drawFromImageCentered(StageEffectImage, srFloor(this.a[a][15 + b].x), srFloor(this.a[a][15 + b].y), 7, 3, 33, 0, 7, 3, h)
+                if (0 != this.pl_ring_move_status[a][b]) {
+                    drawFromImageCentered(StageEffectImage, srFloor(this.pl_current_joint[a][15 + b].x), srFloor(this.pl_current_joint[a][15 + b].y), 7, 3, 33, 0, 7, 3, h)
                 }
             }
         }
@@ -6685,23 +6712,27 @@ SrPlayer.prototype.plDraw = function () {
                     h = PlayerMagAura[a];
                 }
                 h = 4278190080 | 255 * PlayerStrAura[a] / h << 16 | 255 * PlayerDexAura[a] / h << 8 | 255 * PlayerMagAura[a] / h;
-                drawFromImageCentered(StageEffectImage, srFloor(srFloor(this.a[a][9].x + this.a[a][10].x) / 2), srFloor(srFloor(this.a[a][9].y + this.a[a][10].y) / 2), 20, 12, 12, 0, 20, 12, h);
+                drawFromImageCentered(StageEffectImage, srFloor(srFloor(this.pl_current_joint[a][9].x + this.pl_current_joint[a][10].x) / 2), srFloor(srFloor(this.pl_current_joint[a][9].y + this.pl_current_joint[a][10].y) / 2), 20, 12, 12, 0, 20, 12, h);
                 DisplayMode1 = DisplayMode2 = 0;
             }
             if (0 < (PartyShowLpBar & 1) && 0 < PlayerCurrentLp[a]) {
-                filledRect(srFloor(this.a[a][0].x) - 6, srFloor(this.a[a][0].y) - 6, 13, 2, 10027008);
-                filledRect(srFloor(this.a[a][0].x) - 6, srFloor(this.a[a][0].y) - 6, srFloor(13 * PlayerCurrentLp[a] / PlayerMaxLp[a]), 2, 52224);
+                filledRect(srFloor(this.pl_current_joint[a][0].x) - 6, srFloor(this.pl_current_joint[a][0].y) - 6, 13, 2, 10027008);
+                filledRect(srFloor(this.pl_current_joint[a][0].x) - 6, srFloor(this.pl_current_joint[a][0].y) - 6, srFloor(13 * PlayerCurrentLp[a] / PlayerMaxLp[a]), 2, 52224);
             }
             if (a == SelectedPlayer && !GameMode) {
                 if (0 == PartyPlayerSymbol) {
-                    filledRect(srFloor(this.a[a][0].x) - 1, srFloor(this.a[a][0].y) - 8, 3, 3, 16776960)
+                    filledRect(srFloor(this.pl_current_joint[a][0].x) - 1, srFloor(this.pl_current_joint[a][0].y) - 8, 3, 3, 16776960)
                 } else if (1 == PartyPlayerSymbol) {
-                    drawLine(srFloor(this.a[a][0].x) - 3, srFloor(this.a[a][0].y) - 14, srFloor(this.a[a][0].x) + 3, srFloor(this.a[a][0].y) - 14, 16776960);
-                    drawLine(srFloor(this.a[a][0].x) - 3, srFloor(this.a[a][0].y) - 14, srFloor(this.a[a][0].x) + .5, srFloor(this.a[a][0].y) - 7, 16776960);
-                    drawLine(srFloor(this.a[a][0].x) + 3.5, srFloor(this.a[a][0].y) - 14, srFloor(this.a[a][0].x) + .5, srFloor(this.a[a][0].y) - 7, 16776960)
+                    drawLine(srFloor(this.pl_current_joint[a][0].x) - 3, srFloor(this.pl_current_joint[a][0].y) - 14, srFloor(this.pl_current_joint[a][0].x) + 3, srFloor(this.pl_current_joint[a][0].y) - 14, 16776960);
+                    drawLine(srFloor(this.pl_current_joint[a][0].x) - 3, srFloor(this.pl_current_joint[a][0].y) - 14, srFloor(this.pl_current_joint[a][0].x) + .5, srFloor(this.pl_current_joint[a][0].y) - 7, 16776960);
+                    drawLine(srFloor(this.pl_current_joint[a][0].x) + 3.5, srFloor(this.pl_current_joint[a][0].y) - 14, srFloor(this.pl_current_joint[a][0].x) + .5, srFloor(this.pl_current_joint[a][0].y) - 7, 16776960)
                 }
             }
         }
+        //if(this.pl_is_found[a]>0) {
+        //    drawLine( srFloor(this.pl_current_joint[a][0].x), srFloor(this.pl_current_joint[a][0].y), srFloor(this.pl_current_joint[a][0].x), srFloor(this.pl_current_joint[a][0].y-100), 16777215);
+        //}
+        //console.log(this.pl_ring_hit_interval[0].toString());
     }
 };
 
@@ -7259,6 +7290,7 @@ SrEnemy.prototype.enDelete = function (a) {
 
 /*
 ぶつかる
+a:SrEnemy
 */
 function enGroundCollision(a, b, c, d) {
     var e = new SrVec2;
@@ -7331,13 +7363,13 @@ function findEnemy(a, b, c, d) {
 /*
 敵がダメージをうける
 */
-function enTakeDamage(a, b, c, d, e, g, h, q, m) {
+function enGetDamage(a, b, c, d, e, g, h, q, m) {
     var l = SR_ENEMY;
     var A = -1;
     var z;
     var Z;
     var B;
-    SR_PLAYER.j = 0;
+    SR_PLAYER.pl_damage_dealt = 0;
     q *= .5;
     m *= .5;
     //for (var S = 0; S < l.i && (z = ENEMY_DATA[l.f[S]][ENEMY_SIZE], Z = ENEMY_DATA[l.f[S]][ENEMY_TYPE], B = srFloor(ENEMY_HITBOX_VAR_1[Z] / 2) * srFloor(z / 2 + 1), z = srFloor(ENEMY_HITBOX_VAR_2[Z] / 2) * z, !l.j[S] || l.a[S][20].x - B > g + q || l.a[S][20].x + B < g - q || l.a[S][20].y - z > h + m || l.a[S][20].y + z < h - m || (B = d + srFloor(srRandom(e - d + 1)), 4 == b ? (l.B[S] = c - srFloor(c * ENEMY_DATA[l.f[S]][ENEMY_POISON_RESISTANCE] / 100), l.C[S] = B, 0 > ENEMY_DATA[l.f[S]][ENEMY_POISON_RESISTANCE] && (l.C[S] = srMax(1, B - srFloor(B * ENEMY_DATA[l.f[S]][ENEMY_POISON_RESISTANCE] / 100)))) : (0 == b ? B = srMax(1, B - ENEMY_DATA[l.f[S]][ENEMY_PHYSICAL_RESISTANCE]) : 1 == b ? B = srMax(1, B - srFloor(B * ENEMY_DATA[l.f[S]][ENEMY_FIRE_RESISTANCE] / 100)) : 2 == b ? B = srMax(1, B - srFloor(B * ENEMY_DATA[l.f[S]][ENEMY_ICE_RESISTANCE] / 100)) : 3 == b && (B = srMax(1, B - srFloor(B * ENEMY_DATA[l.f[S]][ENEMY_THUNDER_RESISTANCE] / 100))), l.j[S] = srMax(l.j[S] - B, 0), PartyDamageEffect & 1 || SR_INDICATOR.add(l.a[S][20].x, l.a[S][20].y - z, 1, B, 12632256), l.u[S] = B), 2 == b ? (l.A[S] = 500 - srFloor(500 * ENEMY_DATA[l.f[S]][ENEMY_ICE_RESISTANCE] / 100), l.F[S] = c) : 5 == b && (l.w[S] = c - srFloor(c * ENEMY_DATA[l.f[S]][ENEMY_FREEZE_RESISTANCE] / 100)), A = S, SR_PLAYER.j += B, TargetEnemyCurrentLp = l.j[S], TargetEnemyMaxLp = ENEMY_DATA[l.f[S]][ENEMY_LP], TargetEnemyTime = 100, TargetEnemyIndex = l.f[S], 0 != a)); S++) ;
@@ -7381,7 +7413,7 @@ function enTakeDamage(a, b, c, d, e, g, h, q, m) {
             l.w[S] = c - srFloor(c * ENEMY_DATA[l.f[S]][ENEMY_FREEZE_RESISTANCE] / 100);
         }
         A = S;
-        SR_PLAYER.j += B;
+        SR_PLAYER.pl_damage_dealt += B;
         TargetEnemyCurrentLp = l.j[S];
         TargetEnemyMaxLp = ENEMY_DATA[l.f[S]][ENEMY_LP];
         TargetEnemyTime = 100;
@@ -7395,8 +7427,10 @@ function enTakeDamage(a, b, c, d, e, g, h, q, m) {
 
 /*
 敵が攻撃する
+a:SrEnemy
 */
 function enAttack(a, b, c) {
+
     var d = new SrVec2;
     var e = a.f[b] + c;
     var g = ENEMY_DATA[e];
@@ -7461,7 +7495,7 @@ function enAttack(a, b, c) {
                 var ca = a.a[b][0].y + 10 * d.y;
                 SR_PROJECTILE.pjAdd(1, h, ca, 0, 0, c, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, 0, ua, pa, Ha, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, 0, 0, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, g, Wa, Ca)
             } else if (2 == h) {
-                d = SR_PLAYER.a[ab][2].x - a.a[b][0].x;
+                d = SR_PLAYER.pl_current_joint[ab][2].x - a.a[b][0].x;
                 d /= srAbs(d);
                 h = a.a[b][0].x + 10 * d;
                 ca = a.a[b][0].y;
@@ -7469,7 +7503,7 @@ function enAttack(a, b, c) {
             } else if (3 == h || 6 == h) {
                 //for (3 == h ? setVec2(d, SR_PLAYER.a[ab][2].x - a.a[b][0].x, SR_PLAYER.a[ab][2].y - a.a[b][0].y) : 6 == h && setVec2(d, 0, -1), e = 0 < q ? q : 16, q = srFloor(512 * angleToXAxis(d) / TWOPI), q -= srFloor((rb - 1) * e / 2), ka = 0; ka < rb; ka++) {
                 if (3 == h) {
-                    setVec2(d, SR_PLAYER.a[ab][2].x - a.a[b][0].x, SR_PLAYER.a[ab][2].y - a.a[b][0].y);
+                    setVec2(d, SR_PLAYER.pl_current_joint[ab][2].x - a.a[b][0].x, SR_PLAYER.pl_current_joint[ab][2].y - a.a[b][0].y);
                 } else if (6 == h) {
                     setVec2(d, 0, -1);
                 }
@@ -7492,7 +7526,7 @@ function enAttack(a, b, c) {
                 }
             } else if (4 == h) {
                 for (ka = 0; ka < rb; ka++) {
-                    setVec2(d, SR_PLAYER.a[ab][2].x - a.a[b][0].x, SR_PLAYER.a[ab][2].y - a.a[b][0].y);
+                    setVec2(d, SR_PLAYER.pl_current_joint[ab][2].x - a.a[b][0].x, SR_PLAYER.pl_current_joint[ab][2].y - a.a[b][0].y);
                     if (0 < q) {
                         e = q;
                     } else {
@@ -7526,14 +7560,14 @@ function enAttack(a, b, c) {
             } else if (8 == h) {
                 for (ka = 0; ka < rb; ka++) {
                     ca = srRandomInt(4);
-                    h = SR_PLAYER.a[ca][2].x;
-                    ca = SR_PLAYER.a[ca][2].y;
+                    h = SR_PLAYER.pl_current_joint[ca][2].x;
+                    ca = SR_PLAYER.pl_current_joint[ca][2].y;
                     SR_PROJECTILE.pjAdd(1, h, ca, 0, 0, c, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, 0, ua, pa, Ha, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, 0, 0, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb, $b, g, Wa, Ca);
                 }
             } else if (9 == h) {
                 for (ka = 0; ka < rb; ka++) {
                     ca = srRandomInt(4);
-                    setVec2(d, SR_PLAYER.a[ca][0].x - a.a[b][0].x, SR_PLAYER.a[ca][0].y - a.a[b][0].y);
+                    setVec2(d, SR_PLAYER.pl_current_joint[ca][0].x - a.a[b][0].x, SR_PLAYER.pl_current_joint[ca][0].y - a.a[b][0].y);
                     normalize(d);
                     h = a.a[b][0].x + 10 * d.x;
                     ca = a.a[b][0].y + 10 * d.y;
@@ -7548,6 +7582,7 @@ function enAttack(a, b, c) {
 
 /*
 敵が死ぬ
+a:SrEnemy
 */
 function enDeath(a, b, c) {
     //for (var d, e = 0, g = 0; g < StageCount; g++) {
@@ -7617,9 +7652,9 @@ function enDeath(a, b, c) {
         }
         if (1 == c) {
             for (AngerCrownLightningTime = 480, b = 0; 4 > b; b++) {
-                plProjectileAttack(SR_PLAYER, 562, SR_PLAYER.a[b][0].x, SR_PLAYER.a[b][0].y, 0);
+                plProjectileAttack(SR_PLAYER, 562, SR_PLAYER.pl_current_joint[b][0].x, SR_PLAYER.pl_current_joint[b][0].y, 0);
                 if (PlayerCurrentLp[b] != PlayerMaxLp[b]) {
-                    SR_INDICATOR.inAdd(SR_PLAYER.a[b][0].x, SR_PLAYER.a[b][0].y, 0, PlayerMaxLp[b] - PlayerCurrentLp[b], 65280);
+                    SR_INDICATOR.inAdd(SR_PLAYER.pl_current_joint[b][0].x, SR_PLAYER.pl_current_joint[b][0].y, 0, PlayerMaxLp[b] - PlayerCurrentLp[b], 65280);
                 }
                 PlayerCurrentLp[b] = PlayerMaxLp[b]
             }
@@ -7665,7 +7700,7 @@ function enDeath(a, b, c) {
     return 0
 }
 
-WINDOW.fff = SrEnemy.prototype.enMain;
+//WINDOW.fff = SrEnemy.prototype.enMain;
 /*
 敵が動く
 */
@@ -7733,7 +7768,7 @@ SrEnemy.prototype.enMain = function () {
     }
 };
 
-WINDOW.fff = SrEnemy.prototype.enWalker;
+//WINDOW.fff = SrEnemy.prototype.enWalker;
 /*
 敵0
 */
@@ -7799,7 +7834,7 @@ SrEnemy.prototype.enWalker = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.enSnake;
+//WINDOW.fff = SrEnemy.prototype.enSnake;
 /*
 敵1
 */
@@ -7812,7 +7847,7 @@ SrEnemy.prototype.enSnake = function (a) {
             moveJoint(this.a[a][2], this.c[a][2], .05, .9);
             b = plFindPlayer(this.a[a][0].x - 200, this.a[a][0].y - 50, this.a[a][0].x + 200, this.a[a][0].y + 50, 0);
             if (-1 != b) {
-                if (SR_PLAYER.a[b][2].x < this.a[a][0].x) {
+                if (SR_PLAYER.pl_current_joint[b][2].x < this.a[a][0].x) {
                     this.a[a][0].x += -.001;
                 } else {
                     this.a[a][0].x += .001;
@@ -7822,7 +7857,7 @@ SrEnemy.prototype.enSnake = function (a) {
                 var c;
                 if (-1 == b) {
                     c = fiftyFifty(-1, 1);
-                } else if (SR_PLAYER.a[b][2].x < this.a[a][0].x) {
+                } else if (SR_PLAYER.pl_current_joint[b][2].x < this.a[a][0].x) {
                     c = -1;
                 } else {
                     c = 1;
@@ -7873,7 +7908,7 @@ SrEnemy.prototype.enSnake = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.enBat;
+//WINDOW.fff = SrEnemy.prototype.enBat;
 /*
 敵2
 */
@@ -7893,7 +7928,7 @@ SrEnemy.prototype.enBat = function (a) {
             setVec2(c, 0, 0);
             var d = plFindPlayer(this.a[a][0].x - 150, this.a[a][0].y - 150, this.a[a][0].x + 150, this.a[a][0].y + 150, 0);
             if (-1 != d) {
-                setDistance(c, SR_PLAYER.a[d][2], this.a[a][0]);
+                setDistance(c, SR_PLAYER.pl_current_joint[d][2], this.a[a][0]);
                 d = normalize(c);
                 d -= ENEMY_DATA[this.f[a]][32] - 10;
                 if (0 > d) {
@@ -7977,7 +8012,7 @@ SrEnemy.prototype.enBat = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.enDragon;
+//WINDOW.fff = SrEnemy.prototype.enDragon;
 /*
 敵3
 */
@@ -7994,7 +8029,7 @@ SrEnemy.prototype.enDragon = function (a) {
             setVec2(c, 0, 0);
             b = plFindPlayer(this.a[a][0].x - 200, this.a[a][0].y - 200, this.a[a][0].x + 200, this.a[a][0].y + 200, 0);
             if (-1 != b) {
-                setDistance(c, SR_PLAYER.a[b][2], this.a[a][0]);
+                setDistance(c, SR_PLAYER.pl_current_joint[b][2], this.a[a][0]);
                 b = normalize(c);
                 b -= ENEMY_DATA[this.f[a]][32] / 2 - 10;
                 if (0 > b) {
@@ -8053,7 +8088,7 @@ SrEnemy.prototype.enDragon = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.enStickMan;
+//WINDOW.fff = SrEnemy.prototype.enStickMan;
 /*
 敵4,12
 */
@@ -8090,7 +8125,7 @@ SrEnemy.prototype.enStickMan = function (a, b) {
             if (50 > srRandom(100) && 0 < (this.g[a] & 3)) {
                 var d = plFindPlayer(this.a[a][0].x - 200, this.a[a][0].y - 50, this.a[a][0].x + 200, this.a[a][0].y + 50, 0);
                 if (-1 != d) {
-                    if (SR_PLAYER.a[d][2].x < this.a[a][0].x) {
+                    if (SR_PLAYER.pl_current_joint[d][2].x < this.a[a][0].x) {
                         this.b[a] = 1;
                     } else {
                         this.b[a] = 2;
@@ -8188,7 +8223,7 @@ SrEnemy.prototype.enStickMan = function (a, b) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.enTree;
+//WINDOW.fff = SrEnemy.prototype.enTree;
 /*
 敵5,18
 */
@@ -8248,7 +8283,7 @@ SrEnemy.prototype.enTree = function (a, b) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.enWheel;
+//WINDOW.fff = SrEnemy.prototype.enWheel;
 /*
 敵6
 */
@@ -8263,7 +8298,7 @@ SrEnemy.prototype.enWheel = function (a) {
             }
             b = plFindPlayer(this.a[a][0].x - 200, this.a[a][0].y - 50, this.a[a][0].x + 200, this.a[a][0].y + 50, 0);
             if (-1 != b && 40 > srRandom(100) && 0 < (this.g[a] & 2)) {
-                if (SR_PLAYER.a[b][2].x < this.a[a][0].x) {
+                if (SR_PLAYER.pl_current_joint[b][2].x < this.a[a][0].x) {
                     this.a[a][0].x += -2;
                 } else {
                     this.a[a][0].x += 2;
@@ -8338,7 +8373,7 @@ SrEnemy.prototype.enWheel = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.enFish;
+//WINDOW.fff = SrEnemy.prototype.enFish;
 /*
 敵7
 */
@@ -8355,7 +8390,7 @@ SrEnemy.prototype.enFish = function (a) {
             setVec2(c, 0, 0);
             b = plFindPlayer(this.a[a][0].x - 150, this.a[a][0].y - 50, this.a[a][0].x + 150, this.a[a][0].y + 50, 0);
             if (-1 != b) {
-                setDistance(c, SR_PLAYER.a[b][2], this.a[a][0]);
+                setDistance(c, SR_PLAYER.pl_current_joint[b][2], this.a[a][0]);
                 b = normalize(c);
                 b -= ENEMY_DATA[this.f[a]][32] / 2 - 10;
                 if (0 > b) {
@@ -8414,7 +8449,7 @@ SrEnemy.prototype.enFish = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.enMushroom;
+//WINDOW.fff = SrEnemy.prototype.enMushroom;
 /*
 敵8
 */
@@ -8473,7 +8508,7 @@ SrEnemy.prototype.enMushroom = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.enEel;
+//WINDOW.fff = SrEnemy.prototype.enEel;
 /*
 敵9,13
 */
@@ -8491,7 +8526,7 @@ SrEnemy.prototype.enEel = function (a, b) {
                 setVec2(d, 0, 0);
                 c = plFindPlayer(this.a[a][0].x - 150, this.a[a][0].y - 50, this.a[a][0].x + 150, this.a[a][0].y + 50, 0);
                 if (-1 != c) {
-                    setDistance(d, SR_PLAYER.a[c][2], this.a[a][0]);
+                    setDistance(d, SR_PLAYER.pl_current_joint[c][2], this.a[a][0]);
                     c = normalize(d);
                     c -= ENEMY_DATA[this.f[a]][32] / 2 - 10;
                     if (0 > c) {
@@ -8523,7 +8558,7 @@ SrEnemy.prototype.enEel = function (a, b) {
                 setVec2(d, 0, 0);
                 c = plFindPlayer(this.a[a][0].x - 500, this.a[a][0].y - 500, this.a[a][0].x + 500, this.a[a][0].y + 500, 0);
                 if (-1 != c) {
-                    setDistance(d, SR_PLAYER.a[c][2], this.a[a][0]);
+                    setDistance(d, SR_PLAYER.pl_current_joint[c][2], this.a[a][0]);
                     c = normalize(d);
                     c -= ENEMY_DATA[this.f[a]][32] / 2 - 10;
                     if (0 > c) {
@@ -8609,7 +8644,7 @@ SrEnemy.prototype.enEel = function (a, b) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.enSpider;
+//WINDOW.fff = SrEnemy.prototype.enSpider;
 /*
 敵10
 */
@@ -8630,7 +8665,7 @@ SrEnemy.prototype.enSpider = function (a) {
             if (50 > srRandom(100) && 0 < (this.g[a] & 3)) {
                 var c = plFindPlayer(this.a[a][0].x - 500, this.a[a][0].y - 25, this.a[a][0].x + 500, this.a[a][0].y + 25, 0);
                 if (-1 != c) {
-                    if (SR_PLAYER.a[c][2].x < this.a[a][0].x) {
+                    if (SR_PLAYER.pl_current_joint[c][2].x < this.a[a][0].x) {
                         this.b[a] = 1;
                     } else {
                         this.b[a] = 2;
@@ -8757,7 +8792,7 @@ SrEnemy.prototype.enSpider = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.enCactus;
+//WINDOW.fff = SrEnemy.prototype.enCactus;
 /*
 敵11
 */
@@ -8823,7 +8858,7 @@ SrEnemy.prototype.enCactus = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.enCopter;
+//WINDOW.fff = SrEnemy.prototype.enCopter;
 /*
 敵14
 */
@@ -8840,8 +8875,8 @@ SrEnemy.prototype.enCopter = function (a) {
             setVec2(c, 0, 0);
             var d = plFindPlayer(this.a[a][0].x - 150, this.a[a][0].y - 250, this.a[a][0].x + 150, this.a[a][0].y + 250, 0);
             if (-1 != d) {
-                c.x = SR_PLAYER.a[d][2].x - this.a[a][0].x;
-                c.y = SR_PLAYER.a[d][2].y - 10 - this.a[a][0].y;
+                c.x = SR_PLAYER.pl_current_joint[d][2].x - this.a[a][0].x;
+                c.y = SR_PLAYER.pl_current_joint[d][2].y - 10 - this.a[a][0].y;
                 if (-10 > c.x) {
                     c.x = -.02;
                 } else if (10 < c.x) {
@@ -8914,7 +8949,7 @@ SrEnemy.prototype.enCopter = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.enBouncer;
+//WINDOW.fff = SrEnemy.prototype.enBouncer;
 /*
 敵15
 */
@@ -8931,7 +8966,7 @@ SrEnemy.prototype.enBouncer = function (a) {
                 var d;
                 if (-1 == c) {
                     d = fiftyFifty(-1, 1);
-                } else if (SR_PLAYER.a[c][2].x < this.a[a][0].x) {
+                } else if (SR_PLAYER.pl_current_joint[c][2].x < this.a[a][0].x) {
                     d = -1;
                 } else {
                     d = 1;
@@ -8993,7 +9028,7 @@ SrEnemy.prototype.enBouncer = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.enGerm;
+//WINDOW.fff = SrEnemy.prototype.enGerm;
 /*
 敵16
 */
@@ -9037,7 +9072,7 @@ SrEnemy.prototype.enGerm = function (a) {
             setVec2(c, 0, 0);
             b = plFindPlayer(this.a[a][0].x - 200, this.a[a][0].y - 200, this.a[a][0].x + 200, this.a[a][0].y + 200, 0);
             if (-1 != b) {
-                setDistance(c, SR_PLAYER.a[b][2], this.a[a][0]);
+                setDistance(c, SR_PLAYER.pl_current_joint[b][2], this.a[a][0]);
                 normalize(c);
                 for (b = 4; 7 > b; b++) {
                     this.a[a][b].x += .02 * c.x;
@@ -9098,7 +9133,7 @@ SrEnemy.prototype.enGerm = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.enDigger;
+//WINDOW.fff = SrEnemy.prototype.enDigger;
 /*
 敵17
 */
@@ -9160,7 +9195,7 @@ SrEnemy.prototype.enDigger = function (a) {
     return a
 };
 
-WINDOW.fff = SrEnemy.prototype.enDraw;
+//WINDOW.fff = SrEnemy.prototype.enDraw;
 /*
 EnDraw 描画
 */
@@ -10734,6 +10769,7 @@ SrProjectile.prototype.pjAdd = function (a, b, c, d, e, g, h, q, m, l, A, z, Z, 
 
 /*
 飛び道具の削除
+a:SrProjectile
 */
 function PjSub(a, b) {
     a.g[b] = a.g[a.a - 1];
@@ -10830,15 +10866,15 @@ function PjMain() {
                     if (-1 != e) {
                         if (a.g[b]) {
                             if (1 != GameMode) {
-                                setDistance(d, SR_PLAYER.a[e][0], a.b[b]);
+                                setDistance(d, SR_PLAYER.pl_current_joint[e][0], a.b[b]);
                             } else {
-                                setDistance(d, SR_PLAYER.a[e][0], a.b[b]);
+                                setDistance(d, SR_PLAYER.pl_current_joint[e][0], a.b[b]);
                             }
                         } else {
                             if (1 != GameMode) {
                                 setDistance(d, SR_ENEMY.a[e][0], a.b[b]);
                             } else {
-                                setDistance(d, SR_PLAYER.a[e][0], a.b[b]);
+                                setDistance(d, SR_PLAYER.pl_current_joint[e][0], a.b[b]);
                             }
                         }
                         normalize(d);
@@ -10906,30 +10942,30 @@ function PjMain() {
                 if (1 == c) {
                     if (a.g[b]) {
                         if (1 != GameMode) {
-                            g = plTakeDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.b[b].x, a.b[b].y, a.F[b], a.G[b], 0);
+                            g = plGetDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.b[b].x, a.b[b].y, a.F[b], a.G[b], 0);
                         } else {
-                            g = plTakeDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.b[b].x, a.b[b].y, a.F[b], a.G[b], 1 - a.g[b] << 2);
+                            g = plGetDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.b[b].x, a.b[b].y, a.F[b], a.G[b], 1 - a.g[b] << 2);
                         }
                     } else {
                         if (1 != GameMode) {
-                            g = enTakeDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.b[b].x, a.b[b].y, a.F[b], a.G[b]);
+                            g = enGetDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.b[b].x, a.b[b].y, a.F[b], a.G[b]);
                         } else {
-                            g = plTakeDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.b[b].x, a.b[b].y, a.F[b], a.G[b], 1 - a.g[b] << 2);
+                            g = plGetDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.b[b].x, a.b[b].y, a.F[b], a.G[b], 1 - a.g[b] << 2);
                         }
                     }
                 }
                 if (-1 != g && a.H[b]) {
                     if (a.g[b]) {
                         if (1 != GameMode) {
-                            setDistance(d, SR_PLAYER.a[g][0], a.b[b]);
+                            setDistance(d, SR_PLAYER.pl_current_joint[g][0], a.b[b]);
                         } else {
-                            setDistance(d, SR_PLAYER.a[g][0], a.b[b]);
+                            setDistance(d, SR_PLAYER.pl_current_joint[g][0], a.b[b]);
                         }
                     } else {
                         if (1 != GameMode) {
                             setDistance(d, SR_ENEMY.a[g][0], a.b[b]);
                         } else {
-                            setDistance(d, SR_PLAYER.a[g][0], a.b[b]);
+                            setDistance(d, SR_PLAYER.pl_current_joint[g][0], a.b[b]);
                         }
                     }
                     normalize(d);
@@ -10942,11 +10978,11 @@ function PjMain() {
                     if (a.g[b]) {
                         if (1 != GameMode) {
                             //vecSub
-                            SR_PLAYER.g[g][0].vecSub(d);
+                            SR_PLAYER.pl_last_joint[g][0].vecSub(d);
                             a.H[b] = 0;
                         } else {
                             //vecSub
-                            SR_PLAYER.g[g][0].vecSub(d);
+                            SR_PLAYER.pl_last_joint[g][0].vecSub(d);
                             a.H[b] = 0;
                         }
                     } else {
@@ -10956,7 +10992,7 @@ function PjMain() {
                             a.H[b] = 0;
                         } else {
                             //vecSub
-                            SR_PLAYER.g[g][0].vecSub(d);
+                            SR_PLAYER.pl_last_joint[g][0].vecSub(d);
                             a.H[b] = 0;
                         }
                     }
@@ -11398,8 +11434,9 @@ function DpMain() {
                     PartyGold = srClampA(PartyGold + a.value[b], 0, 9999999);
                     SR_INDICATOR.inAdd(a.b[b].x, a.b[b].y, 0, a.value[b], 16776960);
                 } else if (2 == a.g[b]) {
+                    //おにぎりの優先順位の処理
                     for (d = 0; 4 > d; d++) {
-                        if (0 != SR_PLAYER.H[d] && srFloor(100 * PlayerCurrentLp[c] / PlayerMaxLp[c]) > srFloor(100 * PlayerCurrentLp[d] / PlayerMaxLp[d])) {
+                        if (0 != SR_PLAYER.pl_is_found[d] && srFloor(100 * PlayerCurrentLp[c] / PlayerMaxLp[c]) > srFloor(100 * PlayerCurrentLp[d] / PlayerMaxLp[d])) {
                             c = d;
                         }
                     }
@@ -11786,7 +11823,7 @@ var TIMEOUT = setTimeout;
 //var LocationHostName=location.hostname;
 var LocationHostName = "dan-ball.jp";
 
-WINDOW.fff = cvPutImageData;
+//WINDOW.fff = cvPutImageData;
 
 /*
 画像貼り付け
@@ -11800,7 +11837,7 @@ function cvPutImageData(a, b, c) {
     }
 }
 
-WINDOW.fff = consoleLog;
+//WINDOW.fff = consoleLog;
 
 /*
 console.log(a)
@@ -12081,6 +12118,7 @@ SrText.prototype.txSet = function (a, b, c) {
 
 /*
 テキスト
+a:SrText
 */
 function textOutputB(a, b, c, d, e, g) {
     var h;
@@ -12136,6 +12174,7 @@ function textOutputB(a, b, c, d, e, g) {
 
 /*
 中央テキスト
+a:SrText
 */
 function centeredText(a, b, c, d, e, g) {
     b -= d.length * (a.c + a.b) >> 1;
@@ -12155,6 +12194,7 @@ function itemText(a, b, c, d, e, g) {
 
 /*
 テキスト
+a:SrText
 */
 function textOutputM(a, b, c, d, e, g, h, q, m, l, A, z, Z, B) {
     e = e * q >> 8;
