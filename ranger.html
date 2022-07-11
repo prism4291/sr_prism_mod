@@ -48,7 +48,8 @@
             <label for="bun"></label><textarea id="bun" onclick="this.select();"></textarea>
         </td>
         <th>
-            <input type="SUBMIT" value="get" onclick="save()" onmousedown="document.getElementById('bun').value='';document.getElementById('pass').innerHTML='';">
+            <input type="SUBMIT" value="get" onclick="save()"
+                   onmousedown="document.getElementById('bun').value='';document.getElementById('pass').innerHTML='';">
             <input type="SUBMIT" value="set" onclick="load()" onmousedown="document.getElementById('pass').value='';">
         </th>
     </tr>
@@ -58,54 +59,54 @@
 <canvas ID="cv" style="margin:auto;display:block;width:512px;height:384px; "></canvas>
 <script async src="./ranger.js" onload="startGame('','',0,'');"></script>
 item <select name="summon_class" id="summon_class">
-  <option value="0">all</option>
-  <option value="1">boxer</option>
-  <option value="2">gladiator</option>
-  <option value="3">sniper</option>
-  <option value="4">magician</option>
-  <option value="5">priest</option>
-  <option value="6">gunner</option>
-  <option value="7">whipper</option>
-  <option value="8">angel</option>
-  <option value="9">other</option>
+    <option value="0">all</option>
+    <option value="1">boxer</option>
+    <option value="2">gladiator</option>
+    <option value="3">sniper</option>
+    <option value="4">magician</option>
+    <option value="5">priest</option>
+    <option value="6">gunner</option>
+    <option value="7">whipper</option>
+    <option value="8">angel</option>
+    <option value="9">other</option>
 </select>
-  <select name="summon_level" id="summon_level">
-  <option value="0">all</option>
-  <option value="1">1</option>
-  <option value="2">2</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
-  <option value="5">5</option>
-  <option value="6">6</option>
-  <option value="7">7</option>
-  <option value="8">8</option>
+<select name="summon_level" id="summon_level">
+    <option value="0">all</option>
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
 </select>
-  <input type="submit" value="search" onclick="
+<input type="submit" value="search" onclick="
 sl = document.getElementById('summon');
 	while(sl.lastChild)
 	{
 		sl.removeChild(sl.lastChild);
 	}
 
-var num1=document.getElementById('summon_class').value;                                               
+var num1=document.getElementById('summon_class').value;
 num2=document.getElementById('summon_level').value;                                              for(var i=0;i<ITEM_DATA.length;i++){
 if(num1!=0){
- if(num1!=9){                                               
+ if(num1!=9){
   if(ITEM_DATA[i][5]!=num1){
    continue;
   }
  }else{
   if(ITEM_DATA[i][5]<=8&&ITEM_DATA[i][5]>=1){
-                                              
+
    continue;
   }
  }
-}                                            
+}
 if(num2!=0){
 if(ITEM_DATA[i][1]!=num2){
 continue;
 }
-}                                           
+}
 var option1 = document.createElement('option');
 
 //option要素にvalueと表示名を設定
@@ -119,15 +120,134 @@ sl.appendChild(option1)
 
 }
                                                ">
-  <select name="summon" id="summon">
+<select name="summon" id="summon" onclick="document.getElementById('item_data').value='['+ITEM_DATA[document.getElementById('summon').value].map(function(item) {
+if(typeof item=='string'){
+    return String.fromCharCode(34)+item+String.fromCharCode(34);
+}
+return item;
+
+}).join(',')+']'">
 </select>
-  
-  <input type="submit" value="summon" onclick="SR_DROP.dpAdd(100,100,document.getElementById('summon').value,0,0);"><br>
-<label for="custom_fps">fps:</label><input type="number" id="custom_fps" value="60"> <label for="multiple_move"> 処理数:</label><input type="number" id="multiple_move" value="1"><br>
+
+<input type="submit" value="summon" onclick="SR_DROP.dpAdd(100,100,document.getElementById('summon').value,0,0);">
+<input type="text" id="item_data" value=""  onclick="this.select();">
+<br>
+enemy <select name="enemy_in_stage" id="enemy_in_stage" onclick="
+sl = document.getElementById('enemy_in_stage');
+if(sl.lastChild){
+    return;
+}
+var option1 = document.createElement('option');
+
+//option要素にvalueと表示名を設定
+    option1.value = -1;
+    option1.textContent ='all';
+
+//select要素にoption要素を追加する
+    sl.appendChild(option1)
+for(var i=0;i<STAGE_NAME.length;i++){
+    option1 = document.createElement('option');
+
+//option要素にvalueと表示名を設定
+    option1.value = i;
+    option1.textContent =STAGE_NAME[i];
+
+//select要素にoption要素を追加する
+    sl.appendChild(option1)
+}
+option1 = document.createElement('option');
+
+//option要素にvalueと表示名を設定
+    option1.value = i;
+    option1.textContent ='user';
+
+//select要素にoption要素を追加する
+    sl.appendChild(option1)
+"></select>
+<input type="submit" value="search2" onclick="
+sl = document.getElementById('summon2');
+	while(sl.lastChild)
+	{
+		sl.removeChild(sl.lastChild);
+	}
+
+var num1=parseInt(document.getElementById('enemy_in_stage').value);
+    if(num1==-1){
+        for(var i=0;i<ENEMY_DATA.length;i++){
+//console.log(num1+','+(num1+0));
+if(ENEMY_DATA[i].length<=0){
+    continue;
+}
+var option1 = document.createElement('option');
+
+//option要素にvalueと表示名を設定
+option1.value = i;
+option1.textContent ='enemy-'+i;
+
+//select要素にoption要素を追加する
+sl.appendChild(option1)
+
+
+
+}
+
+
+    }else if(num1==STAGE_INDEX_DATA.length-1){
+        for(var i=340;i<ENEMY_DATA.length;i++){
+//console.log(num1+','+(num1+0));
+
+var option1 = document.createElement('option');
+
+//option要素にvalueと表示名を設定
+option1.value = i;
+option1.textContent ='enemy-'+i;
+
+//select要素にoption要素を追加する
+sl.appendChild(option1)
+
+
+
+}
+    }else{
+for(var i=STAGE_INDEX_DATA[num1];i<STAGE_INDEX_DATA[1+num1];i++){
+//console.log(num1+','+(num1+0));
+
+var option1 = document.createElement('option');
+
+//option要素にvalueと表示名を設定
+option1.value = i;
+option1.textContent ='enemy-'+i;
+
+//select要素にoption要素を追加する
+sl.appendChild(option1)
+
+
+
+}}
+                                               ">
+<select name="summon2" id="summon2" onclick="if(!document.getElementById('summon2').value){return;}document.getElementById('enemy_data').value='['+ENEMY_DATA[document.getElementById('summon2').value].map(function(item) {
+if(typeof item=='string'){
+    return String.fromCharCode(34)+item+String.fromCharCode(34);
+}
+return item;
+
+}).join(',')+']'">
+</select>
+count:</label><input type="number" id="enemy_count" value="1">
+<input type="submit" value="summon" onclick="if(!document.getElementById('summon2').value){return;}for(var i=0;i<document.getElementById('enemy_count').value;i++){SR_ENEMY.enAdd(50,10,document.getElementById('summon2').value);SR_ENEMY.I=0;}">
+<input type="text" id="enemy_data" value=""  onclick="this.select();">
+<br>
+<label for="custom_fps">fps:</label><input type="number" id="custom_fps" value="60"> <label for="multiple_move">
+    処理数:</label><input type="number" id="multiple_move" value="1"><br>
 <input type="button" value="sp増加" onclick="for(let ii=0;ii<4;ii++){PlayerSp[ii]+=10;}"><br>
-<input type="button" value="アイテム追加" onclick="ITEM_DATA[ITEM_DATA.length]=eval(document.getElementById('new_item').value);SR_DROP.dpAdd(100,100,ITEM_DATA.length-1,0,0);"><label for="new_item"></label><textarea id="new_item">['thunder glove', 1, 500, 3, 2, 1, 4294967142, 1, 3, 0, 2, 4, 1, 10, 15, 22, 15, 1, 1, 4294967040, 1, 12, 48, 16, 16, 0, 0, 10, 10, 0, 100, 0, 0, 0, 3, 0, 10, 0, 0, 1, 29, 0]</textarea><br>
-<input type="button" value="敵追加" onclick="ENEMY_DATA[ENEMY_DATA.length]=eval(document.getElementById('new_enemy').value);SR_ENEMY.enAdd(50,10,ENEMY_DATA.length-1);"><label for="new_enemy"></label><textarea id="new_enemy">[1, 0, 1, 1, 3394611, 10053171, 10, 2, 1, 1, 4294967091, 1, 16, 16, 8, 8, 0, 0, 10, 10, 0, 100, 0, 0, 0, 0, 1, 3, 1, 1, 50, 20, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4278190080, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 1, 7, 40, 189, 40, 19, 80]</textarea><br>
-<input type="button" value="ステージ" onclick="StageOpenData=[3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 3, 7, 7, 7, 7, 7, 7, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7];"/><br>
+<input type="button" value="アイテム追加"
+       onclick="ITEM_DATA[ITEM_DATA.length]=eval(document.getElementById('new_item').value);SR_DROP.dpAdd(100,100,ITEM_DATA.length-1,0,0);"><label
+        for="new_item"></label><textarea id="new_item">['thunder glove', 1, 500, 3, 2, 1, 4294967142, 1, 3, 0, 2, 4, 1, 10, 15, 22, 15, 1, 1, 4294967040, 1, 12, 48, 16, 16, 0, 0, 10, 10, 0, 100, 0, 0, 0, 3, 0, 10, 0, 0, 1, 29, 0]</textarea><br>
+<input type="button" value="敵追加"
+       onclick="ENEMY_DATA[ENEMY_DATA.length]=eval(document.getElementById('new_enemy').value);if(ENEMY_DATA[ENEMY_DATA.length-1][60]==0){SR_ENEMY.enAdd(50,10,ENEMY_DATA.length-1);}"><label
+        for="new_enemy"></label><textarea id="new_enemy">[1, 0, 1, 1, 3394611, 10053171, 10, 2, 1, 1, 4294967091, 1, 16, 16, 8, 8, 0, 0, 10, 10, 0, 100, 0, 0, 0, 0, 1, 3, 1, 1, 50, 20, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4278190080, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, 1, 7, 40, 189, 40, 19, 80]</textarea><br>
+<input type="button" value="ステージ"
+       onclick="StageOpenData=[3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 3, 7, 7, 7, 7, 7, 7, 3, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7];"/><br>
 </body>
 
 </html>
