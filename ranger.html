@@ -234,7 +234,7 @@ return item;
 }).join(',')+']'">
 </select>
 count:</label><input type="number" id="enemy_count" value="1">
-<input type="submit" value="summon" onclick="if(!document.getElementById('summon2').value){return;}for(var i=0;i<document.getElementById('enemy_count').value;i++){SR_ENEMY.enAdd(50,10,document.getElementById('summon2').value);SR_ENEMY.I=0;}">
+<input type="submit" value="summon" onclick="if(!document.getElementById('summon2').value){return;}for(var i=0;i<document.getElementById('enemy_count').value;i++){SR_ENEMY.enAdd(50,10,document.getElementById('summon2').value);SR_ENEMY.en_spawn_count=0;}">
 <input type="text" id="enemy_data" value=""  onclick="this.select();">
 <br>
 <label for="custom_fps">fps:</label><input type="number" id="custom_fps" value="60"> <label for="multiple_move">
