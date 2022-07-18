@@ -3644,8 +3644,8 @@ function drawStage(a) {
                 drawFromImageCentered(ProjectileImage, SR_PLAYER.pl_current_joint[b][0].x, SR_PLAYER.pl_current_joint[b][0].y, 80, 80, 33, 1, 14, 14, 3238002687);
             }
             for (b = 0; b < SR_PROJECTILE.a; b++) {
-                if (1 != SR_PROJECTILE.g[b]) {
-                    drawFromImageCentered(ProjectileImage, SR_PROJECTILE.b[b].x, SR_PROJECTILE.b[b].y, 32, 32, 33, 1, 14, 14, 2164260863);
+                if (1 != SR_PROJECTILE.pj_is_from_enemy[b]) {
+                    drawFromImageCentered(ProjectileImage, SR_PROJECTILE.pj_position[b].x, SR_PROJECTILE.pj_position[b].y, 32, 32, 33, 1, 14, 14, 2164260863);
                 }
             }
             for (b = 0; 4 > b; b++) {
@@ -3759,7 +3759,7 @@ function drawStage(a) {
             }
             for (b = 0; b < SR_PROJECTILE.a; b++) {
                 if (1 == SR_PROJECTILE.i[b]) {
-                    filledRectCentered(SR_PROJECTILE.b[b].x, SR_PROJECTILE.b[b].y, 3, 3, 0);
+                    filledRectCentered(SR_PROJECTILE.pj_position[b].x, SR_PROJECTILE.pj_position[b].y, 3, 3, 0);
                 }
             }
             GameCanvas = h;
@@ -10644,11 +10644,11 @@ var SR_PROJECTILE = new SrProjectile;
 */
 function SrProjectile() {
     var a;
-    this.g = new Int32Array(1E3);
-    this.b = Array(1E3);
-    this.c = Array(1E3);
-    this.u = new Int32Array(1E3);
-    this.ia = new Int32Array(1E3);
+    this.pj_is_from_enemy = new Int32Array(1E3);
+    this.pj_position = Array(1E3);
+    this.pj_velocity = Array(1E3);
+    this.pj_is_transparent = new Int32Array(1E3);
+    this.pj_is_rotated = new Int32Array(1E3);
     this.ka = new Int32Array(1E3);
     this.v = new Int32Array(1E3);
     this.la = new Int32Array(1E3);
@@ -10658,7 +10658,7 @@ function SrProjectile() {
     this.G = new Int32Array(1E3);
     this.C = new Int32Array(1E3);
     this.I = new Int32Array(1E3);
-    this.h = new Int32Array(1E3);
+    this.pj_time = new Int32Array(1E3);
     this.D = new Int32Array(1E3);
     this.ja = new Int32Array(1E3);
     this.m = new Int32Array(1E3);
@@ -10695,10 +10695,10 @@ function SrProjectile() {
     this.O = new Int32Array(1E3);
     this.P = new Int32Array(1E3);
     for (a = this.a = 0; 1E3 > a; a++) {
-        this.b[a] = new SrVec2;
+        this.pj_position[a] = new SrVec2;
     }
     for (a = 0; 1E3 > a; a++) {
-        this.c[a] = new SrVec2
+        this.pj_velocity[a] = new SrVec2
     }
 }
 
@@ -10714,11 +10714,11 @@ SrProjectile.prototype.pjReset = function () {
 */
 SrProjectile.prototype.pjAdd = function (a, b, c, d, e, g, h, q, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, ab, Pa, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb) {
     if (1E3 != this.a) {
-        this.g[this.a] = a;
-        setVec2(this.b[this.a], b, c);
-        setVec2(this.c[this.a], d, e);
-        this.u[this.a] = 0;
-        this.ia[this.a] = g;
+        this.pj_is_from_enemy[this.a] = a;
+        setVec2(this.pj_position[this.a], b, c);
+        setVec2(this.pj_velocity[this.a], d, e);
+        this.pj_is_transparent[this.a] = 0;
+        this.pj_is_rotated[this.a] = g;
         this.ka[this.a] = h;
         this.v[this.a] = q;
         this.la[this.a] = m;
@@ -10728,7 +10728,7 @@ SrProjectile.prototype.pjAdd = function (a, b, c, d, e, g, h, q, m, l, A, z, Z, 
         this.G[this.a] = Z;
         this.C[this.a] = srFloor(srRandom(B));
         this.I[this.a] = S;
-        this.h[this.a] = ia;
+        this.pj_time[this.a] = ia;
         this.D[this.a] = za;
         this.ja[this.a] = ta;
         this.m[this.a] = X;
@@ -10773,11 +10773,11 @@ SrProjectile.prototype.pjAdd = function (a, b, c, d, e, g, h, q, m, l, A, z, Z, 
 a:SrProjectile
 */
 function PjSub(a, b) {
-    a.g[b] = a.g[a.a - 1];
-    a.b[b].vecSet(a.b[a.a - 1]);
-    a.c[b].vecSet(a.c[a.a - 1]);
-    a.u[b] = a.u[a.a - 1];
-    a.ia[b] = a.ia[a.a - 1];
+    a.pj_is_from_enemy[b] = a.pj_is_from_enemy[a.a - 1];
+    a.pj_position[b].vecSet(a.pj_position[a.a - 1]);
+    a.pj_velocity[b].vecSet(a.pj_velocity[a.a - 1]);
+    a.pj_is_transparent[b] = a.pj_is_transparent[a.a - 1];
+    a.pj_is_rotated[b] = a.pj_is_rotated[a.a - 1];
     a.ka[b] = a.ka[a.a - 1];
     a.v[b] = a.v[a.a - 1];
     a.la[b] = a.la[a.a - 1];
@@ -10787,7 +10787,7 @@ function PjSub(a, b) {
     a.G[b] = a.G[a.a - 1];
     a.C[b] = a.C[a.a - 1];
     a.I[b] = a.I[a.a - 1];
-    a.h[b] = a.h[a.a - 1];
+    a.pj_time[b] = a.pj_time[a.a - 1];
     a.D[b] = a.D[a.a - 1];
     a.ja[b] = a.ja[a.a - 1];
     a.m[b] = a.m[a.a - 1];
@@ -10838,61 +10838,61 @@ function PjMain() {
     var e;
     var g;
     for (b = 0; b < a.a; b++) {
-        if (-64 > a.b[b].x || 576 < a.b[b].x) {
+        if (-64 > a.pj_position[b].x || 576 < a.pj_position[b].x) {
             PjSub(a, b--);
         } else if (0 < a.C[b]) {
             a.C[b]--;
         } else {
-            if (1 == a.u[b]) {
-                a.h[b]++;
-                if (a.h[b] >= a.D[b]) {
+            if (1 == a.pj_is_transparent[b]) {
+                a.pj_time[b]++;
+                if (a.pj_time[b] >= a.D[b]) {
                     PjSub(a, b--);
                 }
             } else {
                 if (0 < a.J[b]) {
                     e = a.J[b];
-                    if (a.g[b]) {
+                    if (a.pj_is_from_enemy[b]) {
                         if (1 != GameMode) {
-                            e = plFindPlayer(a.b[b].x - e, a.b[b].y - e, a.b[b].x + e, a.b[b].y + e, 0);
+                            e = plFindPlayer(a.pj_position[b].x - e, a.pj_position[b].y - e, a.pj_position[b].x + e, a.pj_position[b].y + e, 0);
                         } else {
-                            e = plFindPlayer(a.b[b].x - e, a.b[b].y - e, a.b[b].x + e, a.b[b].y + e, 1 - a.g[b] << 2);
+                            e = plFindPlayer(a.pj_position[b].x - e, a.pj_position[b].y - e, a.pj_position[b].x + e, a.pj_position[b].y + e, 1 - a.pj_is_from_enemy[b] << 2);
                         }
                     } else {
                         if (1 != GameMode) {
-                            e = findEnemy(a.b[b].x - e, a.b[b].y - e, a.b[b].x + e, a.b[b].y + e);
+                            e = findEnemy(a.pj_position[b].x - e, a.pj_position[b].y - e, a.pj_position[b].x + e, a.pj_position[b].y + e);
                         } else {
-                            e = plFindPlayer(a.b[b].x - e, a.b[b].y - e, a.b[b].x + e, a.b[b].y + e, 1 - a.g[b] << 2);
+                            e = plFindPlayer(a.pj_position[b].x - e, a.pj_position[b].y - e, a.pj_position[b].x + e, a.pj_position[b].y + e, 1 - a.pj_is_from_enemy[b] << 2);
                         }
                     }
                     if (-1 != e) {
-                        if (a.g[b]) {
+                        if (a.pj_is_from_enemy[b]) {
                             if (1 != GameMode) {
-                                setDistance(d, SR_PLAYER.pl_current_joint[e][0], a.b[b]);
+                                setDistance(d, SR_PLAYER.pl_current_joint[e][0], a.pj_position[b]);
                             } else {
-                                setDistance(d, SR_PLAYER.pl_current_joint[e][0], a.b[b]);
+                                setDistance(d, SR_PLAYER.pl_current_joint[e][0], a.pj_position[b]);
                             }
                         } else {
                             if (1 != GameMode) {
-                                setDistance(d, SR_ENEMY.en_current_joint[e][0], a.b[b]);
+                                setDistance(d, SR_ENEMY.en_current_joint[e][0], a.pj_position[b]);
                             } else {
-                                setDistance(d, SR_PLAYER.pl_current_joint[e][0], a.b[b]);
+                                setDistance(d, SR_PLAYER.pl_current_joint[e][0], a.pj_position[b]);
                             }
                         }
                         normalize(d);
-                        e = magnitudeOf(a.c[b]);
-                        a.c[b].x = .85 * a.c[b].x + .15 * d.x + srRandomRange(-.1, .1);
-                        a.c[b].y = .85 * a.c[b].y + .15 * d.y + srRandomRange(-.1, .1);
-                        normalize(a.c[b]);
-                        scaleVec2(a.c[b], srMax(e, 1));
+                        e = magnitudeOf(a.pj_velocity[b]);
+                        a.pj_velocity[b].x = .85 * a.pj_velocity[b].x + .15 * d.x + srRandomRange(-.1, .1);
+                        a.pj_velocity[b].y = .85 * a.pj_velocity[b].y + .15 * d.y + srRandomRange(-.1, .1);
+                        normalize(a.pj_velocity[b]);
+                        scaleVec2(a.pj_velocity[b], srMax(e, 1));
                     }
                 }
-                a.c[b].y += .01 * a.ja[b];
-                scaleVec2(a.c[b], .01 * a.m[b]);
+                a.pj_velocity[b].y += .01 * a.ja[b];
+                scaleVec2(a.pj_velocity[b], .01 * a.m[b]);
                 e = a;
                 g = b;
                 c = d;
                 var h = 0;
-                c.vecSet(e.c[g]);
+                c.vecSet(e.pj_velocity[g]);
                 var q = srFloor(magnitudeOf(c) / 4) + 1;
                 scaleVec2(c, 1 / q);
                 var m;
@@ -10900,23 +10900,23 @@ function PjMain() {
                 var A;
                 //当たり判定かな
                 for (var z = 0; z < q; z++) {
-                    m = e.b[g].y + c.y;
-                    l = srFloor(srClampA(e.b[g].x, 0, 511) / 8);
+                    m = e.pj_position[g].y + c.y;
+                    l = srFloor(srClampA(e.pj_position[g].x, 0, 511) / 8);
                     A = srFloor(srClampA(m, 0, 255) / 8);
                     l = SR_TERRAIN.a[A][l];
                     if (0 > l || 8 < l || e.K[g]) {
-                        e.b[g].y = m;
+                        e.pj_position[g].y = m;
                     } else if (e.s[g]) {
                         if (2 == e.s[g]) {
                             c.y *= -1;
-                            e.c[g].y *= -1;
+                            e.pj_velocity[g].y *= -1;
                         }
                     } else {
                         h = 1;
                     }
-                    m = e.b[g].x + c.x;
+                    m = e.pj_position[g].x + c.x;
                     l = srFloor(srClampA(m, 0, 511) / 8);
-                    A = srFloor(srClampA(e.b[g].y, 0, 255) / 8);
+                    A = srFloor(srClampA(e.pj_position[g].y, 0, 255) / 8);
                     l = SR_TERRAIN.a[A][l];
                     if (0 <= l && 8 >= l && !e.K[g]) {
                         if (!e.s[g] || 1 == e.s[g]) {
@@ -10924,10 +10924,10 @@ function PjMain() {
                         }
                         if (2 == e.s[g]) {
                             c.x *= -1;
-                            e.c[g].x *= -1;
+                            e.pj_velocity[g].x *= -1;
                         }
                     } else {
-                        e.b[g].x = m;
+                        e.pj_position[g].x = m;
                     }
                 }
                 e = h;
@@ -10941,42 +10941,42 @@ function PjMain() {
                 }
                 g = -1;
                 if (1 == c) {
-                    if (a.g[b]) {
+                    if (a.pj_is_from_enemy[b]) {
                         if (1 != GameMode) {
-                            g = plGetDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.b[b].x, a.b[b].y, a.F[b], a.G[b], 0);
+                            g = plGetDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.pj_position[b].x, a.pj_position[b].y, a.F[b], a.G[b], 0);
                         } else {
-                            g = plGetDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.b[b].x, a.b[b].y, a.F[b], a.G[b], 1 - a.g[b] << 2);
+                            g = plGetDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.pj_position[b].x, a.pj_position[b].y, a.F[b], a.G[b], 1 - a.pj_is_from_enemy[b] << 2);
                         }
                     } else {
                         if (1 != GameMode) {
-                            g = enGetDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.b[b].x, a.b[b].y, a.F[b], a.G[b]);
+                            g = enGetDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.pj_position[b].x, a.pj_position[b].y, a.F[b], a.G[b]);
                         } else {
-                            g = plGetDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.b[b].x, a.b[b].y, a.F[b], a.G[b], 1 - a.g[b] << 2);
+                            g = plGetDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.pj_position[b].x, a.pj_position[b].y, a.F[b], a.G[b], 1 - a.pj_is_from_enemy[b] << 2);
                         }
                     }
                 }
                 if (-1 != g && a.H[b]) {
-                    if (a.g[b]) {
+                    if (a.pj_is_from_enemy[b]) {
                         if (1 != GameMode) {
-                            setDistance(d, SR_PLAYER.pl_current_joint[g][0], a.b[b]);
+                            setDistance(d, SR_PLAYER.pl_current_joint[g][0], a.pj_position[b]);
                         } else {
-                            setDistance(d, SR_PLAYER.pl_current_joint[g][0], a.b[b]);
+                            setDistance(d, SR_PLAYER.pl_current_joint[g][0], a.pj_position[b]);
                         }
                     } else {
                         if (1 != GameMode) {
-                            setDistance(d, SR_ENEMY.en_current_joint[g][0], a.b[b]);
+                            setDistance(d, SR_ENEMY.en_current_joint[g][0], a.pj_position[b]);
                         } else {
-                            setDistance(d, SR_PLAYER.pl_current_joint[g][0], a.b[b]);
+                            setDistance(d, SR_PLAYER.pl_current_joint[g][0], a.pj_position[b]);
                         }
                     }
                     normalize(d);
                     scaleVec2(d, .1 * a.H[b]);
-                    if (1 == GameMode || a.g[b]) {
+                    if (1 == GameMode || a.pj_is_from_enemy[b]) {
                         scaleVec2(d, .1);
                     } else {
                         scaleVec2(d, ENEMY_KNOCKBACK_VAR[ENEMY_DATA[SR_ENEMY.en_id[g]][ENEMY_TYPE]] / ENEMY_DATA[SR_ENEMY.en_id[g]][ENEMY_SIZE]);
                     }
-                    if (a.g[b]) {
+                    if (a.pj_is_from_enemy[b]) {
                         if (1 != GameMode) {
                             //vecSub
                             SR_PLAYER.pl_last_joint[g][0].vecSub(d);
@@ -11002,8 +11002,8 @@ function PjMain() {
                     g = -1;
                 }
                 if (1 == e || -1 != g) {
-                    a.u[b] = 1;
-                    a.h[b] = 0;
+                    a.pj_is_transparent[b] = 1;
+                    a.pj_time[b] = 0;
                     if (1 == a.sub[b] || 3 == a.sub[b] || 4 == a.sub[b] || 5 == a.sub[b] || 6 == a.sub[b] || 7 == a.sub[b] || 8 == a.sub[b] || 9 == a.sub[b]) {
                         h = srFloor(srRandom(512));
                         for (c = 0; c < a.f[b]; c++) {
@@ -11018,8 +11018,8 @@ function PjMain() {
                                 d.x = srRandomRange(.1 * -a.f[b], .1 * a.f[b]);
                                 d.y = srRandomRange(.2 * -a.f[b], .1 * -a.f[b]);
                             } else if (5 == a.sub[b]) {
-                                d.x = a.c[b].x;
-                                d.y = a.c[b].y;
+                                d.x = a.pj_velocity[b].x;
+                                d.y = a.pj_velocity[b].y;
                             } else if (6 == a.sub[b]) {
                                 d.x = srRandomRange(.01 * -a.f[b], .01 * a.f[b]);
                                 d.y = srRandomRange(.2 * -a.f[b], .05 * -a.f[b]);
@@ -11033,24 +11033,24 @@ function PjMain() {
                                 d.x = a.f[b] * AngleArray[h][0] * q;
                                 d.y = a.f[b] * AngleArray[h][1] * q;
                             } else if (9 == a.sub[b]) {
-                                d.x = a.c[b].x;
-                                d.y = a.c[b].y;
+                                d.x = a.pj_velocity[b].x;
+                                d.y = a.pj_velocity[b].y;
                                 normalize(d);
                             }
-                            SR_PROJECTILE.pjAdd(a.g[b], a.b[b].x, a.b[b].y, d.x, d.y, a.U[b], a.ea[b], a.R[b], a.L[b], a.$[b], a.ca[b], a.Y[b], a.Z[b], a.T[b], a.aa[b], a.S[b], a.V[b], a.W[b], a.fa[b], a.ba[b], a.X[b], 0, 0, a.da[b], a.M[b], a.N[b], a.O[b], a.P[b], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+                            SR_PROJECTILE.pjAdd(a.pj_is_from_enemy[b], a.pj_position[b].x, a.pj_position[b].y, d.x, d.y, a.U[b], a.ea[b], a.R[b], a.L[b], a.$[b], a.ca[b], a.Y[b], a.Z[b], a.T[b], a.aa[b], a.S[b], a.V[b], a.W[b], a.fa[b], a.ba[b], a.X[b], 0, 0, a.da[b], a.M[b], a.N[b], a.O[b], a.P[b], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
                         }
                     }
                 }
-                if (0 < a.h[b]) {
-                    a.h[b]--;
+                if (0 < a.pj_time[b]) {
+                    a.pj_time[b]--;
                 }
-                if (!a.h[b]) {
-                    a.u[b] = 1;
+                if (!a.pj_time[b]) {
+                    a.pj_is_transparent[b] = 1;
                 }
                 if (2 == a.sub[b] && (srRandom(100) < a.f[b] || 1 == e || -1 != g)) {
                     d.x = srRandomRange(-1, 1);
                     d.y = srRandomRange(-1, 1);
-                    SR_PROJECTILE.pjAdd(a.g[b], a.b[b].x, a.b[b].y, d.x, d.y, a.U[b], a.ea[b], a.R[b], a.L[b], a.$[b], a.ca[b], a.Y[b], a.Z[b], a.T[b], a.aa[b], a.S[b], a.V[b], a.W[b], a.fa[b], a.ba[b], a.X[b], 0, 0, a.da[b], a.M[b], a.N[b], a.O[b], a.P[b], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+                    SR_PROJECTILE.pjAdd(a.pj_is_from_enemy[b], a.pj_position[b].x, a.pj_position[b].y, d.x, d.y, a.U[b], a.ea[b], a.R[b], a.L[b], a.$[b], a.ca[b], a.Y[b], a.Z[b], a.T[b], a.aa[b], a.S[b], a.V[b], a.W[b], a.fa[b], a.ba[b], a.X[b], 0, 0, a.da[b], a.M[b], a.N[b], a.O[b], a.P[b], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
                 }
             }
         }
@@ -11072,8 +11072,8 @@ function PjDraw() {
     for (b = 0; b < a.a; b++) {
         if (0 >= a.C[b]) {
             c = 16 * a.ka[b];
-            if (1 == a.u[b]) {
-                d = srFloor((a.v[b] >> 24 & 255) * (a.D[b] - a.h[b]) / a.D[b]) << 24 | a.v[b] & 16777215;
+            if (1 == a.pj_is_transparent[b]) {
+                d = srFloor((a.v[b] >> 24 & 255) * (a.D[b] - a.pj_time[b]) / a.D[b]) << 24 | a.v[b] & 16777215;
             } else {
                 d = a.v[b];
             }
@@ -11082,8 +11082,13 @@ function PjDraw() {
             }
             DisplayMode1 = a.la[b];
             DisplayMode2 = 1;
-            if (a.ia[b]) {
-                g.vecSet(a.c[b]);
+            //debug draw
+            //textOutputM(SMALL_TEXT,srFloor(a.pj_position[b].x), srFloor(a.pj_position[b].y-30),">"+a.pj_is_rotated[b],255,255,255,32,255,255,255,128,5,7);
+            //
+            if (!a.pj_is_rotated[b]) {
+                drawFromImageCentered(ProjectileImage, srFloor(a.pj_position[b].x), srFloor(a.pj_position[b].y), a.ga[b], a.ha[b], c, 0, 16, 16, d);
+            } else {
+                g.vecSet(a.pj_velocity[b]);
                 e.vecSet(g);
                 setPerpendicular(e);
                 normalize(e);
@@ -11092,17 +11097,17 @@ function PjDraw() {
                 scaleVec2(g, a.ha[b] >> 1);
                 setDistance(h, g, e);
                 setSumVec2(q, g, e);
-                var m = a.b[b].x + h.x;
-                var l = a.b[b].y + h.y;
+                var m = a.pj_position[b].x + h.x;
+                var l = a.pj_position[b].y + h.y;
                 var A = c;
-                var z = a.b[b].x + q.x;
-                var Z = a.b[b].y + q.y;
+                var z = a.pj_position[b].x + q.x;
+                var Z = a.pj_position[b].y + q.y;
                 var B = c + 16;
-                var S = a.b[b].x - h.x;
-                var ia = a.b[b].y - h.y;
+                var S = a.pj_position[b].x - h.x;
+                var ia = a.pj_position[b].y - h.y;
                 var za = c + 16;
-                var ta = a.b[b].x - q.x;
-                var X = a.b[b].y - q.y;
+                var ta = a.pj_position[b].x - q.x;
+                var X = a.pj_position[b].y - q.y;
                 var T = c;
                 var Y = 0;
                 var Ua = 0;
@@ -11209,8 +11214,6 @@ function PjDraw() {
                         ia += za;
                     }
                 }
-            } else {
-                drawFromImageCentered(ProjectileImage, srFloor(a.b[b].x), srFloor(a.b[b].y), a.ga[b], a.ha[b], c, 0, 16, 16, d);
             }
             DisplayMode2 = DisplayMode1 = 0
         }
