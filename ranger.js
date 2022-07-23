@@ -2334,8 +2334,8 @@ function pveScreen() {
                     SR_ENEMY.enAdd(c, d, l)
                 }
             }
-            SR_PROJECTILE.a = 0;
-            SR_INDICATOR.a = 0;
+            SR_PROJECTILE.pj_last_index = 0;
+            SR_INDICATOR.in_last_index = 0;
             SR_DROP.a = 0;
             TextFadeTime = SignTouch = TargetEnemyIndex = TargetEnemyTime = TargetEnemyMaxLp = TargetEnemyCurrentLp = SR_DROP.f = 0;
             SequenceStep++
@@ -2561,8 +2561,8 @@ function townScreen() {
             SR_PLAYER.plSet(2, 22, SR_TERRAIN.b[2]);
             SR_PLAYER.plSet(3, 25, SR_TERRAIN.b[3]);
             SR_ENEMY.enReset(1);
-            SR_PROJECTILE.a = 0;
-            SR_INDICATOR.a = 0;
+            SR_PROJECTILE.pj_last_index = 0;
+            SR_INDICATOR.in_last_index = 0;
             SR_DROP.a = 0;
             TextFadeTime = SignTouch = TargetEnemyIndex = TargetEnemyTime = TargetEnemyMaxLp = TargetEnemyCurrentLp = SR_DROP.f = 0;
             SequenceStep++;
@@ -3158,8 +3158,8 @@ function pvpScreen() {
             SR_PLAYER.plSet(2, 34, SR_TERRAIN.b[2]);
             SR_PLAYER.plSet(3, 38, SR_TERRAIN.b[3]);
             SR_ENEMY.enReset(1);
-            SR_PROJECTILE.a = 0;
-            SR_INDICATOR.a = 0;
+            SR_PROJECTILE.pj_last_index = 0;
+            SR_INDICATOR.in_last_index = 0;
             SR_DROP.a = 0;
             TextFadeTime = SignTouch = TargetEnemyIndex = TargetEnemyTime = TargetEnemyMaxLp = TargetEnemyCurrentLp = SR_DROP.f = 0;
             SequenceStep++;
@@ -3348,8 +3348,8 @@ function pvpScreen() {
             PartyGold = 9999999;
             antiCheatSet();
             SR_ENEMY.enReset(1);
-            SR_PROJECTILE.a = 0;
-            SR_INDICATOR.a = 0;
+            SR_PROJECTILE.pj_last_index = 0;
+            SR_INDICATOR.in_last_index = 0;
             SR_DROP.a = 0;
             TextFadeTime = SignTouch = TargetEnemyIndex = TargetEnemyTime = TargetEnemyMaxLp = TargetEnemyCurrentLp = SR_DROP.f = 0;
             SequenceStep++
@@ -3643,7 +3643,7 @@ function drawStage(a) {
             for (b = 0; 4 > b; b++) {
                 drawFromImageCentered(ProjectileImage, SR_PLAYER.pl_current_joint[b][0].x, SR_PLAYER.pl_current_joint[b][0].y, 80, 80, 33, 1, 14, 14, 3238002687);
             }
-            for (b = 0; b < SR_PROJECTILE.a; b++) {
+            for (b = 0; b < SR_PROJECTILE.pj_last_index; b++) {
                 if (1 != SR_PROJECTILE.pj_is_from_enemy[b]) {
                     drawFromImageCentered(ProjectileImage, SR_PROJECTILE.pj_position[b].x, SR_PROJECTILE.pj_position[b].y, 32, 32, 33, 1, 14, 14, 2164260863);
                 }
@@ -3757,7 +3757,7 @@ function drawStage(a) {
                     filledRectCentered(SR_PLAYER.pl_current_joint[b][10].x, SR_PLAYER.pl_current_joint[b][10].y, 1, 1, 0);
                 }
             }
-            for (b = 0; b < SR_PROJECTILE.a; b++) {
+            for (b = 0; b < SR_PROJECTILE.pj_last_index; b++) {
                 if (1 == SR_PROJECTILE.pj_type[b]) {
                     filledRectCentered(SR_PROJECTILE.pj_position[b].x, SR_PROJECTILE.pj_position[b].y, 3, 3, 0);
                 }
@@ -10694,7 +10694,7 @@ function SrProjectile() {
     this.pj_residue_count = new Int32Array(1E3);
     this.pj_residue_type = new Int32Array(1E3);
     this.pj_residue_type_value = new Int32Array(1E3);
-    for (a = this.a = 0; 1E3 > a; a++) {
+    for (a = this.pj_last_index = 0; 1E3 > a; a++) {
         this.pj_position[a] = new SrVec2;
     }
     for (a = 0; 1E3 > a; a++) {
@@ -10706,65 +10706,65 @@ function SrProjectile() {
 飛び道具のリセット
 */
 SrProjectile.prototype.pjReset = function () {
-    this.a = 0
+    this.pj_last_index = 0
 };
 
 /*
 飛び道具の追加
 */
 SrProjectile.prototype.pjAdd = function (a, b, c, d, e, g, h, q, m, l, A, z, Z, B, S, ia, za, ta, X, T, Y, Ua, eb, Va, ua, pa, Ha, rb, Aa, ka, ab, Pa, Wa, Ca, yb, Hb, Ib, Jb, Kb, Lb, Mb, Nb, Ob, Pb, Qb, sb, Rb, Sb, Tb, Ub, Vb) {
-    if (1E3 != this.a) {
-        this.pj_is_from_enemy[this.a] = a;
-        setVec2(this.pj_position[this.a], b, c);
-        setVec2(this.pj_velocity[this.a], d, e);
-        this.pj_is_dying[this.a] = 0;
-        this.pj_is_rotated[this.a] = g;
-        this.pj_image[this.a] = h;
-        this.pj_color[this.a] = q;
-        this.pj_is_transparent[this.a] = m;
-        this.pj_width[this.a] = l;
-        this.pj_height[this.a] = A;
-        this.pj_hit_width[this.a] = z;
-        this.pj_hit_height[this.a] = Z;
-        this.pj_summon_delay[this.a] = srFloor(srRandom(B));
-        this.pj_hit_delay[this.a] = S;
-        this.pj_time[this.a] = ia;
-        this.pj_despawn_time[this.a] = za;
-        this.pj_gravity[this.a] = ta;
-        this.pj_acceleration[this.a] = X;
-        this.pj_pierce[this.a] = T;
-        this.pj_bounce[this.a] = Y;
-        this.pj_homing[this.a] = Ua;
-        this.pj_knockback[this.a] = eb;
-        this.pj_multiple_hit[this.a] = Va;
-        this.pj_min_at[this.a] = ua;
-        this.pj_max_at[this.a] = pa;
-        this.pj_type[this.a] = Ha;
-        this.pj_type_value[this.a] = rb;
-        this.pj_residue_mode[this.a] = Aa;
-        this.pj_residue_is_rotated[this.a] = ka;
-        this.pj_residue_image[this.a] = ab;
-        this.pj_residue_color[this.a] = Pa;
-        this.pj_residue_is_transparent[this.a] = Wa;
-        this.pj_residue_width[this.a] = Ca;
-        this.pj_residue_height[this.a] = yb;
-        this.pj_residue_hit_width[this.a] = Hb;
-        this.pj_residue_hit_height[this.a] = Ib;
-        this.pj_residue_summon_delay[this.a] = Jb;
-        this.pj_residue_hit_delay[this.a] = Kb;
-        this.pj_residue_time[this.a] = Lb;
-        this.pj_residue_despawn_time[this.a] = Mb;
-        this.pj_residue_gravity[this.a] = Nb;
-        this.pj_residue_acceleration[this.a] = Ob;
-        this.pj_residue_pierce[this.a] = Pb;
-        this.pj_residue_bounce[this.a] = Qb;
-        this.pj_residue_multiple_hit[this.a] = sb;
-        this.pj_residue_min_at[this.a] = Rb;
-        this.pj_residue_max_at[this.a] = Sb;
-        this.pj_residue_count[this.a] = Tb;
-        this.pj_residue_type[this.a] = Ub;
-        this.pj_residue_type_value[this.a] = Vb;
-        this.a++
+    if (1E3 != this.pj_last_index) {
+        this.pj_is_from_enemy[this.pj_last_index] = a;
+        setVec2(this.pj_position[this.pj_last_index], b, c);
+        setVec2(this.pj_velocity[this.pj_last_index], d, e);
+        this.pj_is_dying[this.pj_last_index] = 0;
+        this.pj_is_rotated[this.pj_last_index] = g;
+        this.pj_image[this.pj_last_index] = h;
+        this.pj_color[this.pj_last_index] = q;
+        this.pj_is_transparent[this.pj_last_index] = m;
+        this.pj_width[this.pj_last_index] = l;
+        this.pj_height[this.pj_last_index] = A;
+        this.pj_hit_width[this.pj_last_index] = z;
+        this.pj_hit_height[this.pj_last_index] = Z;
+        this.pj_summon_delay[this.pj_last_index] = srFloor(srRandom(B));
+        this.pj_hit_delay[this.pj_last_index] = S;
+        this.pj_time[this.pj_last_index] = ia;
+        this.pj_despawn_time[this.pj_last_index] = za;
+        this.pj_gravity[this.pj_last_index] = ta;
+        this.pj_acceleration[this.pj_last_index] = X;
+        this.pj_pierce[this.pj_last_index] = T;
+        this.pj_bounce[this.pj_last_index] = Y;
+        this.pj_homing[this.pj_last_index] = Ua;
+        this.pj_knockback[this.pj_last_index] = eb;
+        this.pj_multiple_hit[this.pj_last_index] = Va;
+        this.pj_min_at[this.pj_last_index] = ua;
+        this.pj_max_at[this.pj_last_index] = pa;
+        this.pj_type[this.pj_last_index] = Ha;
+        this.pj_type_value[this.pj_last_index] = rb;
+        this.pj_residue_mode[this.pj_last_index] = Aa;
+        this.pj_residue_is_rotated[this.pj_last_index] = ka;
+        this.pj_residue_image[this.pj_last_index] = ab;
+        this.pj_residue_color[this.pj_last_index] = Pa;
+        this.pj_residue_is_transparent[this.pj_last_index] = Wa;
+        this.pj_residue_width[this.pj_last_index] = Ca;
+        this.pj_residue_height[this.pj_last_index] = yb;
+        this.pj_residue_hit_width[this.pj_last_index] = Hb;
+        this.pj_residue_hit_height[this.pj_last_index] = Ib;
+        this.pj_residue_summon_delay[this.pj_last_index] = Jb;
+        this.pj_residue_hit_delay[this.pj_last_index] = Kb;
+        this.pj_residue_time[this.pj_last_index] = Lb;
+        this.pj_residue_despawn_time[this.pj_last_index] = Mb;
+        this.pj_residue_gravity[this.pj_last_index] = Nb;
+        this.pj_residue_acceleration[this.pj_last_index] = Ob;
+        this.pj_residue_pierce[this.pj_last_index] = Pb;
+        this.pj_residue_bounce[this.pj_last_index] = Qb;
+        this.pj_residue_multiple_hit[this.pj_last_index] = sb;
+        this.pj_residue_min_at[this.pj_last_index] = Rb;
+        this.pj_residue_max_at[this.pj_last_index] = Sb;
+        this.pj_residue_count[this.pj_last_index] = Tb;
+        this.pj_residue_type[this.pj_last_index] = Ub;
+        this.pj_residue_type_value[this.pj_last_index] = Vb;
+        this.pj_last_index++
     }
 };
 
@@ -10773,57 +10773,57 @@ SrProjectile.prototype.pjAdd = function (a, b, c, d, e, g, h, q, m, l, A, z, Z, 
 a:SrProjectile
 */
 function PjSub(a, b) {
-    a.pj_is_from_enemy[b] = a.pj_is_from_enemy[a.a - 1];
-    a.pj_position[b].vecSet(a.pj_position[a.a - 1]);
-    a.pj_velocity[b].vecSet(a.pj_velocity[a.a - 1]);
-    a.pj_is_dying[b] = a.pj_is_dying[a.a - 1];
-    a.pj_is_rotated[b] = a.pj_is_rotated[a.a - 1];
-    a.pj_image[b] = a.pj_image[a.a - 1];
-    a.pj_color[b] = a.pj_color[a.a - 1];
-    a.pj_is_transparent[b] = a.pj_is_transparent[a.a - 1];
-    a.pj_width[b] = a.pj_width[a.a - 1];
-    a.pj_height[b] = a.pj_height[a.a - 1];
-    a.pj_hit_width[b] = a.pj_hit_width[a.a - 1];
-    a.pj_hit_height[b] = a.pj_hit_height[a.a - 1];
-    a.pj_summon_delay[b] = a.pj_summon_delay[a.a - 1];
-    a.pj_hit_delay[b] = a.pj_hit_delay[a.a - 1];
-    a.pj_time[b] = a.pj_time[a.a - 1];
-    a.pj_despawn_time[b] = a.pj_despawn_time[a.a - 1];
-    a.pj_gravity[b] = a.pj_gravity[a.a - 1];
-    a.pj_acceleration[b] = a.pj_acceleration[a.a - 1];
-    a.pj_pierce[b] = a.pj_pierce[a.a - 1];
-    a.pj_bounce[b] = a.pj_bounce[a.a - 1];
-    a.pj_homing[b] = a.pj_homing[a.a - 1];
-    a.pj_knockback[b] = a.pj_knockback[a.a - 1];
-    a.pj_multiple_hit[b] = a.pj_multiple_hit[a.a - 1];
-    a.pj_min_at[b] = a.pj_min_at[a.a - 1];
-    a.pj_max_at[b] = a.pj_max_at[a.a - 1];
-    a.pj_type[b] = a.pj_type[a.a - 1];
-    a.pj_type_value[b] = a.pj_type_value[a.a - 1];
-    a.pj_residue_mode[b] = a.pj_residue_mode[a.a - 1];
-    a.pj_residue_is_rotated[b] = a.pj_residue_is_rotated[a.a - 1];
-    a.pj_residue_image[b] = a.pj_residue_image[a.a - 1];
-    a.pj_residue_color[b] = a.pj_residue_color[a.a - 1];
-    a.pj_residue_is_transparent[b] = a.pj_residue_is_transparent[a.a - 1];
-    a.pj_residue_width[b] = a.pj_residue_width[a.a - 1];
-    a.pj_residue_height[b] = a.pj_residue_height[a.a - 1];
-    a.pj_residue_hit_width[b] = a.pj_residue_hit_width[a.a - 1];
-    a.pj_residue_hit_height[b] = a.pj_residue_hit_height[a.a - 1];
-    a.pj_residue_summon_delay[b] = a.pj_residue_summon_delay[a.a - 1];
-    a.pj_residue_hit_delay[b] = a.pj_residue_hit_delay[a.a - 1];
-    a.pj_residue_time[b] = a.pj_residue_time[a.a - 1];
-    a.pj_residue_despawn_time[b] = a.pj_residue_despawn_time[a.a - 1];
-    a.pj_residue_gravity[b] = a.pj_residue_gravity[a.a - 1];
-    a.pj_residue_acceleration[b] = a.pj_residue_acceleration[a.a - 1];
-    a.pj_residue_pierce[b] = a.pj_residue_pierce[a.a - 1];
-    a.pj_residue_bounce[b] = a.pj_residue_bounce[a.a - 1];
-    a.pj_residue_multiple_hit[b] = a.pj_residue_multiple_hit[a.a - 1];
-    a.pj_residue_min_at[b] = a.pj_residue_min_at[a.a - 1];
-    a.pj_residue_max_at[b] = a.pj_residue_max_at[a.a - 1];
-    a.pj_residue_count[b] = a.pj_residue_count[a.a - 1];
-    a.pj_residue_type[b] = a.pj_residue_type[a.a - 1];
-    a.pj_residue_type_value[b] = a.pj_residue_type_value[a.a - 1];
-    a.a--
+    a.pj_is_from_enemy[b] = a.pj_is_from_enemy[a.pj_last_index - 1];
+    a.pj_position[b].vecSet(a.pj_position[a.pj_last_index - 1]);
+    a.pj_velocity[b].vecSet(a.pj_velocity[a.pj_last_index - 1]);
+    a.pj_is_dying[b] = a.pj_is_dying[a.pj_last_index - 1];
+    a.pj_is_rotated[b] = a.pj_is_rotated[a.pj_last_index - 1];
+    a.pj_image[b] = a.pj_image[a.pj_last_index - 1];
+    a.pj_color[b] = a.pj_color[a.pj_last_index - 1];
+    a.pj_is_transparent[b] = a.pj_is_transparent[a.pj_last_index - 1];
+    a.pj_width[b] = a.pj_width[a.pj_last_index - 1];
+    a.pj_height[b] = a.pj_height[a.pj_last_index - 1];
+    a.pj_hit_width[b] = a.pj_hit_width[a.pj_last_index - 1];
+    a.pj_hit_height[b] = a.pj_hit_height[a.pj_last_index - 1];
+    a.pj_summon_delay[b] = a.pj_summon_delay[a.pj_last_index - 1];
+    a.pj_hit_delay[b] = a.pj_hit_delay[a.pj_last_index - 1];
+    a.pj_time[b] = a.pj_time[a.pj_last_index - 1];
+    a.pj_despawn_time[b] = a.pj_despawn_time[a.pj_last_index - 1];
+    a.pj_gravity[b] = a.pj_gravity[a.pj_last_index - 1];
+    a.pj_acceleration[b] = a.pj_acceleration[a.pj_last_index - 1];
+    a.pj_pierce[b] = a.pj_pierce[a.pj_last_index - 1];
+    a.pj_bounce[b] = a.pj_bounce[a.pj_last_index - 1];
+    a.pj_homing[b] = a.pj_homing[a.pj_last_index - 1];
+    a.pj_knockback[b] = a.pj_knockback[a.pj_last_index - 1];
+    a.pj_multiple_hit[b] = a.pj_multiple_hit[a.pj_last_index - 1];
+    a.pj_min_at[b] = a.pj_min_at[a.pj_last_index - 1];
+    a.pj_max_at[b] = a.pj_max_at[a.pj_last_index - 1];
+    a.pj_type[b] = a.pj_type[a.pj_last_index - 1];
+    a.pj_type_value[b] = a.pj_type_value[a.pj_last_index - 1];
+    a.pj_residue_mode[b] = a.pj_residue_mode[a.pj_last_index - 1];
+    a.pj_residue_is_rotated[b] = a.pj_residue_is_rotated[a.pj_last_index - 1];
+    a.pj_residue_image[b] = a.pj_residue_image[a.pj_last_index - 1];
+    a.pj_residue_color[b] = a.pj_residue_color[a.pj_last_index - 1];
+    a.pj_residue_is_transparent[b] = a.pj_residue_is_transparent[a.pj_last_index - 1];
+    a.pj_residue_width[b] = a.pj_residue_width[a.pj_last_index - 1];
+    a.pj_residue_height[b] = a.pj_residue_height[a.pj_last_index - 1];
+    a.pj_residue_hit_width[b] = a.pj_residue_hit_width[a.pj_last_index - 1];
+    a.pj_residue_hit_height[b] = a.pj_residue_hit_height[a.pj_last_index - 1];
+    a.pj_residue_summon_delay[b] = a.pj_residue_summon_delay[a.pj_last_index - 1];
+    a.pj_residue_hit_delay[b] = a.pj_residue_hit_delay[a.pj_last_index - 1];
+    a.pj_residue_time[b] = a.pj_residue_time[a.pj_last_index - 1];
+    a.pj_residue_despawn_time[b] = a.pj_residue_despawn_time[a.pj_last_index - 1];
+    a.pj_residue_gravity[b] = a.pj_residue_gravity[a.pj_last_index - 1];
+    a.pj_residue_acceleration[b] = a.pj_residue_acceleration[a.pj_last_index - 1];
+    a.pj_residue_pierce[b] = a.pj_residue_pierce[a.pj_last_index - 1];
+    a.pj_residue_bounce[b] = a.pj_residue_bounce[a.pj_last_index - 1];
+    a.pj_residue_multiple_hit[b] = a.pj_residue_multiple_hit[a.pj_last_index - 1];
+    a.pj_residue_min_at[b] = a.pj_residue_min_at[a.pj_last_index - 1];
+    a.pj_residue_max_at[b] = a.pj_residue_max_at[a.pj_last_index - 1];
+    a.pj_residue_count[b] = a.pj_residue_count[a.pj_last_index - 1];
+    a.pj_residue_type[b] = a.pj_residue_type[a.pj_last_index - 1];
+    a.pj_residue_type_value[b] = a.pj_residue_type_value[a.pj_last_index - 1];
+    a.pj_last_index--
 }
 
 /*
@@ -10836,7 +10836,7 @@ function PjMain() {
     var d = new SrVec2;
     var e;
     var g;
-    for (b = 0; b < a.a; b++) {
+    for (b = 0; b < a.pj_last_index; b++) {
         if (-64 > a.pj_position[b].x || 576 < a.pj_position[b].x) {
             PjSub(a, b--);
         } else if (0 < a.pj_summon_delay[b]) {
@@ -11068,7 +11068,7 @@ function PjDraw() {
     var g = new SrVec2;
     var h = new SrVec2;
     var q = new SrVec2;
-    for (b = 0; b < a.a; b++) {
+    for (b = 0; b < a.pj_last_index; b++) {
         if (0 >= a.pj_summon_delay[b]) {
             c = 16 * a.pj_image[b];
             if (1 == a.pj_is_dying[b]) {
@@ -11228,16 +11228,16 @@ var SR_INDICATOR = new SrIndicator;
 */
 function SrIndicator() {
     var a;
-    this.b = Array(1E3);
-    this.c = Array(1E3);
-    this.value = new Int32Array(1E3);
-    this.f = new Int32Array(1E3);
-    this.g = new Int32Array(1E3);
-    for (a = this.a = 0; 1E3 > a; a++) {
-        this.b[a] = new SrVec2;
+    this.in_position = Array(1E3);
+    this.in_velocity = Array(1E3);
+    this.in_value = new Int32Array(1E3);
+    this.in_color = new Int32Array(1E3);
+    this.in_fade_time = new Int32Array(1E3);
+    for (a = this.in_last_index = 0; 1E3 > a; a++) {
+        this.in_position[a] = new SrVec2;
     }
     for (a = 0; 1E3 > a; a++) {
-        this.c[a] = new SrVec2
+        this.in_velocity[a] = new SrVec2
     }
 }
 
@@ -11245,26 +11245,26 @@ function SrIndicator() {
 ダメージエフェクト初期化
 */
 SrIndicator.prototype.inReset = function () {
-    this.a = 0
+    this.in_last_index = 0
 };
 
 /*
 ダメージエフェクト追加
 */
 SrIndicator.prototype.inAdd = function (a, b, c, d, e) {
-    if (1E3 != this.a) {
+    if (1E3 != this.in_last_index) {
         a = srClampA(a, 16, 495);
         b = srClampA(b, 8, 247);
-        setVec2(this.b[this.a], a, b);
-        setVec2(this.c[this.a], c, -2);
+        setVec2(this.in_position[this.in_last_index], a, b);
+        setVec2(this.in_velocity[this.in_last_index], c, -2);
         if (0 != c) {
-            this.c[this.a].x += srRandomRange(-.2, .2);
-            this.c[this.a].y += srRandomRange(-.2, .2);
+            this.in_velocity[this.in_last_index].x += srRandomRange(-.2, .2);
+            this.in_velocity[this.in_last_index].y += srRandomRange(-.2, .2);
         }
-        this.value[this.a] = d;
-        this.f[this.a] = e;
-        this.g[this.a] = 0;
-        this.a++
+        this.in_value[this.in_last_index] = d;
+        this.in_color[this.in_last_index] = e;
+        this.in_fade_time[this.in_last_index] = 0;
+        this.in_last_index++
     }
 };
 
@@ -11272,12 +11272,12 @@ SrIndicator.prototype.inAdd = function (a, b, c, d, e) {
 ダメージエフェクト削除
 */
 SrIndicator.prototype.inDelete = function (a) {
-    this.b[a].vecSet(this.b[this.a - 1]);
-    this.c[a].vecSet(this.c[this.a - 1]);
-    this.value[a] = this.value[this.a - 1];
-    this.f[a] = this.f[this.a - 1];
-    this.g[a] = this.g[this.a - 1];
-    this.a--
+    this.in_position[a].vecSet(this.in_position[this.in_last_index - 1]);
+    this.in_velocity[a].vecSet(this.in_velocity[this.in_last_index - 1]);
+    this.in_value[a] = this.in_value[this.in_last_index - 1];
+    this.in_color[a] = this.in_color[this.in_last_index - 1];
+    this.in_fade_time[a] = this.in_fade_time[this.in_last_index - 1];
+    this.in_last_index--
 };
 
 /*
@@ -11286,24 +11286,24 @@ SrIndicator.prototype.inDelete = function (a) {
 function InMain() {
     var a = SR_INDICATOR;
     var b;
-    for (b = 0; b < a.a; b++) {
-        if (0 == a.c[b].x) {
-            var c = a.b[b];
-            var d = a.c[b];
+    for (b = 0; b < a.in_last_index; b++) {
+        if (0 == a.in_velocity[b].x) {
+            var c = a.in_position[b];
+            var d = a.in_velocity[b];
             d.y += 0;
             scaleVec2(d, .96)
         } else {
-            c = a.b[b];
-            d = a.c[b];
+            c = a.in_position[b];
+            d = a.in_velocity[b];
             d.y += .05;
             scaleVec2(d, .99);
         }
         //vecAdd
         c.vecAdd(d);
-        a.b[b].x = srClampA(a.b[b].x, 16, 495);
-        a.b[b].y = srClampA(a.b[b].y, 8, 247);
-        a.g[b]++;
-        if (100 <= a.g[b]) {
+        a.in_position[b].x = srClampA(a.in_position[b].x, 16, 495);
+        a.in_position[b].y = srClampA(a.in_position[b].y, 8, 247);
+        a.in_fade_time[b]++;
+        if (100 <= a.in_fade_time[b]) {
             a.inDelete(b--)
         }
     }
@@ -11319,12 +11319,15 @@ function InDraw() {
     var d;
     var e;
     var g;
-    for (b = 0; b < a.a; b++) {
-        c = a.f[b] >> 16 & 255;
-        d = a.f[b] >> 8 & 255;
-        e = a.f[b] & 255;
-        g = srFloor(255 * srMin(100 - a.g[b], 50) / 50);
-        showText(SMALL_TEXT, srFloor(a.b[b].x), srFloor(a.b[b].y), "" + a.value[b], c, d, e, g, 0, 0, 0, g, 5, 7)
+    for (b = 0; b < a.in_last_index; b++) {
+        //
+        textOutputM(SMALL_TEXT,srFloor(a.in_position[b].x), srFloor(a.in_position[b].y-30)," "+a.in_velocity[b].y,255,255,255,32,255,255,255,128,5,7);
+        //
+        c = a.in_color[b] >> 16 & 255;
+        d = a.in_color[b] >> 8 & 255;
+        e = a.in_color[b] & 255;
+        g = srFloor(255 * srMin(100 - a.in_fade_time[b], 50) / 50);
+        showText(SMALL_TEXT, srFloor(a.in_position[b].x), srFloor(a.in_position[b].y), "" + a.in_value[b], c, d, e, g, 0, 0, 0, g, 5, 7)
     }
 }
 
