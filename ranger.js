@@ -3758,7 +3758,7 @@ function drawStage(a) {
                 }
             }
             for (b = 0; b < SR_PROJECTILE.a; b++) {
-                if (1 == SR_PROJECTILE.i[b]) {
+                if (1 == SR_PROJECTILE.pj_type[b]) {
                     filledRectCentered(SR_PROJECTILE.pj_position[b].x, SR_PROJECTILE.pj_position[b].y, 3, 3, 0);
                 }
             }
@@ -10647,53 +10647,53 @@ function SrProjectile() {
     this.pj_is_from_enemy = new Int32Array(1E3);
     this.pj_position = Array(1E3);
     this.pj_velocity = Array(1E3);
-    this.pj_is_transparent = new Int32Array(1E3);
+    this.pj_is_dying = new Int32Array(1E3);
     this.pj_is_rotated = new Int32Array(1E3);
-    this.ka = new Int32Array(1E3);
-    this.v = new Int32Array(1E3);
-    this.la = new Int32Array(1E3);
-    this.ga = new Int32Array(1E3);
-    this.ha = new Int32Array(1E3);
-    this.F = new Int32Array(1E3);
-    this.G = new Int32Array(1E3);
-    this.C = new Int32Array(1E3);
-    this.I = new Int32Array(1E3);
+    this.pj_image = new Int32Array(1E3);
+    this.pj_color = new Int32Array(1E3);
+    this.pj_is_transparent = new Int32Array(1E3);
+    this.pj_width = new Int32Array(1E3);
+    this.pj_height = new Int32Array(1E3);
+    this.pj_hit_width = new Int32Array(1E3);
+    this.pj_hit_height = new Int32Array(1E3);
+    this.pj_summon_delay = new Int32Array(1E3);
+    this.pj_hit_delay = new Int32Array(1E3);
     this.pj_time = new Int32Array(1E3);
-    this.D = new Int32Array(1E3);
-    this.ja = new Int32Array(1E3);
-    this.m = new Int32Array(1E3);
-    this.K = new Int32Array(1E3);
-    this.s = new Int32Array(1E3);
-    this.J = new Int32Array(1E3);
-    this.H = new Int32Array(1E3);
-    this.B = new Int32Array(1E3);
-    this.w = new Int32Array(1E3);
-    this.A = new Int32Array(1E3);
-    this.i = new Int32Array(1E3);
-    this.j = new Int32Array(1E3);
-    this.sub = new Int32Array(1E3);
-    this.U = new Int32Array(1E3);
-    this.ea = new Int32Array(1E3);
-    this.R = new Int32Array(1E3);
-    this.L = new Int32Array(1E3);
-    this.$ = new Int32Array(1E3);
-    this.ca = new Int32Array(1E3);
-    this.Y = new Int32Array(1E3);
-    this.Z = new Int32Array(1E3);
-    this.T = new Int32Array(1E3);
-    this.aa = new Int32Array(1E3);
-    this.S = new Int32Array(1E3);
-    this.V = new Int32Array(1E3);
-    this.W = new Int32Array(1E3);
-    this.fa = new Int32Array(1E3);
-    this.ba = new Int32Array(1E3);
-    this.X = new Int32Array(1E3);
-    this.da = new Int32Array(1E3);
-    this.M = new Int32Array(1E3);
-    this.N = new Int32Array(1E3);
-    this.f = new Int32Array(1E3);
-    this.O = new Int32Array(1E3);
-    this.P = new Int32Array(1E3);
+    this.pj_despawn_time = new Int32Array(1E3);
+    this.pj_gravity = new Int32Array(1E3);
+    this.pj_acceleration = new Int32Array(1E3);
+    this.pj_pierce = new Int32Array(1E3);
+    this.pj_bounce = new Int32Array(1E3);
+    this.pj_homing = new Int32Array(1E3);
+    this.pj_knockback = new Int32Array(1E3);
+    this.pj_multiple_hit = new Int32Array(1E3);
+    this.pj_min_at = new Int32Array(1E3);
+    this.pj_max_at = new Int32Array(1E3);
+    this.pj_type = new Int32Array(1E3);
+    this.pj_type_value = new Int32Array(1E3);
+    this.pj_residue_mode = new Int32Array(1E3);
+    this.pj_residue_is_rotated = new Int32Array(1E3);
+    this.pj_residue_image = new Int32Array(1E3);
+    this.pj_residue_color = new Int32Array(1E3);
+    this.pj_residue_is_transparent = new Int32Array(1E3);
+    this.pj_residue_width = new Int32Array(1E3);
+    this.pj_residue_height = new Int32Array(1E3);
+    this.pj_residue_hit_width = new Int32Array(1E3);
+    this.pj_residue_hit_height = new Int32Array(1E3);
+    this.pj_residue_summon_delay = new Int32Array(1E3);
+    this.pj_residue_hit_delay = new Int32Array(1E3);
+    this.pj_residue_time = new Int32Array(1E3);
+    this.pj_residue_despawn_time = new Int32Array(1E3);
+    this.pj_residue_gravity = new Int32Array(1E3);
+    this.pj_residue_acceleration = new Int32Array(1E3);
+    this.pj_residue_pierce = new Int32Array(1E3);
+    this.pj_residue_bounce = new Int32Array(1E3);
+    this.pj_residue_multiple_hit = new Int32Array(1E3);
+    this.pj_residue_min_at = new Int32Array(1E3);
+    this.pj_residue_max_at = new Int32Array(1E3);
+    this.pj_residue_count = new Int32Array(1E3);
+    this.pj_residue_type = new Int32Array(1E3);
+    this.pj_residue_type_value = new Int32Array(1E3);
     for (a = this.a = 0; 1E3 > a; a++) {
         this.pj_position[a] = new SrVec2;
     }
@@ -10717,53 +10717,53 @@ SrProjectile.prototype.pjAdd = function (a, b, c, d, e, g, h, q, m, l, A, z, Z, 
         this.pj_is_from_enemy[this.a] = a;
         setVec2(this.pj_position[this.a], b, c);
         setVec2(this.pj_velocity[this.a], d, e);
-        this.pj_is_transparent[this.a] = 0;
+        this.pj_is_dying[this.a] = 0;
         this.pj_is_rotated[this.a] = g;
-        this.ka[this.a] = h;
-        this.v[this.a] = q;
-        this.la[this.a] = m;
-        this.ga[this.a] = l;
-        this.ha[this.a] = A;
-        this.F[this.a] = z;
-        this.G[this.a] = Z;
-        this.C[this.a] = srFloor(srRandom(B));
-        this.I[this.a] = S;
+        this.pj_image[this.a] = h;
+        this.pj_color[this.a] = q;
+        this.pj_is_transparent[this.a] = m;
+        this.pj_width[this.a] = l;
+        this.pj_height[this.a] = A;
+        this.pj_hit_width[this.a] = z;
+        this.pj_hit_height[this.a] = Z;
+        this.pj_summon_delay[this.a] = srFloor(srRandom(B));
+        this.pj_hit_delay[this.a] = S;
         this.pj_time[this.a] = ia;
-        this.D[this.a] = za;
-        this.ja[this.a] = ta;
-        this.m[this.a] = X;
-        this.K[this.a] = T;
-        this.s[this.a] = Y;
-        this.J[this.a] = Ua;
-        this.H[this.a] = eb;
-        this.B[this.a] = Va;
-        this.w[this.a] = ua;
-        this.A[this.a] = pa;
-        this.i[this.a] = Ha;
-        this.j[this.a] = rb;
-        this.sub[this.a] = Aa;
-        this.U[this.a] = ka;
-        this.ea[this.a] = ab;
-        this.R[this.a] = Pa;
-        this.L[this.a] = Wa;
-        this.$[this.a] = Ca;
-        this.ca[this.a] = yb;
-        this.Y[this.a] = Hb;
-        this.Z[this.a] = Ib;
-        this.T[this.a] = Jb;
-        this.aa[this.a] = Kb;
-        this.S[this.a] = Lb;
-        this.V[this.a] = Mb;
-        this.W[this.a] = Nb;
-        this.fa[this.a] = Ob;
-        this.ba[this.a] = Pb;
-        this.X[this.a] = Qb;
-        this.da[this.a] = sb;
-        this.M[this.a] = Rb;
-        this.N[this.a] = Sb;
-        this.f[this.a] = Tb;
-        this.O[this.a] = Ub;
-        this.P[this.a] = Vb;
+        this.pj_despawn_time[this.a] = za;
+        this.pj_gravity[this.a] = ta;
+        this.pj_acceleration[this.a] = X;
+        this.pj_pierce[this.a] = T;
+        this.pj_bounce[this.a] = Y;
+        this.pj_homing[this.a] = Ua;
+        this.pj_knockback[this.a] = eb;
+        this.pj_multiple_hit[this.a] = Va;
+        this.pj_min_at[this.a] = ua;
+        this.pj_max_at[this.a] = pa;
+        this.pj_type[this.a] = Ha;
+        this.pj_type_value[this.a] = rb;
+        this.pj_residue_mode[this.a] = Aa;
+        this.pj_residue_is_rotated[this.a] = ka;
+        this.pj_residue_image[this.a] = ab;
+        this.pj_residue_color[this.a] = Pa;
+        this.pj_residue_is_transparent[this.a] = Wa;
+        this.pj_residue_width[this.a] = Ca;
+        this.pj_residue_height[this.a] = yb;
+        this.pj_residue_hit_width[this.a] = Hb;
+        this.pj_residue_hit_height[this.a] = Ib;
+        this.pj_residue_summon_delay[this.a] = Jb;
+        this.pj_residue_hit_delay[this.a] = Kb;
+        this.pj_residue_time[this.a] = Lb;
+        this.pj_residue_despawn_time[this.a] = Mb;
+        this.pj_residue_gravity[this.a] = Nb;
+        this.pj_residue_acceleration[this.a] = Ob;
+        this.pj_residue_pierce[this.a] = Pb;
+        this.pj_residue_bounce[this.a] = Qb;
+        this.pj_residue_multiple_hit[this.a] = sb;
+        this.pj_residue_min_at[this.a] = Rb;
+        this.pj_residue_max_at[this.a] = Sb;
+        this.pj_residue_count[this.a] = Tb;
+        this.pj_residue_type[this.a] = Ub;
+        this.pj_residue_type_value[this.a] = Vb;
         this.a++
     }
 };
@@ -10776,54 +10776,53 @@ function PjSub(a, b) {
     a.pj_is_from_enemy[b] = a.pj_is_from_enemy[a.a - 1];
     a.pj_position[b].vecSet(a.pj_position[a.a - 1]);
     a.pj_velocity[b].vecSet(a.pj_velocity[a.a - 1]);
-    a.pj_is_transparent[b] = a.pj_is_transparent[a.a - 1];
+    a.pj_is_dying[b] = a.pj_is_dying[a.a - 1];
     a.pj_is_rotated[b] = a.pj_is_rotated[a.a - 1];
-    a.ka[b] = a.ka[a.a - 1];
-    a.v[b] = a.v[a.a - 1];
-    a.la[b] = a.la[a.a - 1];
-    a.ga[b] = a.ga[a.a - 1];
-    a.ha[b] = a.ha[a.a - 1];
-    a.F[b] = a.F[a.a - 1];
-    a.G[b] = a.G[a.a - 1];
-    a.C[b] = a.C[a.a - 1];
-    a.I[b] = a.I[a.a - 1];
+    a.pj_image[b] = a.pj_image[a.a - 1];
+    a.pj_color[b] = a.pj_color[a.a - 1];
+    a.pj_is_transparent[b] = a.pj_is_transparent[a.a - 1];
+    a.pj_width[b] = a.pj_width[a.a - 1];
+    a.pj_height[b] = a.pj_height[a.a - 1];
+    a.pj_hit_width[b] = a.pj_hit_width[a.a - 1];
+    a.pj_hit_height[b] = a.pj_hit_height[a.a - 1];
+    a.pj_summon_delay[b] = a.pj_summon_delay[a.a - 1];
+    a.pj_hit_delay[b] = a.pj_hit_delay[a.a - 1];
     a.pj_time[b] = a.pj_time[a.a - 1];
-    a.D[b] = a.D[a.a - 1];
-    a.ja[b] = a.ja[a.a - 1];
-    a.m[b] = a.m[a.a - 1];
-    a.K[b] = a.K[a.a - 1];
-    a.s[b] = a.s[a.a - 1];
-    a.J[b] = a.J[a.a - 1];
-    a.H[b] = a.H[a.a - 1];
-    a.B[b] = a.B[a.a - 1];
-    a.w[b] = a.w[a.a - 1];
-    a.A[b] = a.A[a.a - 1];
-    a.i[b] = a.i[a.a - 1];
-    a.j[b] = a.j[a.a - 1];
-    //what is this sub
-    a.sub[b] = a.sub[a.a - 1];
-    a.U[b] = a.U[a.a - 1];
-    a.ea[b] = a.ea[a.a - 1];
-    a.R[b] = a.R[a.a - 1];
-    a.L[b] = a.L[a.a - 1];
-    a.$[b] = a.$[a.a - 1];
-    a.ca[b] = a.ca[a.a - 1];
-    a.Y[b] = a.Y[a.a - 1];
-    a.Z[b] = a.Z[a.a - 1];
-    a.T[b] = a.T[a.a - 1];
-    a.aa[b] = a.aa[a.a - 1];
-    a.S[b] = a.S[a.a - 1];
-    a.V[b] = a.V[a.a - 1];
-    a.W[b] = a.W[a.a - 1];
-    a.fa[b] = a.fa[a.a - 1];
-    a.ba[b] = a.ba[a.a - 1];
-    a.X[b] = a.X[a.a - 1];
-    a.da[b] = a.da[a.a - 1];
-    a.M[b] = a.M[a.a - 1];
-    a.N[b] = a.N[a.a - 1];
-    a.f[b] = a.f[a.a - 1];
-    a.O[b] = a.O[a.a - 1];
-    a.P[b] = a.P[a.a - 1];
+    a.pj_despawn_time[b] = a.pj_despawn_time[a.a - 1];
+    a.pj_gravity[b] = a.pj_gravity[a.a - 1];
+    a.pj_acceleration[b] = a.pj_acceleration[a.a - 1];
+    a.pj_pierce[b] = a.pj_pierce[a.a - 1];
+    a.pj_bounce[b] = a.pj_bounce[a.a - 1];
+    a.pj_homing[b] = a.pj_homing[a.a - 1];
+    a.pj_knockback[b] = a.pj_knockback[a.a - 1];
+    a.pj_multiple_hit[b] = a.pj_multiple_hit[a.a - 1];
+    a.pj_min_at[b] = a.pj_min_at[a.a - 1];
+    a.pj_max_at[b] = a.pj_max_at[a.a - 1];
+    a.pj_type[b] = a.pj_type[a.a - 1];
+    a.pj_type_value[b] = a.pj_type_value[a.a - 1];
+    a.pj_residue_mode[b] = a.pj_residue_mode[a.a - 1];
+    a.pj_residue_is_rotated[b] = a.pj_residue_is_rotated[a.a - 1];
+    a.pj_residue_image[b] = a.pj_residue_image[a.a - 1];
+    a.pj_residue_color[b] = a.pj_residue_color[a.a - 1];
+    a.pj_residue_is_transparent[b] = a.pj_residue_is_transparent[a.a - 1];
+    a.pj_residue_width[b] = a.pj_residue_width[a.a - 1];
+    a.pj_residue_height[b] = a.pj_residue_height[a.a - 1];
+    a.pj_residue_hit_width[b] = a.pj_residue_hit_width[a.a - 1];
+    a.pj_residue_hit_height[b] = a.pj_residue_hit_height[a.a - 1];
+    a.pj_residue_summon_delay[b] = a.pj_residue_summon_delay[a.a - 1];
+    a.pj_residue_hit_delay[b] = a.pj_residue_hit_delay[a.a - 1];
+    a.pj_residue_time[b] = a.pj_residue_time[a.a - 1];
+    a.pj_residue_despawn_time[b] = a.pj_residue_despawn_time[a.a - 1];
+    a.pj_residue_gravity[b] = a.pj_residue_gravity[a.a - 1];
+    a.pj_residue_acceleration[b] = a.pj_residue_acceleration[a.a - 1];
+    a.pj_residue_pierce[b] = a.pj_residue_pierce[a.a - 1];
+    a.pj_residue_bounce[b] = a.pj_residue_bounce[a.a - 1];
+    a.pj_residue_multiple_hit[b] = a.pj_residue_multiple_hit[a.a - 1];
+    a.pj_residue_min_at[b] = a.pj_residue_min_at[a.a - 1];
+    a.pj_residue_max_at[b] = a.pj_residue_max_at[a.a - 1];
+    a.pj_residue_count[b] = a.pj_residue_count[a.a - 1];
+    a.pj_residue_type[b] = a.pj_residue_type[a.a - 1];
+    a.pj_residue_type_value[b] = a.pj_residue_type_value[a.a - 1];
     a.a--
 }
 
@@ -10840,17 +10839,17 @@ function PjMain() {
     for (b = 0; b < a.a; b++) {
         if (-64 > a.pj_position[b].x || 576 < a.pj_position[b].x) {
             PjSub(a, b--);
-        } else if (0 < a.C[b]) {
-            a.C[b]--;
+        } else if (0 < a.pj_summon_delay[b]) {
+            a.pj_summon_delay[b]--;
         } else {
-            if (1 == a.pj_is_transparent[b]) {
+            if (1 == a.pj_is_dying[b]) {
                 a.pj_time[b]++;
-                if (a.pj_time[b] >= a.D[b]) {
+                if (a.pj_time[b] >= a.pj_despawn_time[b]) {
                     PjSub(a, b--);
                 }
             } else {
-                if (0 < a.J[b]) {
-                    e = a.J[b];
+                if (0 < a.pj_homing[b]) {
+                    e = a.pj_homing[b];
                     if (a.pj_is_from_enemy[b]) {
                         if (1 != GameMode) {
                             e = plFindPlayer(a.pj_position[b].x - e, a.pj_position[b].y - e, a.pj_position[b].x + e, a.pj_position[b].y + e, 0);
@@ -10886,8 +10885,8 @@ function PjMain() {
                         scaleVec2(a.pj_velocity[b], srMax(e, 1));
                     }
                 }
-                a.pj_velocity[b].y += .01 * a.ja[b];
-                scaleVec2(a.pj_velocity[b], .01 * a.m[b]);
+                a.pj_velocity[b].y += .01 * a.pj_gravity[b];
+                scaleVec2(a.pj_velocity[b], .01 * a.pj_acceleration[b]);
                 e = a;
                 g = b;
                 c = d;
@@ -10904,10 +10903,10 @@ function PjMain() {
                     l = srFloor(srClampA(e.pj_position[g].x, 0, 511) / 8);
                     A = srFloor(srClampA(m, 0, 255) / 8);
                     l = SR_TERRAIN.a[A][l];
-                    if (0 > l || 8 < l || e.K[g]) {
+                    if (0 > l || 8 < l || e.pj_pierce[g]) {
                         e.pj_position[g].y = m;
-                    } else if (e.s[g]) {
-                        if (2 == e.s[g]) {
+                    } else if (e.pj_bounce[g]) {
+                        if (2 == e.pj_bounce[g]) {
                             c.y *= -1;
                             e.pj_velocity[g].y *= -1;
                         }
@@ -10918,11 +10917,11 @@ function PjMain() {
                     l = srFloor(srClampA(m, 0, 511) / 8);
                     A = srFloor(srClampA(e.pj_position[g].y, 0, 255) / 8);
                     l = SR_TERRAIN.a[A][l];
-                    if (0 <= l && 8 >= l && !e.K[g]) {
-                        if (!e.s[g] || 1 == e.s[g]) {
+                    if (0 <= l && 8 >= l && !e.pj_pierce[g]) {
+                        if (!e.pj_bounce[g] || 1 == e.pj_bounce[g]) {
                             h = 1;
                         }
-                        if (2 == e.s[g]) {
+                        if (2 == e.pj_bounce[g]) {
                             c.x *= -1;
                             e.pj_velocity[g].x *= -1;
                         }
@@ -10932,30 +10931,30 @@ function PjMain() {
                 }
                 e = h;
                 c = 1;
-                if (1 == a.i[b] && a.j[b] && srRandom(1E3) > a.j[b]) {
+                if (1 == a.pj_type[b] && a.pj_type_value[b] && srRandom(1E3) > a.pj_type_value[b]) {
                     c = 0;
                 }
-                if (0 < a.I[b]) {
-                    a.I[b]--;
+                if (0 < a.pj_hit_delay[b]) {
+                    a.pj_hit_delay[b]--;
                     c = 0;
                 }
                 g = -1;
                 if (1 == c) {
                     if (a.pj_is_from_enemy[b]) {
                         if (1 != GameMode) {
-                            g = plGetDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.pj_position[b].x, a.pj_position[b].y, a.F[b], a.G[b], 0);
+                            g = plGetDamage(a.pj_multiple_hit[b], a.pj_type[b], a.pj_type_value[b], a.pj_min_at[b], a.pj_max_at[b], a.pj_position[b].x, a.pj_position[b].y, a.pj_hit_width[b], a.pj_hit_height[b], 0);
                         } else {
-                            g = plGetDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.pj_position[b].x, a.pj_position[b].y, a.F[b], a.G[b], 1 - a.pj_is_from_enemy[b] << 2);
+                            g = plGetDamage(a.pj_multiple_hit[b], a.pj_type[b], a.pj_type_value[b], a.pj_min_at[b], a.pj_max_at[b], a.pj_position[b].x, a.pj_position[b].y, a.pj_hit_width[b], a.pj_hit_height[b], 1 - a.pj_is_from_enemy[b] << 2);
                         }
                     } else {
                         if (1 != GameMode) {
-                            g = enGetDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.pj_position[b].x, a.pj_position[b].y, a.F[b], a.G[b]);
+                            g = enGetDamage(a.pj_multiple_hit[b], a.pj_type[b], a.pj_type_value[b], a.pj_min_at[b], a.pj_max_at[b], a.pj_position[b].x, a.pj_position[b].y, a.pj_hit_width[b], a.pj_hit_height[b]);
                         } else {
-                            g = plGetDamage(a.B[b], a.i[b], a.j[b], a.w[b], a.A[b], a.pj_position[b].x, a.pj_position[b].y, a.F[b], a.G[b], 1 - a.pj_is_from_enemy[b] << 2);
+                            g = plGetDamage(a.pj_multiple_hit[b], a.pj_type[b], a.pj_type_value[b], a.pj_min_at[b], a.pj_max_at[b], a.pj_position[b].x, a.pj_position[b].y, a.pj_hit_width[b], a.pj_hit_height[b], 1 - a.pj_is_from_enemy[b] << 2);
                         }
                     }
                 }
-                if (-1 != g && a.H[b]) {
+                if (-1 != g && a.pj_knockback[b]) {
                     if (a.pj_is_from_enemy[b]) {
                         if (1 != GameMode) {
                             setDistance(d, SR_PLAYER.pl_current_joint[g][0], a.pj_position[b]);
@@ -10970,7 +10969,7 @@ function PjMain() {
                         }
                     }
                     normalize(d);
-                    scaleVec2(d, .1 * a.H[b]);
+                    scaleVec2(d, .1 * a.pj_knockback[b]);
                     if (1 == GameMode || a.pj_is_from_enemy[b]) {
                         scaleVec2(d, .1);
                     } else {
@@ -10980,64 +10979,64 @@ function PjMain() {
                         if (1 != GameMode) {
                             //vecSub
                             SR_PLAYER.pl_last_joint[g][0].vecSub(d);
-                            a.H[b] = 0;
+                            a.pj_knockback[b] = 0;
                         } else {
                             //vecSub
                             SR_PLAYER.pl_last_joint[g][0].vecSub(d);
-                            a.H[b] = 0;
+                            a.pj_knockback[b] = 0;
                         }
                     } else {
                         if (1 != GameMode) {
                             //vecSub
                             SR_ENEMY.en_last_joint[g][0].vecSub(d);
-                            a.H[b] = 0;
+                            a.pj_knockback[b] = 0;
                         } else {
                             //vecSub
                             SR_PLAYER.pl_last_joint[g][0].vecSub(d);
-                            a.H[b] = 0;
+                            a.pj_knockback[b] = 0;
                         }
                     }
                 }
-                if (1 == a.i[b] && a.j[b]) {
+                if (1 == a.pj_type[b] && a.pj_type_value[b]) {
                     g = -1;
                 }
                 if (1 == e || -1 != g) {
-                    a.pj_is_transparent[b] = 1;
+                    a.pj_is_dying[b] = 1;
                     a.pj_time[b] = 0;
-                    if (1 == a.sub[b] || 3 == a.sub[b] || 4 == a.sub[b] || 5 == a.sub[b] || 6 == a.sub[b] || 7 == a.sub[b] || 8 == a.sub[b] || 9 == a.sub[b]) {
+                    if (1 == a.pj_residue_mode[b] || 3 == a.pj_residue_mode[b] || 4 == a.pj_residue_mode[b] || 5 == a.pj_residue_mode[b] || 6 == a.pj_residue_mode[b] || 7 == a.pj_residue_mode[b] || 8 == a.pj_residue_mode[b] || 9 == a.pj_residue_mode[b]) {
                         h = srFloor(srRandom(512));
-                        for (c = 0; c < a.f[b]; c++) {
-                            if (1 == a.sub[b]) {
+                        for (c = 0; c < a.pj_residue_count[b]; c++) {
+                            if (1 == a.pj_residue_mode[b]) {
                                 setVec2(d, 0, 0);
-                            } else if (3 == a.sub[b]) {
+                            } else if (3 == a.pj_residue_mode[b]) {
                                 h = srFloor(srRandom(512));
                                 q = srRandomRange(.05, .1);
-                                d.x = a.f[b] * AngleArray[h][0] * q;
-                                d.y = a.f[b] * AngleArray[h][1] * q;
-                            } else if (4 == a.sub[b]) {
-                                d.x = srRandomRange(.1 * -a.f[b], .1 * a.f[b]);
-                                d.y = srRandomRange(.2 * -a.f[b], .1 * -a.f[b]);
-                            } else if (5 == a.sub[b]) {
+                                d.x = a.pj_residue_count[b] * AngleArray[h][0] * q;
+                                d.y = a.pj_residue_count[b] * AngleArray[h][1] * q;
+                            } else if (4 == a.pj_residue_mode[b]) {
+                                d.x = srRandomRange(.1 * -a.pj_residue_count[b], .1 * a.pj_residue_count[b]);
+                                d.y = srRandomRange(.2 * -a.pj_residue_count[b], .1 * -a.pj_residue_count[b]);
+                            } else if (5 == a.pj_residue_mode[b]) {
                                 d.x = a.pj_velocity[b].x;
                                 d.y = a.pj_velocity[b].y;
-                            } else if (6 == a.sub[b]) {
-                                d.x = srRandomRange(.01 * -a.f[b], .01 * a.f[b]);
-                                d.y = srRandomRange(.2 * -a.f[b], .05 * -a.f[b]);
-                            } else if (7 == a.sub[b]) {
-                                q = srFloor(h + 512 * c / a.f[b]) & 511;
-                                d.x = a.f[b] * AngleArray[q][0];
-                                d.y = a.f[b] * AngleArray[q][1];
-                            } else if (8 == a.sub[b]) {
+                            } else if (6 == a.pj_residue_mode[b]) {
+                                d.x = srRandomRange(.01 * -a.pj_residue_count[b], .01 * a.pj_residue_count[b]);
+                                d.y = srRandomRange(.2 * -a.pj_residue_count[b], .05 * -a.pj_residue_count[b]);
+                            } else if (7 == a.pj_residue_mode[b]) {
+                                q = srFloor(h + 512 * c / a.pj_residue_count[b]) & 511;
+                                d.x = a.pj_residue_count[b] * AngleArray[q][0];
+                                d.y = a.pj_residue_count[b] * AngleArray[q][1];
+                            } else if (8 == a.pj_residue_mode[b]) {
                                 h = srFloor(srRandom(512));
                                 q = srRandomRange(0, .1);
-                                d.x = a.f[b] * AngleArray[h][0] * q;
-                                d.y = a.f[b] * AngleArray[h][1] * q;
-                            } else if (9 == a.sub[b]) {
+                                d.x = a.pj_residue_count[b] * AngleArray[h][0] * q;
+                                d.y = a.pj_residue_count[b] * AngleArray[h][1] * q;
+                            } else if (9 == a.pj_residue_mode[b]) {
                                 d.x = a.pj_velocity[b].x;
                                 d.y = a.pj_velocity[b].y;
                                 normalize(d);
                             }
-                            SR_PROJECTILE.pjAdd(a.pj_is_from_enemy[b], a.pj_position[b].x, a.pj_position[b].y, d.x, d.y, a.U[b], a.ea[b], a.R[b], a.L[b], a.$[b], a.ca[b], a.Y[b], a.Z[b], a.T[b], a.aa[b], a.S[b], a.V[b], a.W[b], a.fa[b], a.ba[b], a.X[b], 0, 0, a.da[b], a.M[b], a.N[b], a.O[b], a.P[b], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+                            SR_PROJECTILE.pjAdd(a.pj_is_from_enemy[b], a.pj_position[b].x, a.pj_position[b].y, d.x, d.y, a.pj_residue_is_rotated[b], a.pj_residue_image[b], a.pj_residue_color[b], a.pj_residue_is_transparent[b], a.pj_residue_width[b], a.pj_residue_height[b], a.pj_residue_hit_width[b], a.pj_residue_hit_height[b], a.pj_residue_summon_delay[b], a.pj_residue_hit_delay[b], a.pj_residue_time[b], a.pj_residue_despawn_time[b], a.pj_residue_gravity[b], a.pj_residue_acceleration[b], a.pj_residue_pierce[b], a.pj_residue_bounce[b], 0, 0, a.pj_residue_multiple_hit[b], a.pj_residue_min_at[b], a.pj_residue_max_at[b], a.pj_residue_type[b], a.pj_residue_type_value[b], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
                         }
                     }
                 }
@@ -11045,12 +11044,12 @@ function PjMain() {
                     a.pj_time[b]--;
                 }
                 if (!a.pj_time[b]) {
-                    a.pj_is_transparent[b] = 1;
+                    a.pj_is_dying[b] = 1;
                 }
-                if (2 == a.sub[b] && (srRandom(100) < a.f[b] || 1 == e || -1 != g)) {
+                if (2 == a.pj_residue_mode[b] && (srRandom(100) < a.pj_residue_count[b] || 1 == e || -1 != g)) {
                     d.x = srRandomRange(-1, 1);
                     d.y = srRandomRange(-1, 1);
-                    SR_PROJECTILE.pjAdd(a.pj_is_from_enemy[b], a.pj_position[b].x, a.pj_position[b].y, d.x, d.y, a.U[b], a.ea[b], a.R[b], a.L[b], a.$[b], a.ca[b], a.Y[b], a.Z[b], a.T[b], a.aa[b], a.S[b], a.V[b], a.W[b], a.fa[b], a.ba[b], a.X[b], 0, 0, a.da[b], a.M[b], a.N[b], a.O[b], a.P[b], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+                    SR_PROJECTILE.pjAdd(a.pj_is_from_enemy[b], a.pj_position[b].x, a.pj_position[b].y, d.x, d.y, a.pj_residue_is_rotated[b], a.pj_residue_image[b], a.pj_residue_color[b], a.pj_residue_is_transparent[b], a.pj_residue_width[b], a.pj_residue_height[b], a.pj_residue_hit_width[b], a.pj_residue_hit_height[b], a.pj_residue_summon_delay[b], a.pj_residue_hit_delay[b], a.pj_residue_time[b], a.pj_residue_despawn_time[b], a.pj_residue_gravity[b], a.pj_residue_acceleration[b], a.pj_residue_pierce[b], a.pj_residue_bounce[b], 0, 0, a.pj_residue_multiple_hit[b], a.pj_residue_min_at[b], a.pj_residue_max_at[b], a.pj_residue_type[b], a.pj_residue_type_value[b], 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
                 }
             }
         }
@@ -11070,31 +11069,33 @@ function PjDraw() {
     var h = new SrVec2;
     var q = new SrVec2;
     for (b = 0; b < a.a; b++) {
-        if (0 >= a.C[b]) {
-            c = 16 * a.ka[b];
-            if (1 == a.pj_is_transparent[b]) {
-                d = srFloor((a.v[b] >> 24 & 255) * (a.D[b] - a.pj_time[b]) / a.D[b]) << 24 | a.v[b] & 16777215;
+        if (0 >= a.pj_summon_delay[b]) {
+            c = 16 * a.pj_image[b];
+            if (1 == a.pj_is_dying[b]) {
+                d = srFloor((a.pj_color[b] >> 24 & 255) * (a.pj_despawn_time[b] - a.pj_time[b]) / a.pj_despawn_time[b]) << 24 | a.pj_color[b] & 16777215;
             } else {
-                d = a.v[b];
+                d = a.pj_color[b];
             }
-            if (0 < a.I[b]) {
+            if (0 < a.pj_hit_delay[b]) {
                 d = srFloor((d >> 24 & 255) / 2) << 24 | d & 16777215;
             }
-            DisplayMode1 = a.la[b];
+            DisplayMode1 = a.pj_is_transparent[b];
             DisplayMode2 = 1;
             //debug draw
-            //textOutputM(SMALL_TEXT,srFloor(a.pj_position[b].x), srFloor(a.pj_position[b].y-30),">"+a.pj_is_rotated[b],255,255,255,32,255,255,255,128,5,7);
+            //textOutputM(SMALL_TEXT,srFloor(a.pj_position[b].x), srFloor(a.pj_position[b].y-30)," "+a.pj_residue_type[b],255,255,255,32,255,255,255,128,5,7);
+            //当たり判定
+            //frameRectCentered(a.pj_position[b].x,a.pj_position[b].y,a.pj_hit_width[b],a.pj_hit_height[b],256*256*256*256-1);
             //
             if (!a.pj_is_rotated[b]) {
-                drawFromImageCentered(ProjectileImage, srFloor(a.pj_position[b].x), srFloor(a.pj_position[b].y), a.ga[b], a.ha[b], c, 0, 16, 16, d);
+                drawFromImageCentered(ProjectileImage, srFloor(a.pj_position[b].x), srFloor(a.pj_position[b].y), a.pj_width[b], a.pj_height[b], c, 0, 16, 16, d);
             } else {
                 g.vecSet(a.pj_velocity[b]);
                 e.vecSet(g);
                 setPerpendicular(e);
                 normalize(e);
                 normalize(g);
-                scaleVec2(e, a.ga[b] >> 1);
-                scaleVec2(g, a.ha[b] >> 1);
+                scaleVec2(e, a.pj_width[b] >> 1);
+                scaleVec2(g, a.pj_height[b] >> 1);
                 setDistance(h, g, e);
                 setSumVec2(q, g, e);
                 var m = a.pj_position[b].x + h.x;
