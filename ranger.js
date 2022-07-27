@@ -1738,8 +1738,9 @@ function startGame(a, b, c, d, e, g, h, q, m, l, A, z, Z, B) {
         }
     }
     if (1 == StartUpStep) {
-        imageToArray(LARGE_TEXT.f);
-        imageToArray(SMALL_TEXT.f);
+        //tx.f
+        imageToArray(LARGE_TEXT.tx_image);
+        imageToArray(SMALL_TEXT.tx_image);
         for (a = 0; 13 > a; a++) {
             imageToArray(TerrainTextureImageArray[a]);
         }
@@ -1808,16 +1809,16 @@ function playSequence() {
         }
         if (0 < SaveMessageTime) {
             SaveMessageTime--;
-            centeredText(LARGE_TEXT, 480, 247, "save OK", 16711680, 6684672);
+            showTextSolidCenter(LARGE_TEXT, 480, 247, "save OK", 16711680, 6684672);
         }
         if (0 < SaveCodeErrorMessageTime) {
             SaveCodeErrorMessageTime--;
             if (2 == SaveCodeError) {
-                textOutputB(LARGE_TEXT, 10, 10, "VERSION ERROR", 16711680, 6684672);
+                showTextSolidTopLeft(LARGE_TEXT, 10, 10, "VERSION ERROR", 16711680, 6684672);
             } else if (3 == SaveCodeError) {
-                textOutputB(LARGE_TEXT, 10, 10, "DATA ERROR", 16711680, 6684672);
+                showTextSolidTopLeft(LARGE_TEXT, 10, 10, "DATA ERROR", 16711680, 6684672);
             } else if (4 == SaveCodeError) {
-                textOutputB(LARGE_TEXT, 10, 10, "USER ERROR", 16711680, 6684672);
+                showTextSolidTopLeft(LARGE_TEXT, 10, 10, "USER ERROR", 16711680, 6684672);
             }
         }
         antiCheatCheck()
@@ -1844,10 +1845,10 @@ function menuAndMap() {
     } else if (1 == SequenceStep) {
         CurrentArea = 0;
         if (SR_TERRAIN.trSet(0)) {
-            SR_PLAYER.plSet(0, 20, SR_TERRAIN.b[20]);
-            SR_PLAYER.plSet(1, 28, SR_TERRAIN.b[28]);
-            SR_PLAYER.plSet(2, 36, SR_TERRAIN.b[36]);
-            SR_PLAYER.plSet(3, 44, SR_TERRAIN.b[44]);
+            SR_PLAYER.plSet(0, 20, SR_TERRAIN.tr_low_surface[20]);
+            SR_PLAYER.plSet(1, 28, SR_TERRAIN.tr_low_surface[28]);
+            SR_PLAYER.plSet(2, 36, SR_TERRAIN.tr_low_surface[36]);
+            SR_PLAYER.plSet(3, 44, SR_TERRAIN.tr_low_surface[44]);
             setPlayerStatus();
             SR_ENEMY.enReset(1);
             SequenceStep++;
@@ -1886,9 +1887,9 @@ function menuAndMap() {
         b = srClampA(b, 100, 300);
         //if (isMouseHoveredCenter(100 == b ? 256 : 316, 195, 100 == b ? 128 : 248, 24)) {
         if (100 == b) {
-            centeredText(LARGE_TEXT, 256, 195, "NEW GAME", 16777215, 10053171);
+            showTextSolidCenter(LARGE_TEXT, 256, 195, "NEW GAME", 16777215, 10053171);
         } else {
-            centeredText(LARGE_TEXT, 256, 195, "               NEW GAME with the Crown", 16777215, 10053171);
+            showTextSolidCenter(LARGE_TEXT, 256, 195, "               NEW GAME with the Crown", 16777215, 10053171);
         }
         if (100 == b && isMouseHoveredCenter(256, 195, 128, 24) || 100 != b && isMouseHoveredCenter(316, 195, 248, 24)) {
             if (Clicked) {
@@ -1916,7 +1917,7 @@ function menuAndMap() {
             }
         }
         if (0 != PlayerClass[0] && 0 != PlayerClass[1] && 0 != PlayerClass[2] && 0 != PlayerClass[3]) {
-            centeredText(LARGE_TEXT, 256, 235, "LOAD GAME", 16777215, 10053171);
+            showTextSolidCenter(LARGE_TEXT, 256, 235, "LOAD GAME", 16777215, 10053171);
             if (isMouseHoveredCenter(256, 235, 128, 24)) {
                 if (Clicked) {
                     SequenceStep = 5
@@ -1924,7 +1925,7 @@ function menuAndMap() {
                 drawLine(192, 243, 320, 243, 11141120);
             }
         }
-        centeredText(LARGE_TEXT, 256, 275, "VS MODE", 16777215, 5066137);
+        showTextSolidCenter(LARGE_TEXT, 256, 275, "VS MODE", 16777215, 5066137);
         if (isMouseHoveredCenter(256, 275, 128, 24)) {
             if (Clicked) {
                 //vsモードにできないようにする
@@ -1943,7 +1944,7 @@ function menuAndMap() {
         SR_PLAYER.plMain();
         TrDraw();
         SR_PLAYER.plDraw();
-        showText(LARGE_TEXT, 256, 50, "Player's Class Selection", 204, 148, 73, 255, 100, 0, 0, 255, 16, 24);
+        showTextCenter(LARGE_TEXT, 256, 50, "Player's Class Selection", 204, 148, 73, 255, 100, 0, 0, 255, 16, 24);
         for (a = 0; 4 > a; a++) {
             if (isMouseHoveredCenter(160 + 64 * a, 140, 24, 24)) {
                 if (Clicked) {
@@ -1960,9 +1961,10 @@ function menuAndMap() {
             var b = 46 + 60 * a;
             var c = CLASS_NAME[a + 1];
             var d = LARGE_TEXT;
-            d.b = -1;
-            centeredText(d, b, 220, c, 13407305, 6553600);
-            d.b = 0;
+            //tx.b
+            d.tx_spacing = -1;
+            showTextSolidCenter(d, b, 220, c, 13407305, 6553600);
+            d.tx_spacing = 0;
             if (isMouseHoveredCenter(46 + 60 * a, 240, 24, 24)) {
                 if (Clicked) {
                     PlayerClass[SelectedPanel] = a + 1;
@@ -1976,7 +1978,7 @@ function menuAndMap() {
             drawFromImageCentered(PlayerImage, 46 + 60 * a, 240, 24, 24, 24 * (a + 1), 0, 24, 24, 16777215)
         }
         if (0 != PlayerClass[0] && 0 != PlayerClass[1] && 0 != PlayerClass[2] && 0 != PlayerClass[3]) {
-            centeredText(LARGE_TEXT, 464, 300, "START", 16777215, 10053171);
+            showTextSolidCenter(LARGE_TEXT, 464, 300, "START", 16777215, 10053171);
             if (isMouseHoveredCenter(464, 300, 128, 24)) {
                 if (Clicked) {
                     SequenceStep++
@@ -1984,7 +1986,7 @@ function menuAndMap() {
                 drawLine(416, 308, 512, 308, 11141120);
             }
         }
-        centeredText(LARGE_TEXT, 48, 300, "RETURN", 16777215, 10053171);
+        showTextSolidCenter(LARGE_TEXT, 48, 300, "RETURN", 16777215, 10053171);
         if (isMouseHoveredCenter(48, 300, 128, 24)) {
             if (Clicked) {
                 for (a = 0; 4 > a; a++) {
@@ -2111,7 +2113,7 @@ function menuAndMap() {
         if (1 == c && 100 != b) {
             InventoryItem[17] = 561;
         }
-        CurrentArea = SR_WORLD_MAP.a = 0;
+        CurrentArea = SR_WORLD_MAP.mp_scroll_x = 0;
         SequenceStep = 6;
         antiCheatSet();
         drawMenuCopyRight()
@@ -2126,14 +2128,14 @@ function menuAndMap() {
         var h = new SrVec2;
         //20 > he && 256 > MouseY1 ? a.a = srClampA(a.a + 4, -720, 0) : 492 < he && 256 > MouseY1 && (a.a = srClampA(a.a - 4, -720, 0));
         if (20 > MouseX1 && 256 > MouseY1) {
-            a.a = srClampA(a.a + 4, -720, 0);
+            a.mp_scroll_x = srClampA(a.mp_scroll_x + 4, -720, 0);
         } else if (492 < MouseX1 && 256 > MouseY1) {
-            a.a = srClampA(a.a - 4, -720, 0);
+            a.mp_scroll_x = srClampA(a.mp_scroll_x - 4, -720, 0);
         }
         for (g = 0; 16 > g; g++) {
-            for (e = 0; e < a.m; e++) {
-                if (-1 != a.b[g][e]) {
-                    drawItem(MapTileImage, a.a + 16 * e, 16 * g, 16, 16, a.b[g][e] % 5 * 16, 16 * srFloor(a.b[g][e] / 5), 16, 16);
+            for (e = 0; e < a.mp_width; e++) {
+                if (-1 != a.mp_tile[g][e]) {
+                    drawItem(MapTileImage, a.mp_scroll_x + 16 * e, 16 * g, 16, 16, a.mp_tile[g][e] % 5 * 16, 16 * srFloor(a.mp_tile[g][e] / 5), 16, 16);
                 }
             }
         }
@@ -2150,7 +2152,7 @@ function menuAndMap() {
                         scaleVec2(h, 8);
                         d.vecAdd(h);
                         for (c = 0; c < g; c++) {
-                            filledRectCentered(a.a + d.x, d.y, 2, 2, 13421772);
+                            filledRectCentered(a.mp_scroll_x + d.x, d.y, 2, 2, 13421772);
                             d.vecAdd(h);
                         }
                     }
@@ -2158,23 +2160,23 @@ function menuAndMap() {
             }
         }
         for (g = 0; 16 > g; g++) {
-            for (e = 0; e < a.m; e++) {
-                if (-1 != a.c[g][e]) {
-                    drawItem(MapSymbolImage, a.a + 16 * e + 8, 16 * g + 8, 16, 16, 16 * a.c[g][e], 0, 16, 16);
+            for (e = 0; e < a.mp_width; e++) {
+                if (-1 != a.mp_symbol[g][e]) {
+                    drawItem(MapSymbolImage, a.mp_scroll_x + 16 * e + 8, 16 * g + 8, 16, 16, 16 * a.mp_symbol[g][e], 0, 16, 16);
                 }
             }
         }
-        drawFromImage(MapSymbolImage, a.a + 384 - 8, 124, 16, 16, 16, 0, 16, 16, 8421631);
-        drawFromImage(MapSymbolImage, a.a + 504 - 8, 116, 16, 16, 48, 0, 16, 16, 16777215);
-        drawFromImage(MapSymbolImage, a.a + 552 - 8, 116, 16, 16, 64, 0, 16, 16, 16777215);
-        drawFromImage(MapSymbolImage, a.a + 592 - 8, 100, 16, 16, 32, 0, 16, 16, 16777215);
-        drawFromImage(MapSymbolImage, a.a + 672 - 8, 68, 16, 16, 32, 0, 16, 16, 16777215);
-        drawFromImage(MapSymbolImage, a.a + 808 - 8, 132, 16, 16, 16, 0, 16, 16, 13434879);
-        drawFromImage(MapSymbolImage, a.a + 904 - 8, 164, 16, 16, 112, 0, 16, 16, 13434879);
-        drawFromImage(MapSymbolImage, a.a + 1040 - 8, 172, 16, 16, 128, 0, 16, 16, 13434879);
-        drawFromImage(MapSymbolImage, a.a + 1088 - 8, 100, 16, 16, 32, 0, 16, 16, 16777215);
-        drawFromImage(MapSymbolImage, a.a + 1160 - 8, 84, 16, 16, 32, 0, 16, 16, 16777215);
-        drawFromImage(MapSymbolImage, a.a + 1112 - 8, 44, 32, 16, 144, 0, 32, 16, 16777215);
+        drawFromImage(MapSymbolImage, a.mp_scroll_x + 384 - 8, 124, 16, 16, 16, 0, 16, 16, 8421631);
+        drawFromImage(MapSymbolImage, a.mp_scroll_x + 504 - 8, 116, 16, 16, 48, 0, 16, 16, 16777215);
+        drawFromImage(MapSymbolImage, a.mp_scroll_x + 552 - 8, 116, 16, 16, 64, 0, 16, 16, 16777215);
+        drawFromImage(MapSymbolImage, a.mp_scroll_x + 592 - 8, 100, 16, 16, 32, 0, 16, 16, 16777215);
+        drawFromImage(MapSymbolImage, a.mp_scroll_x + 672 - 8, 68, 16, 16, 32, 0, 16, 16, 16777215);
+        drawFromImage(MapSymbolImage, a.mp_scroll_x + 808 - 8, 132, 16, 16, 16, 0, 16, 16, 13434879);
+        drawFromImage(MapSymbolImage, a.mp_scroll_x + 904 - 8, 164, 16, 16, 112, 0, 16, 16, 13434879);
+        drawFromImage(MapSymbolImage, a.mp_scroll_x + 1040 - 8, 172, 16, 16, 128, 0, 16, 16, 13434879);
+        drawFromImage(MapSymbolImage, a.mp_scroll_x + 1088 - 8, 100, 16, 16, 32, 0, 16, 16, 16777215);
+        drawFromImage(MapSymbolImage, a.mp_scroll_x + 1160 - 8, 84, 16, 16, 32, 0, 16, 16, 16777215);
+        drawFromImage(MapSymbolImage, a.mp_scroll_x + 1112 - 8, 44, 32, 16, 144, 0, 32, 16, 16777215);
         for (b = 0; b < StageCount; b++) {
             if (0 != StageOpenData[b]) {
                 e = 8 * MAP_DATA[b][0];
@@ -2190,7 +2192,7 @@ function menuAndMap() {
                     c = 13421568;
                 }
                 if (0 == MAP_DATA[b][2]) {
-                    filledRectCentered(a.a + e, g, 6, 6, c)
+                    filledRectCentered(a.mp_scroll_x + e, g, 6, 6, c)
                 }
 
                 if (71 == b) {
@@ -2198,14 +2200,14 @@ function menuAndMap() {
                 } else {
                     c = 24;
                 }
-                if (isMouseHoveredCenter(a.a + e, g, c, c)) {
-                    frameRectCentered(a.a + e, g, c, c, 13369344);
+                if (isMouseHoveredCenter(a.mp_scroll_x + e, g, c, c)) {
+                    frameRectCentered(a.mp_scroll_x + e, g, c, c, 13369344);
                 }
             }
         }
         e = 8 * MAP_DATA[CurrentStage][0];
         g = 8 * MAP_DATA[CurrentStage][1];
-        drawItem(PlayerImage, a.a + e + 1 - 12, g - 14 - 11, 24, 22, 0, 0, 24, 22);
+        drawItem(PlayerImage, a.mp_scroll_x + e + 1 - 12, g - 14 - 11, 24, 22, 0, 0, 24, 22);
         for (b = 0; b < StageCount; b++) {
             //0 != StageOpenData[b] && (e = 8 * MAP_DATA[b][0], g = 8 * MAP_DATA[b][1], c = 71 == b ? 3 : 24, isMouseHoveredCenter(a.a + e, g, c, c)) && (!$d || b && 20 != b && 47 != b && 70 != b && 77 != b ? $d && b && (CurrentStage = b, CurrentArea = 0, SequenceStep = 10) : (CurrentStage = b, CurrentArea = 1, SequenceStep = 50), e = srClampA(he, 1 + 4 * STAGE_NAME[b].length, 510 - 4 * STAGE_NAME[b].length), g = srClampA(MouseY1 - 24, 8, 256), centeredText(LARGE_TEXT, e, g, STAGE_NAME[b], 16777215, 5263440));
             if (0 != StageOpenData[b]) {
@@ -2216,7 +2218,7 @@ function menuAndMap() {
                 } else {
                     c = 24
                 }
-                if (isMouseHoveredCenter(a.a + e, g, c, c)) {
+                if (isMouseHoveredCenter(a.mp_scroll_x + e, g, c, c)) {
                     if (!Clicked || b && 20 != b && 47 != b && 70 != b && 77 != b) {
                         if (Clicked && b) {
                             CurrentStage = b;
@@ -2230,21 +2232,26 @@ function menuAndMap() {
                     }
                     e = srClampA(MouseX1, 1 + 4 * STAGE_NAME[b].length, 510 - 4 * STAGE_NAME[b].length);
                     g = srClampA(MouseY1 - 24, 8, 256);
-                    centeredText(LARGE_TEXT, e, g, STAGE_NAME[b], 16777215, 5263440);
+                    showTextSolidCenter(LARGE_TEXT, e, g, STAGE_NAME[b], 16777215, 5263440);
                 }
             }
         }
         b = LARGE_TEXT;
-        b.b = 4;
-        centeredText(b, 256, 16, "WORLD MAP", -1, 13158600);
-        b.b = 0;
-        if (0 > a.a) {
-            centeredText(LARGE_TEXT, 12, 16, "<<", 13158600, 5263440);
+        //tx.b
+        b.tx_spacing = 4;
+        showTextSolidCenter(b, 256, 16, "WORLD MAP", -1, 13158600);
+        b.tx_spacing = 0;
+        if (0 > a.mp_scroll_x) {
+            showTextSolidCenter(LARGE_TEXT, 12, 16, "<<", 13158600, 5263440);
         }
-        if (-720 < a.a) {
-            centeredText(LARGE_TEXT, 500, 16, ">>", 13158600, 5263440);
+        if (-720 < a.mp_scroll_x) {
+            showTextSolidCenter(LARGE_TEXT, 500, 16, ">>", 13158600, 5263440);
         }
         drawUi(2)
+        //
+        //showTextSolidTopLeft(LARGE_TEXT,100,100,SR_WORLD_MAP.mp_scroll_x.toString(),16777215,10000000)
+        //
+
     }
 }
 
@@ -2257,10 +2264,10 @@ function pveScreen() {
     var a, b, c, d;
     if (10 == SequenceStep) {
         if (SR_TERRAIN.trSet(CurrentStage)) {
-            SR_PLAYER.plSet(0, 0, SR_TERRAIN.b[0]);
-            SR_PLAYER.plSet(1, 1, SR_TERRAIN.b[1]);
-            SR_PLAYER.plSet(2, 2, SR_TERRAIN.b[2]);
-            SR_PLAYER.plSet(3, 3, SR_TERRAIN.b[3]);
+            SR_PLAYER.plSet(0, 0, SR_TERRAIN.tr_low_surface[0]);
+            SR_PLAYER.plSet(1, 1, SR_TERRAIN.tr_low_surface[1]);
+            SR_PLAYER.plSet(2, 2, SR_TERRAIN.tr_low_surface[2]);
+            SR_PLAYER.plSet(3, 3, SR_TERRAIN.tr_low_surface[3]);
             SR_ENEMY.enReset(1);
             var e = srFloor(srRandomRange(12, 28));
             var g = srFloor(srRandomRange(28, 44));
@@ -2287,47 +2294,47 @@ function pveScreen() {
                 for (b = 0; b < A; b++) {
                     if (m == TERRAIN_GROUND) {
                         c = srFloor(srRandomRange(12, 60));
-                        d = fiftyFifty(SR_TERRAIN.b[c], SR_TERRAIN.g[c]);
+                        d = fiftyFifty(SR_TERRAIN.tr_low_surface[c], SR_TERRAIN.tr_high_surface[c]);
                     } else if (m == TERRAIN_GROUND_LEFT) {
                         c = srFloor(srRandomRange(12, 28));
-                        d = fiftyFifty(SR_TERRAIN.b[c], SR_TERRAIN.g[c]);
+                        d = fiftyFifty(SR_TERRAIN.tr_low_surface[c], SR_TERRAIN.tr_high_surface[c]);
                     } else if (m == TERRAIN_GROUND_MIDDLE) {
                         c = srFloor(srRandomRange(28, 44));
-                        d = fiftyFifty(SR_TERRAIN.b[c], SR_TERRAIN.g[c]);
+                        d = fiftyFifty(SR_TERRAIN.tr_low_surface[c], SR_TERRAIN.tr_high_surface[c]);
                     } else if (m == TERRAIN_GROUND_RIGHT) {
                         c = srFloor(srRandomRange(44, 60));
-                        d = fiftyFifty(SR_TERRAIN.b[c], SR_TERRAIN.g[c]);
+                        d = fiftyFifty(SR_TERRAIN.tr_low_surface[c], SR_TERRAIN.tr_high_surface[c]);
                     } else if (m == TERRAIN_AIR_WATER) {
                         c = srFloor(srRandomRange(12, 60));
-                        d = srFloor(srRandomRange(SR_TERRAIN.h[c] + 2, SR_TERRAIN.g[c]));
+                        d = srFloor(srRandomRange(SR_TERRAIN.tr_cavern_top[c] + 2, SR_TERRAIN.tr_high_surface[c]));
                     } else if (m == TERRAIN_AIR) {
                         c = srFloor(srRandomRange(12, 60));
-                        d = srFloor(srRandomRange(SR_TERRAIN.h[c] + 2, SR_TERRAIN.u[c]));
-                    } else if (m == TERRAIN_WATER && 0 < SR_TERRAIN.i) {
-                        d = srFloor(srRandom(SR_TERRAIN.i));
-                        c = SR_TERRAIN.s[d] & 63;
-                        d = srFloor(SR_TERRAIN.s[d] / 64);
+                        d = srFloor(srRandomRange(SR_TERRAIN.tr_cavern_top[c] + 2, SR_TERRAIN.tr_water_surface[c]));
+                    } else if (m == TERRAIN_WATER && 0 < SR_TERRAIN.tr_water_can_spawn_location_count) {
+                        d = srFloor(srRandom(SR_TERRAIN.tr_water_can_spawn_location_count));
+                        c = SR_TERRAIN.tr_water_can_spawn_location[d] & 63;
+                        d = srFloor(SR_TERRAIN.tr_water_can_spawn_location[d] / 64);
                     } else if (m == TERRAIN_GROUND_LEFT_CLUMP) {
                         c = e;
-                        d = fiftyFifty(SR_TERRAIN.b[c], SR_TERRAIN.g[c]);
+                        d = fiftyFifty(SR_TERRAIN.tr_low_surface[c], SR_TERRAIN.tr_high_surface[c]);
                     } else if (m == TERRAIN_GROUND_MIDDLE_CLUMP) {
                         c = g;
-                        d = fiftyFifty(SR_TERRAIN.b[c], SR_TERRAIN.g[c]);
+                        d = fiftyFifty(SR_TERRAIN.tr_low_surface[c], SR_TERRAIN.tr_high_surface[c]);
                     } else if (m == TERRAIN_GROUND_RIGHT_CLUMP) {
                         c = h;
-                        d = fiftyFifty(SR_TERRAIN.b[c], SR_TERRAIN.g[c]);
+                        d = fiftyFifty(SR_TERRAIN.tr_low_surface[c], SR_TERRAIN.tr_high_surface[c]);
                     } else if (m == TERRAIN_CEILING) {
                         c = srFloor(srRandomRange(12, 60));
-                        d = SR_TERRAIN.h[c];
+                        d = SR_TERRAIN.tr_cavern_top[c];
                     } else if (m == TERRAIN_CEILING_LEFT) {
                         c = srFloor(srRandomRange(12, 28));
-                        d = SR_TERRAIN.h[c];
+                        d = SR_TERRAIN.tr_cavern_top[c];
                     } else if (m == TERRAIN_CEILING_MIDDLE) {
                         c = srFloor(srRandomRange(28, 44));
-                        d = SR_TERRAIN.h[c];
+                        d = SR_TERRAIN.tr_cavern_top[c];
                     } else if (m == TERRAIN_CEILING_RIGHT) {
                         c = srFloor(srRandomRange(44, 60));
-                        d = SR_TERRAIN.h[c];
+                        d = SR_TERRAIN.tr_cavern_top[c];
                     } else {
                         continue;
                     }
@@ -2336,8 +2343,8 @@ function pveScreen() {
             }
             SR_PROJECTILE.pj_last_index = 0;
             SR_INDICATOR.in_last_index = 0;
-            SR_DROP.a = 0;
-            TextFadeTime = SignTouch = TargetEnemyIndex = TargetEnemyTime = TargetEnemyMaxLp = TargetEnemyCurrentLp = SR_DROP.f = 0;
+            SR_DROP.dp_last_index = 0;
+            TextFadeTime = SignTouch = TargetEnemyIndex = TargetEnemyTime = TargetEnemyMaxLp = TargetEnemyCurrentLp = SR_DROP.dp_anti_cheat_value = 0;
             SequenceStep++
         }
     } else if (11 == SequenceStep) {
@@ -2363,7 +2370,7 @@ function pveScreen() {
             } else if (80 < TextFadeTime) {
                 b = 255 - srFloor(255 * (TextFadeTime - 80) / 30);
             }
-            showText(LARGE_TEXT, 256, 128, a, 255, 255, 255, b, 64, 64, 64, b, 16, 24);
+            showTextCenter(LARGE_TEXT, 256, 128, a, 255, 255, 255, b, 64, 64, 64, b, 16, 24);
             c = -1024 + srFloor(512 * TextFadeTime / 30);
             drawLine(c, 112, c + 1024, 112, 8421504);
             c = 512 - srFloor(512 * TextFadeTime / 30);
@@ -2389,14 +2396,14 @@ function pveScreen() {
             } else if (IsKeyPressed[32]) {
                 SequenceStep = 20;
             }
-            textOutputB(LARGE_TEXT, 368, 8, "Option", 16711680, 0);
+            showTextSolidTopLeft(LARGE_TEXT, 368, 8, "Option", 16711680, 0);
         } else if (IsKeyPressed[32]) {
             SequenceStep = 20;
         } else if (isMouseHovered(428, 4, 80, 20)) {
             if (Clicked) {
                 SequenceStep = 6
             }
-            textOutputB(LARGE_TEXT, 432, 8, "World Map", 16711680, 0);
+            showTextSolidTopLeft(LARGE_TEXT, 432, 8, "World Map", 16711680, 0);
         }
     } else if (13 == SequenceStep) {
         //drawStage(0), drawUi(0), screenTransition(srFloor(255 * TextFadeTime / 30)), TextFadeTime++, 30 == TextFadeTime && (1 == SignTouch ? (SignTouch = 0, CurrentArea++, TextFadeTime = 0, SequenceStep = 10) : 2 == SignTouch && (TextFadeTime = CurrentArea = SignTouch = 0, antiCheatCheck(), StageOpenData[CurrentStage] |= ad, 0 < MAP_DATA[CurrentStage][3] && (StageOpenData[MAP_DATA[CurrentStage][3]] |= STAGE_UNLOCKED), 0 < MAP_DATA[CurrentStage][4] && (StageOpenData[MAP_DATA[CurrentStage][4]] |= STAGE_UNLOCKED), antiCheatSet(), SequenceStep = 6, -1 == MAP_DATA[CurrentStage][3] && (SequenceStep = 40)), SaveCode = generateSaveCode(0), SaveCodeGenerated = 1);
@@ -2443,60 +2450,60 @@ function pveScreen() {
             } else if (IsKeyPressed[32]) {
                 SequenceStep = q;
             }
-            textOutputB(LARGE_TEXT, 368, 8, "Option", 16711680, 0);
+            showTextSolidTopLeft(LARGE_TEXT, 368, 8, "Option", 16711680, 0);
         } else {
             IsKeyPressed[32] && (SequenceStep = q);
         }
         DisplayMode1 = 1;
         filledRect(128, 42, 256, 151, 3425907507);
         DisplayMode1 = 0;
-        centeredText(LARGE_TEXT, 256, 58, "OPTION", 16777215, 0);
+        showTextSolidCenter(LARGE_TEXT, 256, 58, "OPTION", 16777215, 0);
         for (a = 0; 4 > a; a++) {
             drawFromImageCentered(PlayerImage, 256 + 32 * a, 78, 24, 24, 24 * getItemData(InventoryItem[4 + a], 5), 0, 24, 24, 16777215);
             colorPortraitWeap(256 + 32 * a - 12, 66, 24 * getItemData(InventoryItem[4 + a], 5), getItemData(InventoryItem[4 + a], 6));
         }
-        centeredText(LARGE_TEXT, 180, 98, "Auto move", 16777215, 0);
+        showTextSolidCenter(LARGE_TEXT, 180, 98, "Auto move", 16777215, 0);
         b = ["OFF", "ON"];
         for (a = 0; 4 > a; a++) {
-            centeredText(LARGE_TEXT, 256 + 32 * a, 98, b[PlayerAutoMove[a]], 16777215, 0);
+            showTextSolidCenter(LARGE_TEXT, 256 + 32 * a, 98, b[PlayerAutoMove[a]], 16777215, 0);
             if (isMouseHoveredCenter(256 + 32 * a, 98, 32, 13)) {
-                centeredText(LARGE_TEXT, 256 + 32 * a, 98, b[PlayerAutoMove[a]], 16711680, 0);
+                showTextSolidCenter(LARGE_TEXT, 256 + 32 * a, 98, b[PlayerAutoMove[a]], 16711680, 0);
                 if (Clicked) {
                     PlayerAutoMove[a] = 1 - PlayerAutoMove[a];
                 }
             }
         }
-        textOutputB(LARGE_TEXT, 128, 108, "  Move of dying: " + b[PartyMoveIfDying], 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, 128, 108, "  Move of dying: " + b[PartyMoveIfDying], 16777215, 0);
         if (isMouseHovered(128, 108, 256, 13)) {
-            textOutputB(LARGE_TEXT, 128, 108, "  Move of dying: " + b[PartyMoveIfDying], 16711680, 0);
+            showTextSolidTopLeft(LARGE_TEXT, 128, 108, "  Move of dying: " + b[PartyMoveIfDying], 16711680, 0);
             PartyMoveIfDying = srClampSwap(PartyMoveIfDying + MouseChanged, 0, 1);
         }
         a = ["PLAYER&ENEMY", "PLAYER", "ENEMY", "OFF"];
-        textOutputB(LARGE_TEXT, 128, 121, "  Damage Effect: " + a[PartyDamageEffect], 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, 128, 121, "  Damage Effect: " + a[PartyDamageEffect], 16777215, 0);
         if (isMouseHovered(128, 121, 256, 13)) {
-            textOutputB(LARGE_TEXT, 128, 121, "  Damage Effect: " + a[PartyDamageEffect], 16711680, 0);
+            showTextSolidTopLeft(LARGE_TEXT, 128, 121, "  Damage Effect: " + a[PartyDamageEffect], 16711680, 0);
             PartyDamageEffect = srClampSwap(PartyDamageEffect + MouseChanged, 0, 3);
         }
         a = ["OFF", "PLAYER", "ENEMY", "PLAYER&ENEMY"];
-        textOutputB(LARGE_TEXT, 128, 134, "  LP Bar       : " + a[PartyShowLpBar], 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, 128, 134, "  LP Bar       : " + a[PartyShowLpBar], 16777215, 0);
         if (isMouseHovered(128, 134, 256, 13)) {
-            textOutputB(LARGE_TEXT, 128, 134, "  LP Bar       : " + a[PartyShowLpBar], 16711680, 0);
+            showTextSolidTopLeft(LARGE_TEXT, 128, 134, "  LP Bar       : " + a[PartyShowLpBar], 16711680, 0);
             PartyShowLpBar = srClampSwap(PartyShowLpBar + MouseChanged, 0, 3);
         }
         a = ["SQUARE", "TRIANGLE", "SHADOW", "OFF"];
-        textOutputB(LARGE_TEXT, 128, 147, "  PL Symbol    : " + a[PartyPlayerSymbol], 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, 128, 147, "  PL Symbol    : " + a[PartyPlayerSymbol], 16777215, 0);
         if (isMouseHovered(128, 147, 256, 13)) {
-            textOutputB(LARGE_TEXT, 128, 147, "  PL Symbol    : " + a[PartyPlayerSymbol], 16711680, 0);
+            showTextSolidTopLeft(LARGE_TEXT, 128, 147, "  PL Symbol    : " + a[PartyPlayerSymbol], 16711680, 0);
             PartyPlayerSymbol = srClampSwap(PartyPlayerSymbol + MouseChanged, 0, 3);
         }
-        textOutputB(LARGE_TEXT, 128, 160, "  Drag DeadBody: " + b[PartyDragDeadBody], 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, 128, 160, "  Drag DeadBody: " + b[PartyDragDeadBody], 16777215, 0);
         if (isMouseHovered(128, 160, 256, 13)) {
-            textOutputB(LARGE_TEXT, 128, 160, "  Drag DeadBody: " + b[PartyDragDeadBody], 16711680, 0);
+            showTextSolidTopLeft(LARGE_TEXT, 128, 160, "  Drag DeadBody: " + b[PartyDragDeadBody], 16711680, 0);
             PartyDragDeadBody = srClampSwap(PartyDragDeadBody + MouseChanged, 0, 1);
         }
-        centeredText(LARGE_TEXT, 256, 182, "Space Key: open & close", 12632256, 0);
+        showTextSolidCenter(LARGE_TEXT, 256, 182, "Space Key: open & close", 12632256, 0);
         if (isMouseHoveredCenter(256, 182, 256, 13)) {
-            centeredText(LARGE_TEXT, 256, 182, "Space Key: open & close", 16711680, 0);
+            showTextSolidCenter(LARGE_TEXT, 256, 182, "Space Key: open & close", 16711680, 0);
             if (MouseChanged) {
                 SequenceStep = q
             }
@@ -2509,7 +2516,7 @@ function pveScreen() {
             TextFadeTime++
         }
         b = srFloor(255 * TextFadeTime / 100);
-        showText(LARGE_TEXT, 256, 128, "GAME OVER", 100, 20, 10, b, 200, 0, 0, b, 16, 24);
+        showTextCenter(LARGE_TEXT, 256, 128, "GAME OVER", 100, 20, 10, b, 200, 0, 0, b, 16, 24);
         if (100 == TextFadeTime && Clicked) {
             antiCheatCheck();
             for (a = 0; 4 > a; a++) {
@@ -2521,9 +2528,9 @@ function pveScreen() {
             SequenceStep = 1
         }
     } else if (40 == SequenceStep) {
-        showText(LARGE_TEXT, 256, 112, "Congratulation", 204, 148, 73, 255, 100, 0, 0, 255, 16, 24);
-        showText(LARGE_TEXT, 256, 144, "Game Clear", 204, 148, 73, 255, 100, 0, 0, 255, 16, 24);
-        centeredText(LARGE_TEXT, 256, 256, "(C) 2008-2017 DAN-BALL", 13407305, 6553600);
+        showTextCenter(LARGE_TEXT, 256, 112, "Congratulation", 204, 148, 73, 255, 100, 0, 0, 255, 16, 24);
+        showTextCenter(LARGE_TEXT, 256, 144, "Game Clear", 204, 148, 73, 255, 100, 0, 0, 255, 16, 24);
+        showTextSolidCenter(LARGE_TEXT, 256, 256, "(C) 2008-2017 DAN-BALL", 13407305, 6553600);
         for (a = 0; 4 > a; a++) {
             c = 166 + 60 * a - SR_PLAYER.pl_current_joint[a][2].x;
             d = 224 - SR_PLAYER.pl_current_joint[a][2].y;
@@ -2556,15 +2563,15 @@ function townScreen() {
     var a, b, c, d, e;
     if (50 == SequenceStep) {
         if (SR_TERRAIN.trSet(CurrentStage)) {
-            SR_PLAYER.plSet(0, 16, SR_TERRAIN.b[0]);
-            SR_PLAYER.plSet(1, 19, SR_TERRAIN.b[1]);
-            SR_PLAYER.plSet(2, 22, SR_TERRAIN.b[2]);
-            SR_PLAYER.plSet(3, 25, SR_TERRAIN.b[3]);
+            SR_PLAYER.plSet(0, 16, SR_TERRAIN.tr_low_surface[0]);
+            SR_PLAYER.plSet(1, 19, SR_TERRAIN.tr_low_surface[1]);
+            SR_PLAYER.plSet(2, 22, SR_TERRAIN.tr_low_surface[2]);
+            SR_PLAYER.plSet(3, 25, SR_TERRAIN.tr_low_surface[3]);
             SR_ENEMY.enReset(1);
             SR_PROJECTILE.pj_last_index = 0;
             SR_INDICATOR.in_last_index = 0;
-            SR_DROP.a = 0;
-            TextFadeTime = SignTouch = TargetEnemyIndex = TargetEnemyTime = TargetEnemyMaxLp = TargetEnemyCurrentLp = SR_DROP.f = 0;
+            SR_DROP.dp_last_index = 0;
+            TextFadeTime = SignTouch = TargetEnemyIndex = TargetEnemyTime = TargetEnemyMaxLp = TargetEnemyCurrentLp = SR_DROP.dp_anti_cheat_value = 0;
             SequenceStep++;
         }
     } else if (51 == SequenceStep) {
@@ -2589,7 +2596,7 @@ function townScreen() {
         } else if (80 < TextFadeTime) {
             c = 255 - srFloor(255 * (TextFadeTime - 80) / 30);
         }
-        showText(LARGE_TEXT, 256, 128, e, 255, 255, 255, c, 64, 64, 64, c, 16, 24);
+        showTextCenter(LARGE_TEXT, 256, 128, e, 255, 255, 255, c, 64, 64, 64, c, 16, 24);
         b = -1024 + srFloor(512 * TextFadeTime / 30);
         drawLine(b, 112, b + 1024, 112, 8421504);
         b = 512 - srFloor(512 * TextFadeTime / 30);
@@ -2611,18 +2618,18 @@ function townScreen() {
             } else if (IsKeyPressed[32]) {
                 SequenceStep = 20;
             }
-            textOutputB(LARGE_TEXT, 368, 8, "Option", 16711680, 0);
+            showTextSolidTopLeft(LARGE_TEXT, 368, 8, "Option", 16711680, 0);
         } else if (IsKeyPressed[32]) {
             SequenceStep = 20;
         } else if (isMouseHovered(428, 4, 80, 20)) {
             if (Clicked) {
                 SequenceStep = 6
             }
-            textOutputB(LARGE_TEXT, 432, 8, "World Map", 16711680, 0);
+            showTextSolidTopLeft(LARGE_TEXT, 432, 8, "World Map", 16711680, 0);
         } else if (70 == CurrentStage) {
             //if (isMouseHoveredCenter(256, 128, 40, 24) && (centeredText(LARGE_TEXT, 256, 128, "FORGET", 16711680, 1054740), $d && (SequenceStep = 55, MenuEntry = MenuRow = MenuSelected = 0)), isMouseHoveredCenter(256, 160, 40, 24))
             if (isMouseHoveredCenter(256, 128, 40, 24)) {
-                centeredText(LARGE_TEXT, 256, 128, "FORGET", 16711680, 1054740);
+                showTextSolidCenter(LARGE_TEXT, 256, 128, "FORGET", 16711680, 1054740);
                 if (Clicked) {
                     SequenceStep = 55;
                     MenuEntry = MenuRow = MenuSelected = 0
@@ -2633,8 +2640,8 @@ function townScreen() {
                 for (a = 0; 4 > a; a++) {
                     g += PlayerMaxLp[a] - PlayerCurrentLp[a];
                 }
-                centeredText(LARGE_TEXT, 256, 160, "INN", 16711680, 1054740);
-                textOutputB(LARGE_TEXT, 280, 154, "charge of " + g, 16711680, 1054740);
+                showTextSolidCenter(LARGE_TEXT, 256, 160, "INN", 16711680, 1054740);
+                showTextSolidTopLeft(LARGE_TEXT, 280, 154, "charge of " + g, 16711680, 1054740);
                 if (g <= PartyGold && Clicked) {
                     antiCheatCheck();
                     for (a = 0; 4 > a; a++) {
@@ -2649,7 +2656,7 @@ function townScreen() {
                 }
             } else {
                 if (isMouseHoveredCenter(256, 184, 48, 24)) {
-                    centeredText(LARGE_TEXT, 256, 184, "BOOK", 16711680, 1054740);
+                    showTextSolidCenter(LARGE_TEXT, 256, 184, "BOOK", 16711680, 1054740);
                     if (Clicked) {
                         SequenceStep = 54;
                         MenuEntry = MenuRow = MenuSelected = 0;
@@ -2660,8 +2667,8 @@ function townScreen() {
             for (a = g = 0; 4 > a; a++) {
                 g += PlayerMaxLp[a] - PlayerCurrentLp[a];
             }
-            centeredText(LARGE_TEXT, 400, 168, "INN", 16711680, 13800762);
-            centeredText(LARGE_TEXT, 400, 208, "charge of " + g, 16777215, 3219229);
+            showTextSolidCenter(LARGE_TEXT, 400, 168, "INN", 16711680, 13800762);
+            showTextSolidCenter(LARGE_TEXT, 400, 208, "charge of " + g, 16777215, 3219229);
             if (g <= PartyGold && Clicked) {
                 antiCheatCheck();
                 for (a = 0; 4 > a; a++) {
@@ -2676,20 +2683,20 @@ function townScreen() {
         } else {
             if (isMouseHoveredCenter(40, 152, 72, 24)) {
                 if (!CurrentStage) {
-                    centeredText(LARGE_TEXT, 40, 152, "SHOP", 16711680, 13800762);
+                    showTextSolidCenter(LARGE_TEXT, 40, 152, "SHOP", 16711680, 13800762);
                 } else if (20 == CurrentStage) {
-                    centeredText(LARGE_TEXT, 40, 152, " COMPO SHOP", 16711680, 13800762);
+                    showTextSolidCenter(LARGE_TEXT, 40, 152, " COMPO SHOP", 16711680, 13800762);
                 } else if (47 == CurrentStage) {
-                    centeredText(LARGE_TEXT, 40, 152, " JUNK SHOP", 16711680, 13800762);
+                    showTextSolidCenter(LARGE_TEXT, 40, 152, " JUNK SHOP", 16711680, 13800762);
                 } else if (77 == CurrentStage) {
-                    centeredText(LARGE_TEXT, 40, 152, " COMPO SHOP", 16711680, 13800762);
+                    showTextSolidCenter(LARGE_TEXT, 40, 152, " COMPO SHOP", 16711680, 13800762);
                 }
                 if (Clicked) {
                     SequenceStep = 53;
                     MenuEntry = MenuRow = MenuSelected = 0
                 }
             } else if (isMouseHoveredCenter(40, 184, 48, 24)) {
-                centeredText(LARGE_TEXT, 40, 184, "BOOK", 16711680, 13800762);
+                showTextSolidCenter(LARGE_TEXT, 40, 184, "BOOK", 16711680, 13800762);
                 if (Clicked) {
                     SequenceStep = 54;
                     MenuEntry = MenuRow = MenuSelected = 0;
@@ -2751,37 +2758,37 @@ function townScreen() {
             }
         }
         !CurrentStage && g <= b && (h = 0);
-        itemText(c + 8, d + 24, ITEM_DATA[h][0] + " " + (ITEM_DATA[h][1] ? ITEM_DATA[h][1] : ""), -1, 2631720, -2);
-        itemText(c + 8, d + 24, ITEM_DATA[h][0] + " " + (ITEM_DATA[h][1] ? ITEM_DATA[h][1] : ""), 16777215, -1, -2);
+        showTextSolidSpacingTopLeft(c + 8, d + 24, ITEM_DATA[h][0] + " " + (ITEM_DATA[h][1] ? ITEM_DATA[h][1] : ""), -1, 2631720, -2);
+        showTextSolidSpacingTopLeft(c + 8, d + 24, ITEM_DATA[h][0] + " " + (ITEM_DATA[h][1] ? ITEM_DATA[h][1] : ""), 16777215, -1, -2);
         a = getItemData(h, 5);
         if (9 == a) {
-            textOutputB(LARGE_TEXT, c + 8, d + 40, "Compo Item", -1, 5263440);
-            itemText(c + 8, d + 56, ITEM_DATA[h][10], -1, 2631720, -2);
-            itemText(c + 8, d + 56, ITEM_DATA[h][10], 16777215, -1, -2);
-            itemText(c + 8, d + 68, ITEM_DATA[h][11], -1, 2631720, -2);
-            itemText(c + 8, d + 68, ITEM_DATA[h][11], 16777215, -1, -2);
+            showTextSolidTopLeft(LARGE_TEXT, c + 8, d + 40, "Compo Item", -1, 5263440);
+            showTextSolidSpacingTopLeft(c + 8, d + 56, ITEM_DATA[h][10], -1, 2631720, -2);
+            showTextSolidSpacingTopLeft(c + 8, d + 56, ITEM_DATA[h][10], 16777215, -1, -2);
+            showTextSolidSpacingTopLeft(c + 8, d + 68, ITEM_DATA[h][11], -1, 2631720, -2);
+            showTextSolidSpacingTopLeft(c + 8, d + 68, ITEM_DATA[h][11], 16777215, -1, -2);
         } else {
-            textOutputB(LARGE_TEXT, c + 8, d + 40, "AT " + ITEM_DATA[h][10] + "-" + ITEM_DATA[h][11], 16777215, 0);
-            textOutputB(LARGE_TEXT, c + 8, d + 52, "AGI " + ITEM_DATA[h][14] + "-" + ITEM_DATA[h][15], 16777215, 0);
-            textOutputB(LARGE_TEXT, c + 8, d + 64, "RANGE " + ITEM_DATA[h][16], 16777215, 0);
+            showTextSolidTopLeft(LARGE_TEXT, c + 8, d + 40, "AT " + ITEM_DATA[h][10] + "-" + ITEM_DATA[h][11], 16777215, 0);
+            showTextSolidTopLeft(LARGE_TEXT, c + 8, d + 52, "AGI " + ITEM_DATA[h][14] + "-" + ITEM_DATA[h][15], 16777215, 0);
+            showTextSolidTopLeft(LARGE_TEXT, c + 8, d + 64, "RANGE " + ITEM_DATA[h][16], 16777215, 0);
             var q = getItemData(h, 34);
             var m = getItemData(h, 35);
             var l = srMax(getItemData(h, 36), 0);
             var A = getItemData(h, 39);
             var z = getItemData(h, 40);
-            textOutputB(LARGE_TEXT, c + 8, d + 80, "TYPE " + "physical fire ice thunder poison freeze".split(" ")[q], 16777215, 0);
-            textOutputB(LARGE_TEXT, c + 8, d + 92, "AT " + A + "-" + z, 16777215, 0);
+            showTextSolidTopLeft(LARGE_TEXT, c + 8, d + 80, "TYPE " + "physical fire ice thunder poison freeze".split(" ")[q], 16777215, 0);
+            showTextSolidTopLeft(LARGE_TEXT, c + 8, d + 92, "AT " + A + "-" + z, 16777215, 0);
             if (6 == a) {
-                textOutputB(LARGE_TEXT, c + 8, d + 104, "$$ " + l, 16777215, 0);
+                showTextSolidTopLeft(LARGE_TEXT, c + 8, d + 104, "$$ " + l, 16777215, 0);
             } else {
-                textOutputB(LARGE_TEXT, c + 8, d + 104, "MP " + l, 16777215, 0);
+                showTextSolidTopLeft(LARGE_TEXT, c + 8, d + 104, "MP " + l, 16777215, 0);
             }
             if (2 == q) {
-                textOutputB(LARGE_TEXT, c + 8, d + 116, "SLOW " + m + "%", 16777215, 0)
+                showTextSolidTopLeft(LARGE_TEXT, c + 8, d + 116, "SLOW " + m + "%", 16777215, 0)
             } else if (4 == q) {
-                textOutputB(LARGE_TEXT, c + 8, d + 116, "TIME " + m / 50 + "s", 16777215, 0)
+                showTextSolidTopLeft(LARGE_TEXT, c + 8, d + 116, "TIME " + m / 50 + "s", 16777215, 0)
             } else if (5 == q) {
-                textOutputB(LARGE_TEXT, c + 8, d + 116, "TIME " + m / 50 + "s", 16777215, 0)
+                showTextSolidTopLeft(LARGE_TEXT, c + 8, d + 116, "TIME " + m / 50 + "s", 16777215, 0)
             }
         }
         for (a = 0; 9 > a; a++) {
@@ -2791,7 +2798,7 @@ function townScreen() {
                 drawFromImage(LargeItemImage, c + 120 + a % 3 * 28, d + 24 + 28 * srFloor(a / 3), 24, 24, 24 * getItemData(SHOP_DATA[e][MenuSelected][q], 4), 0, 24, 24, getItemData(SHOP_DATA[e][MenuSelected][q], 6));
                 DisplayMode2 = 0;
                 if (ITEM_DATA[SHOP_DATA[e][MenuSelected][q]][1]) {
-                    textOutputB(SMALL_TEXT, c + 120 + a % 3 * 28 + 19, d + 24 + 28 * srFloor(a / 3) + 17, "" + ITEM_DATA[SHOP_DATA[e][MenuSelected][q]][1], 16777215, -1);
+                    showTextSolidTopLeft(SMALL_TEXT, c + 120 + a % 3 * 28 + 19, d + 24 + 28 * srFloor(a / 3) + 17, "" + ITEM_DATA[SHOP_DATA[e][MenuSelected][q]][1], 16777215, -1);
                 }
             }
         }
@@ -2813,7 +2820,7 @@ function townScreen() {
             }
             filledRect(c + 176 - 56, d + 120 - 10, 108, 20, 10027008)
         }
-        centeredText(LARGE_TEXT, c + 176, d + 120, "" + g + "$ BUY", 16777215, 0);
+        showTextSolidCenter(LARGE_TEXT, c + 176, d + 120, "" + g + "$ BUY", 16777215, 0);
         frameRect(c + 176 - 56, d + 120 - 10, 108, 20, 10027008);
         h = 16777215;
         if (isMouseHovered(c + 216 - 12, d + 36 - 12, 24, 24)) {
@@ -2861,23 +2868,23 @@ function townScreen() {
                 antiCheatSet();
             }
             filledRect(c + 1, d + 136, 119, 24, 10027008);
-            centeredText(LARGE_TEXT, c + 60, d + 148, "" + g + "$ SELL", 16777215, 0);
+            showTextSolidCenter(LARGE_TEXT, c + 60, d + 148, "" + g + "$ SELL", 16777215, 0);
         } else if (isMouseHovered(c + 1, d + 136, 120, 24) && 0 == InventoryItem[40] && !ClickToSell) {
             if (Clicked) {
                 ClickToSell = 1;
             }
             filledRect(c + 1, d + 136, 119, 24, 10027008);
-            centeredText(LARGE_TEXT, c + 60, d + 148, "CLICK TO SELL", 16777215, 0);
+            showTextSolidCenter(LARGE_TEXT, c + 60, d + 148, "CLICK TO SELL", 16777215, 0);
         } else if (isMouseHovered(c + 1, d + 136, 120, 24) && 0 == InventoryItem[40] && 1 == ClickToSell) {
             if (Clicked) {
                 ClickToSell = 0;
             }
             filledRect(c + 1, d + 136, 119, 24, 10027008);
-            centeredText(LARGE_TEXT, c + 60, d + 148, "CANCEL", 16777215, 0);
+            showTextSolidCenter(LARGE_TEXT, c + 60, d + 148, "CANCEL", 16777215, 0);
         } else if (1 == ClickToSell) {
-            centeredText(LARGE_TEXT, c + 60, d + 148, "CANCEL", 16777215, 0);
+            showTextSolidCenter(LARGE_TEXT, c + 60, d + 148, "CANCEL", 16777215, 0);
         } else {
-            centeredText(LARGE_TEXT, c + 60, d + 148, "DRAG TO SELL", 16777215, 0);
+            showTextSolidCenter(LARGE_TEXT, c + 60, d + 148, "DRAG TO SELL", 16777215, 0);
         }
         if (isMouseHovered(c + 121, d + 136, 114, 24)) {
             if (Clicked) {
@@ -2886,7 +2893,7 @@ function townScreen() {
             }
             filledRect(c + 121, d + 136, 114, 24, 10027008);
         }
-        centeredText(LARGE_TEXT, c + 176, d + 148, "EXIT", 16777215, 0);
+        showTextSolidCenter(LARGE_TEXT, c + 176, d + 148, "EXIT", 16777215, 0);
         drawUi(1)
     } else if (54 == SequenceStep) {
         drawStage(0);
@@ -2912,7 +2919,7 @@ function townScreen() {
             e += "";
         }
         e += "" + srFloor(MenuSelected / h + 1) + "/" + srFloor((STAGE_BOOK_INDEX_DATA.length - 1) / h + 1);
-        textOutputB(LARGE_TEXT, c + 20, d + 4, e, -1, 32768);
+        showTextSolidTopLeft(LARGE_TEXT, c + 20, d + 4, e, -1, 32768);
         if (isMouseHovered(c + 8, d + 16, 144, 12 * h)) {
             a = srFloor((MouseY1 - (d + 16)) / 12);
             if (Clicked) {
@@ -2924,18 +2931,18 @@ function townScreen() {
             e = STAGE_BOOK_INDEX_DATA[MenuSelected + a];
             if (0 != e) {
                 if (0 < (StageOpenData[e] & STAGE_BEATEN)) {
-                    textOutputB(LARGE_TEXT, c + 8, d + 16 + 12 * a, STAGE_NAME[e], 16777215, 0);
+                    showTextSolidTopLeft(LARGE_TEXT, c + 8, d + 16 + 12 * a, STAGE_NAME[e], 16777215, 0);
                 } else {
-                    textOutputB(LARGE_TEXT, c + 8, d + 16 + 12 * a, "???", 16777215, 0);
+                    showTextSolidTopLeft(LARGE_TEXT, c + 8, d + 16 + 12 * a, "???", 16777215, 0);
                 }
             }
         }
         e = STAGE_BOOK_INDEX_DATA[MenuSelected + MenuRow];
         if (0 != e) {
             if (0 < (StageOpenData[e] & STAGE_BEATEN)) {
-                textOutputB(LARGE_TEXT, c + 8, d + 16 + 12 * MenuRow, STAGE_NAME[e], 16711680, 0);
+                showTextSolidTopLeft(LARGE_TEXT, c + 8, d + 16 + 12 * MenuRow, STAGE_NAME[e], 16711680, 0);
             } else {
-                textOutputB(LARGE_TEXT, c + 8, d + 16 + 12 * MenuRow, "???", 16711680, 0);
+                showTextSolidTopLeft(LARGE_TEXT, c + 8, d + 16 + 12 * MenuRow, "???", 16711680, 0);
             }
         }
         drawLine(c + 0, d + 140, c + 160, d + 140, 16777215);
@@ -2945,21 +2952,21 @@ function townScreen() {
             }
             filledRect(c + 8, d + 144 - 2, 48, 17, 10027008);
         }
-        textOutputB(LARGE_TEXT, c + 16, d + 145, "Prev", 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, c + 16, d + 145, "Prev", 16777215, 0);
         if (isMouseHovered(c + 56, d + 144 - 2, 48, 17)) {
             if (Clicked) {
                 MenuSelected = srClampSwap(srFloor(MenuSelected / h) + 1, 0, srFloor((STAGE_BOOK_INDEX_DATA.length - 1) / h)) * h;
             }
             filledRect(c + 56, d + 144 - 2, 48, 17, 10027008);
         }
-        textOutputB(LARGE_TEXT, c + 64, d + 145, "Next", 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, c + 64, d + 145, "Next", 16777215, 0);
         if (isMouseHovered(c + 104, d + 144 - 2, 48, 17)) {
             if (Clicked) {
                 SequenceStep = 52;
             }
             filledRect(c + 104, d + 144 - 2, 48, 17, 10027008);
         }
-        textOutputB(LARGE_TEXT, c + 112, d + 145, "EXIT", 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, c + 112, d + 145, "EXIT", 16777215, 0);
         if (0 != e) {
             if (0 < (StageOpenData[e] & STAGE_BOOKED)) {
                 h = STAGE_INDEX_DATA[e + 1] - STAGE_INDEX_DATA[e];
@@ -2985,61 +2992,61 @@ function townScreen() {
                     a += ENEMY_DATA[STAGE_INDEX_DATA[e] + a][ENEMY_SECOND_ATTACK];
                 }
                 e = STAGE_INDEX_DATA[e] + MenuEntry;
-                textOutputB(LARGE_TEXT, c + 164, d + 56, "Lv   " + ENEMY_DATA[e][ENEMY_LEVEL], 16777215, 0);
-                textOutputB(LARGE_TEXT, c + 164, d + 68, "LP   " + ENEMY_DATA[e][ENEMY_LP], 16777215, 0);
-                textOutputB(LARGE_TEXT, c + 164, d + 80, "GOLD " + ENEMY_DATA[e][ENEMY_GOLD], 16777215, 0);
-                textOutputB(LARGE_TEXT, c + 164, d + 92, "EXP  " + ENEMY_DATA[e][ENEMY_EXP], 16777215, 0);
-                textOutputB(LARGE_TEXT, c + 164, d + 108, "Drop Item", 16777215, 0);
+                showTextSolidTopLeft(LARGE_TEXT, c + 164, d + 56, "Lv   " + ENEMY_DATA[e][ENEMY_LEVEL], 16777215, 0);
+                showTextSolidTopLeft(LARGE_TEXT, c + 164, d + 68, "LP   " + ENEMY_DATA[e][ENEMY_LP], 16777215, 0);
+                showTextSolidTopLeft(LARGE_TEXT, c + 164, d + 80, "GOLD " + ENEMY_DATA[e][ENEMY_GOLD], 16777215, 0);
+                showTextSolidTopLeft(LARGE_TEXT, c + 164, d + 92, "EXP  " + ENEMY_DATA[e][ENEMY_EXP], 16777215, 0);
+                showTextSolidTopLeft(LARGE_TEXT, c + 164, d + 108, "Drop Item", 16777215, 0);
                 for (b = a = 0; 6 > a; a += 2) {
                     h = ENEMY_DATA[e][ENEMY_DROP_FIRST + a];
                     if (0 != h) {
                         DisplayMode2 = 2;
                         drawFromImage(SmallItemImage, c + 164, d + 4 * (30 + 3 * b), 12, 12, 12 * getItemData(h, 3), 0, 12, 12, getItemData(h, 6));
                         DisplayMode2 = 0;
-                        itemText(c + 164, d + 4 * (30 + 3 * b), "  " + ITEM_DATA[h][0] + " " + (ITEM_DATA[h][1] ? ITEM_DATA[h][1] : ""), 16777215, 0, -1);
+                        showTextSolidSpacingTopLeft(c + 164, d + 4 * (30 + 3 * b), "  " + ITEM_DATA[h][0] + " " + (ITEM_DATA[h][1] ? ITEM_DATA[h][1] : ""), 16777215, 0, -1);
                         b++;
                     }
                 }
-                textOutputB(LARGE_TEXT, c + 256, d + 56, "strong", 16777215, 0);
+                showTextSolidTopLeft(LARGE_TEXT, c + 256, d + 56, "strong", 16777215, 0);
                 if (0 < ENEMY_DATA[e][ENEMY_PHYSICAL_RESISTANCE]) {
-                    textOutputB(SMALL_TEXT, c + 256, d + 70, "Ph          ", 8421504, 0);
+                    showTextSolidTopLeft(SMALL_TEXT, c + 256, d + 70, "Ph          ", 8421504, 0);
                 }
                 if (0 < ENEMY_DATA[e][ENEMY_FIRE_RESISTANCE]) {
-                    textOutputB(SMALL_TEXT, c + 256, d + 70, "  Fi        ", 16711680, 0);
+                    showTextSolidTopLeft(SMALL_TEXT, c + 256, d + 70, "  Fi        ", 16711680, 0);
                 }
                 if (0 < ENEMY_DATA[e][ENEMY_ICE_RESISTANCE]) {
-                    textOutputB(SMALL_TEXT, c + 256, d + 70, "    Ic      ", 2105599, 0);
+                    showTextSolidTopLeft(SMALL_TEXT, c + 256, d + 70, "    Ic      ", 2105599, 0);
                 }
                 if (0 < ENEMY_DATA[e][ENEMY_THUNDER_RESISTANCE]) {
-                    textOutputB(SMALL_TEXT, c + 256, d + 70, "      Th    ", 16777024, 0);
+                    showTextSolidTopLeft(SMALL_TEXT, c + 256, d + 70, "      Th    ", 16777024, 0);
                 }
                 if (0 < ENEMY_DATA[e][ENEMY_POISON_RESISTANCE]) {
-                    textOutputB(SMALL_TEXT, c + 256, d + 70, "        Po  ", 65280, 0);
+                    showTextSolidTopLeft(SMALL_TEXT, c + 256, d + 70, "        Po  ", 65280, 0);
                 }
                 if (0 < ENEMY_DATA[e][ENEMY_FREEZE_RESISTANCE]) {
-                    textOutputB(SMALL_TEXT, c + 256, d + 70, "          Fr", 12632319, 0);
+                    showTextSolidTopLeft(SMALL_TEXT, c + 256, d + 70, "          Fr", 12632319, 0);
                 }
-                textOutputB(LARGE_TEXT, c + 256, d + 80, "weak", 16777215, 0);
+                showTextSolidTopLeft(LARGE_TEXT, c + 256, d + 80, "weak", 16777215, 0);
                 if (0 > ENEMY_DATA[e][ENEMY_PHYSICAL_RESISTANCE]) {
-                    textOutputB(SMALL_TEXT, c + 256, d + 94, "Ph          ", 8421504, 0);
+                    showTextSolidTopLeft(SMALL_TEXT, c + 256, d + 94, "Ph          ", 8421504, 0);
                 }
                 if (0 > ENEMY_DATA[e][ENEMY_FIRE_RESISTANCE]) {
-                    textOutputB(SMALL_TEXT, c + 256, d + 94, "  Fi        ", 16711680, 0);
+                    showTextSolidTopLeft(SMALL_TEXT, c + 256, d + 94, "  Fi        ", 16711680, 0);
                 }
                 if (0 > ENEMY_DATA[e][ENEMY_ICE_RESISTANCE]) {
-                    textOutputB(SMALL_TEXT, c + 256, d + 94, "    Ic      ", 2105599, 0);
+                    showTextSolidTopLeft(SMALL_TEXT, c + 256, d + 94, "    Ic      ", 2105599, 0);
                 }
                 if (0 > ENEMY_DATA[e][ENEMY_THUNDER_RESISTANCE]) {
-                    textOutputB(SMALL_TEXT, c + 256, d + 94, "      Th    ", 16777024, 0);
+                    showTextSolidTopLeft(SMALL_TEXT, c + 256, d + 94, "      Th    ", 16777024, 0);
                 }
                 if (0 > ENEMY_DATA[e][ENEMY_POISON_RESISTANCE]) {
-                    textOutputB(SMALL_TEXT, c + 256, d + 94, "        Po  ", 65280, 0);
+                    showTextSolidTopLeft(SMALL_TEXT, c + 256, d + 94, "        Po  ", 65280, 0);
                 }
                 if (0 > ENEMY_DATA[e][ENEMY_FREEZE_RESISTANCE]) {
-                    textOutputB(SMALL_TEXT, c + 256, d + 94, "          Fr", 12632319, 0)
+                    showTextSolidTopLeft(SMALL_TEXT, c + 256, d + 94, "          Fr", 12632319, 0)
                 }
             } else if (0 < (StageOpenData[e] & STAGE_BEATEN)) {
-                centeredText(LARGE_TEXT, c + 240, d + 40, "Information fee", 16777215, 0);
+                showTextSolidCenter(LARGE_TEXT, c + 240, d + 40, "Information fee", 16777215, 0);
                 g = 1E3 * (MenuSelected + MenuRow + 1);
                 if (isMouseHoveredCenter(c + 240, d + 80, 160, 160)) {
                     if (g <= PartyGold && Clicked) {
@@ -3050,10 +3057,10 @@ function townScreen() {
                     }
                     filledRectCentered(c + 240, d + 80, 120, 32, 10027008);
                 }
-                centeredText(LARGE_TEXT, c + 240, d + 80, "" + g + "$ BUY", 16777215, 0);
+                showTextSolidCenter(LARGE_TEXT, c + 240, d + 80, "" + g + "$ BUY", 16777215, 0);
             } else {
-                centeredText(LARGE_TEXT, c + 240, d + 40, "?????", 16777215, 0);
-                centeredText(LARGE_TEXT, c + 240, d + 80, "???", 16777215, 0);
+                showTextSolidCenter(LARGE_TEXT, c + 240, d + 40, "?????", 16777215, 0);
+                showTextSolidCenter(LARGE_TEXT, c + 240, d + 80, "???", 16777215, 0);
             }
         }
         drawUi(1)
@@ -3082,15 +3089,15 @@ function townScreen() {
             colorPortraitWeap(c + 32 * a, d, 24 * getItemData(InventoryItem[4 + a], 5), getItemData(InventoryItem[4 + a], 6));
         }
         frameRect(c + 32 * MenuSelected - 1, d - 1, 26, 26, 16711680);
-        textOutputB(LARGE_TEXT, c, d - 16, CLASS_NAME[getItemData(InventoryItem[4 + MenuSelected], 5)], 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, c, d - 16, CLASS_NAME[getItemData(InventoryItem[4 + MenuSelected], 5)], 16777215, 0);
         c = 100;
         d = 74;
-        textOutputB(LARGE_TEXT, c, d + 16, "LP  " + PlayerSpLp[MenuSelected], 16777215, 0);
-        textOutputB(LARGE_TEXT, c, d + 28, "STR " + PlayerSpStr[MenuSelected], 16777215, 0);
-        textOutputB(LARGE_TEXT, c, d + 40, "DEX " + PlayerSpDex[MenuSelected], 16777215, 0);
-        textOutputB(LARGE_TEXT, c, d + 52, "MAG " + PlayerSpMag[MenuSelected], 16777215, 0);
-        textOutputB(LARGE_TEXT, c, d + 68, "LV  " + PartyLv[0], 16777215, 0);
-        textOutputB(LARGE_TEXT, c, d + 68, "        SP " + PlayerSp[MenuSelected], 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, c, d + 16, "LP  " + PlayerSpLp[MenuSelected], 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, c, d + 28, "STR " + PlayerSpStr[MenuSelected], 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, c, d + 40, "DEX " + PlayerSpDex[MenuSelected], 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, c, d + 52, "MAG " + PlayerSpMag[MenuSelected], 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, c, d + 68, "LV  " + PartyLv[0], 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, c, d + 68, "        SP " + PlayerSp[MenuSelected], 16777215, 0);
         c = 80;
         d = 28;
         drawLine(c + 0, d + 140, c + 160, d + 140, 16777215);
@@ -3100,7 +3107,7 @@ function townScreen() {
             }
             filledRect(c + 56, d + 144 - 2, 48, 17, 10027008);
         }
-        textOutputB(LARGE_TEXT, c + 64, d + 145, "EXIT", 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, c + 64, d + 145, "EXIT", 16777215, 0);
         g = 1E3 * (PlayerSpLp[MenuSelected] + PlayerSpStr[MenuSelected] + PlayerSpDex[MenuSelected] + PlayerSpMag[MenuSelected]);
         //isMouseHoveredCenter(c + 240, d + 80, 120, 32) && 0 < g && (g <= PartyGold && Clicked && (antiCheatCheck(), PlayerSp[MenuSelected] += PlayerSpLp[MenuSelected] + PlayerSpStr[MenuSelected] + PlayerSpDex[MenuSelected] + PlayerSpMag[MenuSelected], PlayerSpLp[MenuSelected] = 0, PlayerSpStr[MenuSelected] = 0, PlayerSpDex[MenuSelected] = 0, PlayerSpMag[MenuSelected] = 0, PartyGold -= g, antiCheatSet()), filledRectCentered(c + 240, d + 80, 120, 32, 10027008));
         if (isMouseHoveredCenter(c + 240, d + 80, 120, 32) && 0 < g) {
@@ -3116,8 +3123,8 @@ function townScreen() {
             }
             filledRectCentered(c + 240, d + 80, 120, 32, 10027008);
         }
-        centeredText(LARGE_TEXT, c + 240, d + 72, "Forget", 16777215, 0);
-        centeredText(LARGE_TEXT, c + 240, d + 88, "" + g + "$ BUY", 16777215, 0);
+        showTextSolidCenter(LARGE_TEXT, c + 240, d + 72, "Forget", 16777215, 0);
+        showTextSolidCenter(LARGE_TEXT, c + 240, d + 88, "" + g + "$ BUY", 16777215, 0);
         drawUi(1)
     } else if (59 == SequenceStep) {
         drawStage(0);
@@ -3153,15 +3160,15 @@ function pvpScreen() {
         CurrentStage = 0;
         CurrentArea = 1;
         if (SR_TERRAIN.trSet(CurrentStage)) {
-            SR_PLAYER.plSet(0, 26, SR_TERRAIN.b[0]);
-            SR_PLAYER.plSet(1, 30, SR_TERRAIN.b[1]);
-            SR_PLAYER.plSet(2, 34, SR_TERRAIN.b[2]);
-            SR_PLAYER.plSet(3, 38, SR_TERRAIN.b[3]);
+            SR_PLAYER.plSet(0, 26, SR_TERRAIN.tr_low_surface[0]);
+            SR_PLAYER.plSet(1, 30, SR_TERRAIN.tr_low_surface[1]);
+            SR_PLAYER.plSet(2, 34, SR_TERRAIN.tr_low_surface[2]);
+            SR_PLAYER.plSet(3, 38, SR_TERRAIN.tr_low_surface[3]);
             SR_ENEMY.enReset(1);
             SR_PROJECTILE.pj_last_index = 0;
             SR_INDICATOR.in_last_index = 0;
-            SR_DROP.a = 0;
-            TextFadeTime = SignTouch = TargetEnemyIndex = TargetEnemyTime = TargetEnemyMaxLp = TargetEnemyCurrentLp = SR_DROP.f = 0;
+            SR_DROP.dp_last_index = 0;
+            TextFadeTime = SignTouch = TargetEnemyIndex = TargetEnemyTime = TargetEnemyMaxLp = TargetEnemyCurrentLp = SR_DROP.dp_anti_cheat_value = 0;
             SequenceStep++;
         }
     } else if (71 == SequenceStep || 72 == SequenceStep || 73 == SequenceStep || 74 == SequenceStep) {
@@ -3213,8 +3220,9 @@ function pvpScreen() {
             SequenceStep++;
         } else if (72 == SequenceStep) {
             filledRectCentered(256, 100, 300, 100, 8421504);
-            centeredText(LARGE_TEXT, 256, 70, "UPLOAD", 16752800, 0);
-            drawFromImageCentered(UserNameImage, 256, 90, UserNameImage.a, 16, 0, 0, UserNameImage.a, 16, 0);
+            showTextSolidCenter(LARGE_TEXT, 256, 70, "UPLOAD", 16752800, 0);
+            //im.a
+            drawFromImageCentered(UserNameImage, 256, 90, UserNameImage.im_text_width, 16, 0, 0, UserNameImage.im_text_width, 16, 0);
             if (!UploadError) {
                 b = VsUploadCommentInput;
                 filledRect(136, 108, 240, 16, 16777215);
@@ -3238,7 +3246,7 @@ function pvpScreen() {
                 drawFromImage(VsUploadCommentImage, 137, 108, 238, 16, 0, 0, 238, 16, 0);
                 VsUploadCommentInput = b;
                 b = isMouseHoveredCenter(256, 140, 16, 12);
-                centeredText(LARGE_TEXT, 256, 140, "OK", b ? 16711680 : 16777215, 0);
+                showTextSolidCenter(LARGE_TEXT, 256, 140, "OK", b ? 16711680 : 16777215, 0);
                 if (b && Released) {
                     if (2 > VsUploadCommentInput.length) {
                         if (Language) {
@@ -3329,14 +3337,14 @@ function pvpScreen() {
         CurrentStage = 0;
         CurrentArea = 1;
         if (SR_TERRAIN.trSet(CurrentStage)) {
-            SR_PLAYER.plSet(0, 10, SR_TERRAIN.b[0]);
-            SR_PLAYER.plSet(1, 11, SR_TERRAIN.b[1]);
-            SR_PLAYER.plSet(2, 12, SR_TERRAIN.b[2]);
-            SR_PLAYER.plSet(3, 13, SR_TERRAIN.b[3]);
-            SR_PLAYER.plSet(4, 53, SR_TERRAIN.b[0]);
-            SR_PLAYER.plSet(5, 52, SR_TERRAIN.b[1]);
-            SR_PLAYER.plSet(6, 51, SR_TERRAIN.b[2]);
-            SR_PLAYER.plSet(7, 50, SR_TERRAIN.b[3]);
+            SR_PLAYER.plSet(0, 10, SR_TERRAIN.tr_low_surface[0]);
+            SR_PLAYER.plSet(1, 11, SR_TERRAIN.tr_low_surface[1]);
+            SR_PLAYER.plSet(2, 12, SR_TERRAIN.tr_low_surface[2]);
+            SR_PLAYER.plSet(3, 13, SR_TERRAIN.tr_low_surface[3]);
+            SR_PLAYER.plSet(4, 53, SR_TERRAIN.tr_low_surface[0]);
+            SR_PLAYER.plSet(5, 52, SR_TERRAIN.tr_low_surface[1]);
+            SR_PLAYER.plSet(6, 51, SR_TERRAIN.tr_low_surface[2]);
+            SR_PLAYER.plSet(7, 50, SR_TERRAIN.tr_low_surface[3]);
             setPlayerStatus();
             antiCheatCheck();
             for (a = 0; 8 > a; a++) {
@@ -3350,8 +3358,8 @@ function pvpScreen() {
             SR_ENEMY.enReset(1);
             SR_PROJECTILE.pj_last_index = 0;
             SR_INDICATOR.in_last_index = 0;
-            SR_DROP.a = 0;
-            TextFadeTime = SignTouch = TargetEnemyIndex = TargetEnemyTime = TargetEnemyMaxLp = TargetEnemyCurrentLp = SR_DROP.f = 0;
+            SR_DROP.dp_last_index = 0;
+            TextFadeTime = SignTouch = TargetEnemyIndex = TargetEnemyTime = TargetEnemyMaxLp = TargetEnemyCurrentLp = SR_DROP.dp_anti_cheat_value = 0;
             SequenceStep++
         }
     } else if (61 == SequenceStep || 62 == SequenceStep || 63 == SequenceStep || 64 == SequenceStep) {
@@ -3379,22 +3387,23 @@ function pvpScreen() {
                     TextFadeTime = 0;
                 }
                 filledRectCentered(256, 127, 512, 32, 8388608);
-                showText(LARGE_TEXT, 256, 128, "FIGHT", 255, 255, 255, 255, 0, 0, 0, 255, 16, 24);
+                showTextCenter(LARGE_TEXT, 256, 128, "FIGHT", 255, 255, 255, 255, 0, 0, 0, 255, 16, 24);
             } else {
-                showText(LARGE_TEXT, 256, 128, "READY", 255, 255, 255, a, 0, 0, 0, a, 16, 24);
+                showTextCenter(LARGE_TEXT, 256, 128, "READY", 255, 255, 255, a, 0, 0, 0, a, 16, 24);
             }
             DisplayMode1 = 1;
             b = 110;
             c = 120;
             drawVsMessage(UserNameImage, UserName);
-            drawFromImageCentered(UserNameImage, b, c + 0 - 2, UserNameImage.a, 16, 0, 0, UserNameImage.a, 16, a << 24 | 16777215);
+            //im.a
+            drawFromImageCentered(UserNameImage, b, c + 0 - 2, UserNameImage.im_text_width, 16, 0, 0, UserNameImage.im_text_width, 16, a << 24 | 16777215);
             drawVsMessage(UserPartyNameImage, UserPartyName);
-            drawFromImageCentered(UserPartyNameImage, b, c + 16 - 2, UserPartyNameImage.a, 16, 0, 0, UserPartyNameImage.a, 16, a << 24 | 16777215);
+            drawFromImageCentered(UserPartyNameImage, b, c + 16 - 2, UserPartyNameImage.im_text_width, 16, 0, 0, UserPartyNameImage.im_text_width, 16, a << 24 | 16777215);
             b = 402;
             drawVsMessage(OpponentNameImage, OpponentName);
-            drawFromImageCentered(OpponentNameImage, b, c + 0 - 2, OpponentNameImage.a, 16, 0, 0, OpponentNameImage.a, 16, a << 24 | 16777215);
+            drawFromImageCentered(OpponentNameImage, b, c + 0 - 2, OpponentNameImage.im_text_width, 16, 0, 0, OpponentNameImage.im_text_width, 16, a << 24 | 16777215);
             drawVsMessage(OpponentPartyNameImage, OpponentPartyName);
-            drawFromImageCentered(OpponentPartyNameImage, b, c + 16 - 2, OpponentPartyNameImage.a, 16, 0, 0, OpponentPartyNameImage.a, 16, a << 24 | 16777215);
+            drawFromImageCentered(OpponentPartyNameImage, b, c + 16 - 2, OpponentPartyNameImage.im_text_width, 16, 0, 0, OpponentPartyNameImage.im_text_width, 16, a << 24 | 16777215);
             DisplayMode1 = 0;
         } else if (62 == SequenceStep) {
             if (0 == PlayerCurrentLp[0] + PlayerCurrentLp[1] + PlayerCurrentLp[2] + PlayerCurrentLp[3]) {
@@ -3434,67 +3443,70 @@ function pvpScreen() {
                 filledRectCentered(256, 128, 96, 32, 8388608);
             }
             frameRectCentered(256, 128, 96, 32, 0 | srFloor(a / 2) << 16);
-            showText(LARGE_TEXT, 256, 129, "RETRY", 255, 255, 255, a, 0, 0, 0, a, 16, 24);
+            showTextCenter(LARGE_TEXT, 256, 129, "RETRY", 255, 255, 255, a, 0, 0, 0, a, 16, 24);
             b = 60;
             c = 72;
             DisplayMode1 = 1;
-            drawFromImage(UserNameImage, b, c + 0 - 2, UserNameImage.a, 16, 0, 0, UserNameImage.a, 16, a << 24 | 16777215);
+            //im.a
+            drawFromImage(UserNameImage, b, c + 0 - 2, UserNameImage.im_text_width, 16, 0, 0, UserNameImage.im_text_width, 16, a << 24 | 16777215);
             DisplayMode1 = 0;
             //showText(LARGE_TEXT, b + 60, c + 40, 1 == VsResult ? "WIN" : "LOSE", 255, 255, 255, a, 1 == VsResult ? 255 : 0, 0, 1 == VsResult ? 0 : 255, a, 32, 48);
             if (1 == VsResult) {
-                showText(LARGE_TEXT, b + 60, c + 40, "WIN", 255, 255, 255, a, 255, 0, 0, a, 32, 48);
+                showTextCenter(LARGE_TEXT, b + 60, c + 40, "WIN", 255, 255, 255, a, 255, 0, 0, a, 32, 48);
             } else {
-                showText(LARGE_TEXT, b + 60, c + 40, "LOSE", 255, 255, 255, a, 0, 0, 255, a, 32, 48);
+                showTextCenter(LARGE_TEXT, b + 60, c + 40, "LOSE", 255, 255, 255, a, 0, 0, 255, a, 32, 48);
             }
             if (RequestResult) {
                 if ("ok" == RequestResponse[0]) {
-                    textOutputM(LARGE_TEXT, b, c + 64, "" + RequestResponse[1] + " win " + RequestResponse[2] + " lose", 255, 255, 255, a, 0, 0, 0, a, 8, 12);
-                    textOutputM(LARGE_TEXT, b, c + 80, "Winning per " + RequestResponse[3] + "%", 255, 255, 255, a, 0, 0, 0, a, 8, 12);
+                    showTextTopLeft(LARGE_TEXT, b, c + 64, "" + RequestResponse[1] + " win " + RequestResponse[2] + " lose", 255, 255, 255, a, 0, 0, 0, a, 8, 12);
+                    showTextTopLeft(LARGE_TEXT, b, c + 80, "Winning per " + RequestResponse[3] + "%", 255, 255, 255, a, 0, 0, 0, a, 8, 12);
                 } else {
-                    textOutputM(LARGE_TEXT, b, c + 64, " RANKING ERROR", 255, 255, 255, a, 0, 0, 0, a, 8, 12);
+                    showTextTopLeft(LARGE_TEXT, b, c + 64, " RANKING ERROR", 255, 255, 255, a, 0, 0, 0, a, 8, 12);
                 }
             }
             b = 332;
             DisplayMode1 = 1;
-            drawFromImage(OpponentNameImage, b, c + 0 - 2, OpponentNameImage.a, 16, 0, 0, OpponentNameImage.a, 16, a << 24 | 16777215);
+            //im.a
+            drawFromImage(OpponentNameImage, b, c + 0 - 2, OpponentNameImage.im_text_width, 16, 0, 0, OpponentNameImage.im_text_width, 16, a << 24 | 16777215);
             DisplayMode1 = 0;
             //showText(LARGE_TEXT, b + 60, c + 40, 2 == VsResult ? "WIN" : "LOSE", 255, 255, 255, a, 2 == VsResult ? 255 : 0, 0, 2 == VsResult ? 0 : 255, a, 32, 48);
             if (2 == VsResult) {
-                showText(LARGE_TEXT, b + 60, c + 40, "WIN", 255, 255, 255, a, 255, 0, 0, a, 32, 48);
+                showTextCenter(LARGE_TEXT, b + 60, c + 40, "WIN", 255, 255, 255, a, 255, 0, 0, a, 32, 48);
             } else {
-                showText(LARGE_TEXT, b + 60, c + 40, "LOSE", 255, 255, 255, a, 0, 0, 255, a, 32, 48);
+                showTextCenter(LARGE_TEXT, b + 60, c + 40, "LOSE", 255, 255, 255, a, 0, 0, 255, a, 32, 48);
             }
             if (RequestResult) {
                 if ("ok" == RequestResponse[0]) {
-                    textOutputM(LARGE_TEXT, b, c + 64, "" + RequestResponse[4] + " win " + RequestResponse[5] + " lose", 255, 255, 255, a, 0, 0, 0, a, 8, 12);
-                    textOutputM(LARGE_TEXT, b, c + 80, "Winning per " + RequestResponse[6] + "%", 255, 255, 255, a, 0, 0, 0, a, 8, 12);
+                    showTextTopLeft(LARGE_TEXT, b, c + 64, "" + RequestResponse[4] + " win " + RequestResponse[5] + " lose", 255, 255, 255, a, 0, 0, 0, a, 8, 12);
+                    showTextTopLeft(LARGE_TEXT, b, c + 80, "Winning per " + RequestResponse[6] + "%", 255, 255, 255, a, 0, 0, 0, a, 8, 12);
                 } else {
-                    textOutputM(LARGE_TEXT, b, c + 64, " RANKING ERROR", 255, 255, 255, a, 0, 0, 0, a, 8, 12);
+                    showTextTopLeft(LARGE_TEXT, b, c + 64, " RANKING ERROR", 255, 255, 255, a, 0, 0, 0, a, 8, 12);
                 }
             }
         }
         filledRect(0, 257, 512, 126, [13407305, 9480368, 7241784, 10993609, 11302740, 24586, 7297069, 7297069, 10053120][STAGE_DATA[CurrentStage][CurrentArea][0]]);
-        textOutputM(SMALL_TEXT, 10, 374, CHAR_COPYRIGHT1, 0, 0, 0, 0, 0, 0, 0, 128, 5, 7);
-        showText(LARGE_TEXT, 256, 328, "VS", 255, 255, 255, 255, 0, 0, 0, 255, 16, 24);
+        showTextTopLeft(SMALL_TEXT, 10, 374, CHAR_COPYRIGHT1, 0, 0, 0, 0, 0, 0, 0, 128, 5, 7);
+        showTextCenter(LARGE_TEXT, 256, 328, "VS", 255, 255, 255, 255, 0, 0, 0, 255, 16, 24);
         b = 40;
         c = 268;
-        drawFromImage(UserNameImage, b, c + 0 - 2, UserNameImage.a, 16, 0, 0, UserNameImage.a, 16, 0);
-        textOutputB(LARGE_TEXT, b, c + 16, "LV " + PartyLv[0], 16777215, 0);
-        textOutputB(LARGE_TEXT, b, c + 16, "        FP " + PartyFp[0], 16777215, 0);
+        //im.a
+        drawFromImage(UserNameImage, b, c + 0 - 2, UserNameImage.im_text_width, 16, 0, 0, UserNameImage.im_text_width, 16, 0);
+        showTextSolidTopLeft(LARGE_TEXT, b, c + 16, "LV " + PartyLv[0], 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, b, c + 16, "        FP " + PartyFp[0], 16777215, 0);
         drawVsMessage(UserPartyNameBracketImage, "\u300c " + UserPartyName + " \u300d");
-        drawFromImageCentered(UserPartyNameBracketImage, b + 60, c + 88, UserPartyNameBracketImage.a, 16, 0, 0, UserPartyNameBracketImage.a, 16, 0);
+        drawFromImageCentered(UserPartyNameBracketImage, b + 60, c + 88, UserPartyNameBracketImage.im_text_width, 16, 0, 0, UserPartyNameBracketImage.im_text_width, 16, 0);
         b = 206;
-        showText(LARGE_TEXT, b, c + 22, "Rank", 0, 0, 0, 0, 0, 0, 0, 128, 8, 12);
-        showText(LARGE_TEXT, b, c + 60, "" + RANK_NAME[PartyRank[0]], 0, 0, 0, 0, 0, 0, 0, 80, 32, 48);
+        showTextCenter(LARGE_TEXT, b, c + 22, "Rank", 0, 0, 0, 0, 0, 0, 0, 128, 8, 12);
+        showTextCenter(LARGE_TEXT, b, c + 60, "" + RANK_NAME[PartyRank[0]], 0, 0, 0, 0, 0, 0, 0, 80, 32, 48);
         b = 352;
-        drawFromImage(OpponentNameImage, b, c + 0 - 2, OpponentNameImage.a, 16, 0, 0, OpponentNameImage.a, 16, 0);
-        textOutputB(LARGE_TEXT, b, c + 16, "LV " + PartyLv[1], 16777215, 0);
-        textOutputB(LARGE_TEXT, b, c + 16, "        FP " + PartyFp[1], 16777215, 0);
+        drawFromImage(OpponentNameImage, b, c + 0 - 2, OpponentNameImage.im_text_width, 16, 0, 0, OpponentNameImage.im_text_width, 16, 0);
+        showTextSolidTopLeft(LARGE_TEXT, b, c + 16, "LV " + PartyLv[1], 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, b, c + 16, "        FP " + PartyFp[1], 16777215, 0);
         drawVsMessage(OpponentPartyNameBracketImage, "\u300c " + OpponentPartyName + " \u300d");
-        drawFromImageCentered(OpponentPartyNameBracketImage, b + 60, c + 88, OpponentPartyNameBracketImage.a, 16, 0, 0, OpponentPartyNameBracketImage.a, 16, 0);
+        drawFromImageCentered(OpponentPartyNameBracketImage, b + 60, c + 88, OpponentPartyNameBracketImage.im_text_width, 16, 0, 0, OpponentPartyNameBracketImage.im_text_width, 16, 0);
         b = 306;
-        showText(LARGE_TEXT, b, c + 22, "Rank", 0, 0, 0, 0, 0, 0, 0, 128, 8, 12);
-        showText(LARGE_TEXT, b, c + 60, "" + RANK_NAME[PartyRank[1]], 0, 0, 0, 0, 0, 0, 0, 80, 32, 48);
+        showTextCenter(LARGE_TEXT, b, c + 22, "Rank", 0, 0, 0, 0, 0, 0, 0, 128, 8, 12);
+        showTextCenter(LARGE_TEXT, b, c + 60, "" + RANK_NAME[PartyRank[1]], 0, 0, 0, 0, 0, 0, 0, 80, 32, 48);
         b = 40;
         c = 316;
         for (a = 0; 8 > a; a++) {
@@ -3519,7 +3531,7 @@ function pvpScreen() {
 */
 function drawMenuCopyRight() {
     filledRect(0, 368, 512, 16, 0);
-    centeredText(LARGE_TEXT, 256, 376, CHAR_COPYRIGHT2, -1, 6697728)
+    showTextSolidCenter(LARGE_TEXT, 256, 376, CHAR_COPYRIGHT2, -1, 6697728)
 }
 
 //WINDOW.fff = drawStage;
@@ -3533,24 +3545,24 @@ function drawStage(a) {
     if (!CurrentStage && 1 == CurrentArea || 20 == CurrentStage && 1 == CurrentArea || 47 == CurrentStage && 1 == CurrentArea || 77 == CurrentStage && 1 == CurrentArea) {
         drawFromImageCentered(HouseImage, 400, 183, 117, 84, 0, 0, 78, 56, 16777215);
         drawFromImageCentered(HouseImage, 40, 170, 156, 112, 0, 0, 78, 56, 16777215);
-        centeredText(LARGE_TEXT, 400, 168, "INN", 16777215, 13800762);
+        showTextSolidCenter(LARGE_TEXT, 400, 168, "INN", 16777215, 13800762);
         if (!CurrentStage) {
-            centeredText(LARGE_TEXT, 40, 152, "SHOP", 16777215, 13800762);
+            showTextSolidCenter(LARGE_TEXT, 40, 152, "SHOP", 16777215, 13800762);
         } else if (20 == CurrentStage) {
-            centeredText(LARGE_TEXT, 40, 152, " COMPO SHOP", 16777215, 13800762);
+            showTextSolidCenter(LARGE_TEXT, 40, 152, " COMPO SHOP", 16777215, 13800762);
         } else if (47 == CurrentStage) {
-            centeredText(LARGE_TEXT, 40, 152, " JUNK SHOP", 16777215, 13800762);
+            showTextSolidCenter(LARGE_TEXT, 40, 152, " JUNK SHOP", 16777215, 13800762);
         } else if (77 == CurrentStage) {
-            centeredText(LARGE_TEXT, 40, 152, " COMPO SHOP", 16777215, 13800762);
+            showTextSolidCenter(LARGE_TEXT, 40, 152, " COMPO SHOP", 16777215, 13800762);
         }
-        centeredText(LARGE_TEXT, 40, 184, "BOOK", 16777215, 13800762);
+        showTextSolidCenter(LARGE_TEXT, 40, 184, "BOOK", 16777215, 13800762);
     }
     if (70 == CurrentStage && 1 == CurrentArea) {
         drawFromImage(ForgetTreeImage, 0, -288, 512, 512, 0, 0, 64, 64, 16777215);
         if (52 == SequenceStep) {
-            centeredText(LARGE_TEXT, 256, 128, "FORGET", 16777215, 1054740);
-            centeredText(LARGE_TEXT, 256, 160, "INN", 16777215, 1054740);
-            centeredText(LARGE_TEXT, 256, 184, "BOOK", 16777215, 1054740);
+            showTextSolidCenter(LARGE_TEXT, 256, 128, "FORGET", 16777215, 1054740);
+            showTextSolidCenter(LARGE_TEXT, 256, 160, "INN", 16777215, 1054740);
+            showTextSolidCenter(LARGE_TEXT, 256, 184, "BOOK", 16777215, 1054740);
         }
     }
     if (0 == a) {
@@ -3561,24 +3573,24 @@ function drawStage(a) {
         PjMain();
     }
     b = SR_TERRAIN;
-    if (55 != b.c && 89 != b.c && CurrentArea != STAGE_DATA[b.c].length - 1 || 0 == SR_ENEMY.en_last_index) {
+    if (55 != b.tr_stage_id && 89 != b.tr_stage_id && CurrentArea != STAGE_DATA[b.tr_stage_id].length - 1 || 0 == SR_ENEMY.en_last_index) {
         var c;
         if (7 == STAGE_DATA[CurrentStage][CurrentArea][1]) {
-            c = 8 * b.b[63] - 16;
+            c = 8 * b.tr_low_surface[63] - 16;
         } else {
-            c = 8 * b.g[63] - 16;
+            c = 8 * b.tr_high_surface[63] - 16;
         }
         drawItem(SignImage, 480, c, 32, 24, 0, 0, 32, 24);
-        if (CurrentArea == STAGE_DATA[b.c].length - 1) {
-            if (88 == b.c) {
-                centeredText(SMALL_TEXT, 496, c + 8, "END", 0, -1)
+        if (CurrentArea == STAGE_DATA[b.tr_stage_id].length - 1) {
+            if (88 == b.tr_stage_id) {
+                showTextSolidCenter(SMALL_TEXT, 496, c + 8, "END", 0, -1)
             } else {
-                centeredText(SMALL_TEXT, 496, c + 8, "MAP", 0, -1)
+                showTextSolidCenter(SMALL_TEXT, 496, c + 8, "MAP", 0, -1)
             }
-        } else if (CurrentArea == STAGE_DATA[b.c].length - 2) {
-            centeredText(SMALL_TEXT, 496, c + 8, "BOSS", 0, -1)
+        } else if (CurrentArea == STAGE_DATA[b.tr_stage_id].length - 2) {
+            showTextSolidCenter(SMALL_TEXT, 496, c + 8, "BOSS", 0, -1)
         } else {
-            centeredText(SMALL_TEXT, 496, c + 8, "NEXT", 0, -1)
+            showTextSolidCenter(SMALL_TEXT, 496, c + 8, "NEXT", 0, -1)
         }
     }
     SR_ENEMY.enDraw();
@@ -3590,7 +3602,7 @@ function drawStage(a) {
     var g;
     var h;
     h = GameCanvas;
-    switch (d.c) {
+    switch (d.tr_stage_id) {
         case 15:
         case 16:
         case 30:
@@ -3603,7 +3615,8 @@ function drawStage(a) {
         case 69:
             DisplayMode1 = 1;
             DisplayMode2 = 3;
-            GameCanvas = StageEffectCanvasImage.l;
+            //im.l
+            GameCanvas = StageEffectCanvasImage.im_array;
             b = srRandomRange(1.7, 3.69);
             b = b * b * b * b;
             drawFromImageCentered(ProjectileImage, srRandomRange(0, 512), 256 - b, 256, 32, 96, 0, 16, 16, 150994943);
@@ -3615,7 +3628,8 @@ function drawStage(a) {
             }
             GameCanvas = h;
             for (b = 32768; b < e; b++) {
-                d = StageEffectCanvasImage.l[b] & 255;
+                //im.l
+                d = StageEffectCanvasImage.im_array[b] & 255;
                 c = GameCanvas[b] >> 16 & 255;
                 h = ((255 - c) * d >> 8) + c;
                 c = GameCanvas[b] >> 8 & 255;
@@ -3634,7 +3648,8 @@ function drawStage(a) {
         case 50:
         case 83:
         case 84:
-            GameCanvas = StageEffectCanvasImage.l;
+            //im.l
+            GameCanvas = StageEffectCanvasImage.im_array;
             e = 131072;
             for (b = 0; b < e; b++) {
                 GameCanvas[b] = 255;
@@ -3657,14 +3672,15 @@ function drawStage(a) {
                     }
                 }
             }
-            for (b = 0; b < SR_DROP.a; b++) {
-                drawFromImageCentered(ProjectileImage, SR_DROP.b[b].x, SR_DROP.b[b].y - 6, 32, 32, 33, 1, 14, 14, 4294967295);
+            for (b = 0; b < SR_DROP.dp_last_index; b++) {
+                drawFromImageCentered(ProjectileImage, SR_DROP.dp_position[b].x, SR_DROP.dp_position[b].y - 6, 32, 32, 33, 1, 14, 14, 4294967295);
             }
             drawFromImageCentered(ProjectileImage, MouseX1, MouseY1, 80, 80, 33, 1, 14, 14, 3238002687);
             GameCanvas = h;
             DisplayMode1 = 1;
             for (b = 0; b < e; b++) {
-                d = StageEffectCanvasImage.l[b];
+                //im.l
+                d = StageEffectCanvasImage.im_array[b];
                 if (255 == d) {
                     GameCanvas[b] = 251658240;
                 } else {
@@ -3692,13 +3708,15 @@ function drawStage(a) {
                 c = 512 * g;
                 h = ~~(4 * AngleArray[b][1] + .5);
                 for (e = 0; 512 > e; e++) {
-                    StageEffectCanvasImage.l[c + e] = GameCanvas[c + srClampA(e + h, 0, 511)];
+                    //im.l
+                    StageEffectCanvasImage.im_array[c + e] = GameCanvas[c + srClampA(e + h, 0, 511)];
                 }
                 b = b + 6 & 511
             }
             e = 131072;
             for (c = 0; c < e; c++) {
-                GameCanvas[c] = StageEffectCanvasImage.l[c];
+                //im.l
+                GameCanvas[c] = StageEffectCanvasImage.im_array[c];
             }
             break;
         case 51:
@@ -3710,46 +3728,53 @@ function drawStage(a) {
         case 60:
         case 61:
             e = 1;
-            if (57 == d.c) {
+            if (57 == d.tr_stage_id) {
                 e = 2;
-            } else if (58 == d.c) {
+            } else if (58 == d.tr_stage_id) {
                 e = 2;
-            } else if (59 == d.c) {
+            } else if (59 == d.tr_stage_id) {
                 e = 2;
-            } else if (60 == d.c) {
+            } else if (60 == d.tr_stage_id) {
                 e = 3;
-            } else if (61 == d.c) {
+            } else if (61 == d.tr_stage_id) {
                 e = 3;
             }
             for (b = 0; b < e; b++) {
-                StageEffectCanvasImage.l[srFloor(srRandom(24576))] = 1;
+                //im.l
+                StageEffectCanvasImage.im_array[srFloor(srRandom(24576))] = 1;
             }
             for (b = 114687; 0 <= b; b--) {
-                if (1 == StageEffectCanvasImage.l[b]) {
-                    g = SR_TERRAIN.a[b >> 12][(b & 511) >> 3];
+                if (1 == StageEffectCanvasImage.im_array[b]) {
+                    //im.a
+                    g = SR_TERRAIN.tr_data[b >> 12][(b & 511) >> 3];
                     if (-1 == g || 0 == g && 3 > (b & 7) && 3 > (b >> 9 & 7) || 2 == g && 4 < (b & 7) && 3 > (b >> 9 & 7)) {
                         //!(50 > srRandom(100)) && (c = 57 == d.c || 58 == d.c || 61 == d.c ? b + 512 + srFloor(srRandom(4)) - 2 : b + 512 + srFloor(srRandom(3)) - 1, 1 != StageEffectCanvasImage.l[c] && (g = SR_TERRAIN.a[c >> 12][(c & 511) >> 3], -1 == g || 0 == g && 3 > (c & 7) && 3 > (c >> 9 & 7) || 2 == g && 4 < (c & 7) && 3 > (c >> 9 & 7))) && (StageEffectCanvasImage.l[c] = StageEffectCanvasImage.l[b], StageEffectCanvasImage.l[b] = 0);
                         if (50 <= srRandom(100)) {
-                            if (57 == d.c || 58 == d.c || 61 == d.c) {
+                            if (57 == d.tr_stage_id || 58 == d.tr_stage_id || 61 == d.tr_stage_id) {
                                 c = b + 512 + srFloor(srRandom(4)) - 2;
                             } else {
                                 c = b + 512 + srFloor(srRandom(3)) - 1;
                             }
-                            if (1 != StageEffectCanvasImage.l[c]) {
-                                g = SR_TERRAIN.a[c >> 12][(c & 511) >> 3];
+                            //im.l
+                            if (1 != StageEffectCanvasImage.im_array[c]) {
+                                //im.a
+                                g = SR_TERRAIN.tr_data[c >> 12][(c & 511) >> 3];
                                 if (-1 == g || 0 == g && 3 > (c & 7) && 3 > (c >> 9 & 7) || 2 == g && 4 < (c & 7) && 3 > (c >> 9 & 7)) {
-                                    StageEffectCanvasImage.l[c] = StageEffectCanvasImage.l[b];
-                                    StageEffectCanvasImage.l[b] = 0;
+                                    //im.l
+                                    StageEffectCanvasImage.im_array[c] = StageEffectCanvasImage.im_array[b];
+                                    StageEffectCanvasImage.im_array[b] = 0;
                                 }
                             }
 
                         }
                     } else {
-                        StageEffectCanvasImage.l[b] = 0;
+                        //im.l
+                        StageEffectCanvasImage.im_array[b] = 0;
                     }
                 }
             }
-            GameCanvas = StageEffectCanvasImage.l;
+            //im.l
+            GameCanvas = StageEffectCanvasImage.im_array;
             for (b = 0; 4 > b; b++) {
                 if (0 != PlayerCurrentLp[b]) {
                     filledRectCentered(SR_PLAYER.pl_current_joint[b][0].x, SR_PLAYER.pl_current_joint[b][0].y, 3, 3, 0);
@@ -3764,7 +3789,8 @@ function drawStage(a) {
             }
             GameCanvas = h;
             for (b = 114687; 0 <= b; b--) {
-                if (1 == StageEffectCanvasImage.l[b]) {
+                //im.l
+                if (1 == StageEffectCanvasImage.im_array[b]) {
                     GameCanvas[b] = 15266040
                 }
             }
@@ -3774,20 +3800,20 @@ function drawStage(a) {
     filledRect(4, 4, 8 * (STAGE_NAME[CurrentStage].length + 6) + 8, 20, 2151694400);
     DisplayMode1 = 0;
     if (!CurrentStage && 1 == CurrentArea || 20 == CurrentStage && 1 == CurrentArea || 47 == CurrentStage && 1 == CurrentArea || 70 == CurrentStage && 1 == CurrentArea || 77 == CurrentStage && 1 == CurrentArea) {
-        textOutputB(LARGE_TEXT, 8, 8, STAGE_NAME[CurrentStage], 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, 8, 8, STAGE_NAME[CurrentStage], 16777215, 0);
     } else if (CurrentArea + 1 == STAGE_DATA[CurrentStage].length) {
-        textOutputB(LARGE_TEXT, 8, 8, STAGE_NAME[CurrentStage] + ": BOSS", 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, 8, 8, STAGE_NAME[CurrentStage] + ": BOSS", 16777215, 0);
     } else {
-        textOutputB(LARGE_TEXT, 8, 8, STAGE_NAME[CurrentStage] + ": " + (CurrentArea + 1), 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, 8, 8, STAGE_NAME[CurrentStage] + ": " + (CurrentArea + 1), 16777215, 0);
     }
     DisplayMode1 = 1;
     filledRect(364, 4, 56, 20, 2151694400);
     DisplayMode1 = 0;
-    textOutputB(LARGE_TEXT, 368, 8, "Option", 16777215, 0);
+    showTextSolidTopLeft(LARGE_TEXT, 368, 8, "Option", 16777215, 0);
     DisplayMode1 = 1;
     filledRect(428, 4, 80, 20, 2151694400);
     DisplayMode1 = 0;
-    textOutputB(LARGE_TEXT, 432, 8, "World Map", 16777215, 0);
+    showTextSolidTopLeft(LARGE_TEXT, 432, 8, "World Map", 16777215, 0);
     //if (0 < TargetEnemyTime && (0 == a && TargetEnemyTime--, filledRect(196, 10, 120, 12, 3158064), filledRect(196, 10, srFloor(120 * TargetEnemyCurrentLp / TargetEnemyMaxLp), 12, 6291456), 0 < (StageOpenData[CurrentStage] & STAGE_BOOKED))) {
     if (0 < TargetEnemyTime) {
         if (0 == a) {
@@ -3796,9 +3822,9 @@ function drawStage(a) {
         filledRect(196, 10, 120, 12, 3158064);
         filledRect(196, 10, srFloor(120 * TargetEnemyCurrentLp / TargetEnemyMaxLp), 12, 6291456);
         if (0 < (StageOpenData[CurrentStage] & STAGE_BOOKED)) {
-            centeredText(SMALL_TEXT, 256, 16, "" + TargetEnemyCurrentLp + "/" + TargetEnemyMaxLp, 16777215, 0);
+            showTextSolidCenter(SMALL_TEXT, 256, 16, "" + TargetEnemyCurrentLp + "/" + TargetEnemyMaxLp, 16777215, 0);
             EnDrawIcon(TargetEnemyIndex, 206, 33, 1);
-            textOutputB(SMALL_TEXT, 216, 25, "DROP", 16777215, 0);
+            showTextSolidTopLeft(SMALL_TEXT, 216, 25, "DROP", 16777215, 0);
             for (b = a = 0; 6 > a; a += 2) {
                 c = ENEMY_DATA[TargetEnemyIndex][ENEMY_DROP_FIRST + a];
                 if (0 != c) {
@@ -3809,7 +3835,7 @@ function drawStage(a) {
                 }
             }
             a = enDeath(SR_ENEMY, TargetEnemyIndex, 1);
-            textOutputB(SMALL_TEXT, 276, 25, "EXP " + a, 16777215, 0)
+            showTextSolidTopLeft(SMALL_TEXT, 276, 25, "EXP " + a, 16777215, 0)
         }
     }
 }
@@ -4060,7 +4086,7 @@ function drawUi(a) {
         MouseUp = !1;
     }
     filledRect(0, 257, 512, 126, [13407305, 9480368, 7241784, 7630870, 11302740, 13599032, 10993609, 6322320, 1921195, 10053120, 6714227, 6313296, 6313296][STAGE_DATA[CurrentStage][CurrentArea][0]]);
-    textOutputM(SMALL_TEXT, 10, 374, CHAR_COPYRIGHT1, 0, 0, 0, 0, 0, 0, 0, 128, 5, 7);
+    showTextTopLeft(SMALL_TEXT, 10, 374, CHAR_COPYRIGHT1, 0, 0, 0, 0, 0, 0, 0, 128, 5, 7);
     e = 10;
     g = 260;
     var h = 4753E3;
@@ -4087,25 +4113,25 @@ function drawUi(a) {
         d = "STR " + PlayerStr[SelectedPanel];
         var q = "DEX " + PlayerDex[SelectedPanel];
         var m = "MAG " + PlayerMag[SelectedPanel];
-        textOutputB(LARGE_TEXT, e, g + 0, CLASS_NAME[getItemData(InventoryItem[4 + SelectedPanel], 5)], 16777215, 0);
-        textOutputB(LARGE_TEXT, e, g + 16, b, 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, e, g + 0, CLASS_NAME[getItemData(InventoryItem[4 + SelectedPanel], 5)], 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, e, g + 16, b, 16777215, 0);
         if (SR_PLAYER.pl_class[SelectedPanel] != PLAYER_CLASS_DEAD) {
-            textOutputB(LARGE_TEXT, e, g + 28, d, 16777215, 0);
-            textOutputB(LARGE_TEXT, e, g + 40, q, 16777215, 0);
-            textOutputB(LARGE_TEXT, e, g + 52, m, 16777215, 0);
-            textOutputB(SMALL_TEXT, e, g + 30, "              AT ", -1, 0);
-            textOutputB(SMALL_TEXT, e, g + 42, "              AGI ", -1, 0);
-            textOutputB(SMALL_TEXT, e, g + 54, "              RANGE ", -1, 0);
-            textOutputB(SMALL_TEXT, e, g + 30, "                 " + PlayerMinAt[SelectedPanel] + "-" + PlayerMaxAt[SelectedPanel], 0, -1);
-            textOutputB(SMALL_TEXT, e, g + 42, "                  " + PlayerMinAgi[SelectedPanel] + "-" + PlayerMaxAgi[SelectedPanel], 0, -1);
-            textOutputB(SMALL_TEXT, e, g + 54, "                    " + PlayerAttackRange[SelectedPanel], 0, -1);
+            showTextSolidTopLeft(LARGE_TEXT, e, g + 28, d, 16777215, 0);
+            showTextSolidTopLeft(LARGE_TEXT, e, g + 40, q, 16777215, 0);
+            showTextSolidTopLeft(LARGE_TEXT, e, g + 52, m, 16777215, 0);
+            showTextSolidTopLeft(SMALL_TEXT, e, g + 30, "              AT ", -1, 0);
+            showTextSolidTopLeft(SMALL_TEXT, e, g + 42, "              AGI ", -1, 0);
+            showTextSolidTopLeft(SMALL_TEXT, e, g + 54, "              RANGE ", -1, 0);
+            showTextSolidTopLeft(SMALL_TEXT, e, g + 30, "                 " + PlayerMinAt[SelectedPanel] + "-" + PlayerMaxAt[SelectedPanel], 0, -1);
+            showTextSolidTopLeft(SMALL_TEXT, e, g + 42, "                  " + PlayerMinAgi[SelectedPanel] + "-" + PlayerMaxAgi[SelectedPanel], 0, -1);
+            showTextSolidTopLeft(SMALL_TEXT, e, g + 54, "                    " + PlayerAttackRange[SelectedPanel], 0, -1);
             if (5 == PlayerClass[SelectedPanel]) {
-                textOutputB(SMALL_TEXT, e, g + 66, "AURA          AURA", -1, 0);
-                textOutputB(SMALL_TEXT, e, g + 66, "     (AT)" + PlayerStr[SelectedPanel] + "%", 0, -1);
-                textOutputB(SMALL_TEXT, e, g + 66, "                   (DF)" + PlayerDex[SelectedPanel] / 5, 0, -1);
+                showTextSolidTopLeft(SMALL_TEXT, e, g + 66, "AURA          AURA", -1, 0);
+                showTextSolidTopLeft(SMALL_TEXT, e, g + 66, "     (AT)" + PlayerStr[SelectedPanel] + "%", 0, -1);
+                showTextSolidTopLeft(SMALL_TEXT, e, g + 66, "                   (DF)" + PlayerDex[SelectedPanel] / 5, 0, -1);
             } else if (7 == PlayerClass[SelectedPanel]) {
-                textOutputB(SMALL_TEXT, e, g + 66, "              BULLET", -1, 0);
-                textOutputB(SMALL_TEXT, e, g + 66, "                     +" + PlayerDex[SelectedPanel] / 5, 0, -1);
+                showTextSolidTopLeft(SMALL_TEXT, e, g + 66, "              BULLET", -1, 0);
+                showTextSolidTopLeft(SMALL_TEXT, e, g + 66, "                     +" + PlayerDex[SelectedPanel] / 5, 0, -1);
             } else if (8 == PlayerClass[SelectedPanel]) {
                 var l;
                 if (10 > PlayerDex[SelectedPanel]) {
@@ -4119,19 +4145,19 @@ function drawUi(a) {
                 } else {
                     l = 4;
                 }
-                textOutputB(SMALL_TEXT, e, g + 66, "              RING", -1, 0);
-                textOutputB(SMALL_TEXT, e, g + 66, "                   +" + ("" + l).substring(0, srMin(("" + l).length, 5)), 0, -1)
+                showTextSolidTopLeft(SMALL_TEXT, e, g + 66, "              RING", -1, 0);
+                showTextSolidTopLeft(SMALL_TEXT, e, g + 66, "                   +" + ("" + l).substring(0, srMin(("" + l).length, 5)), 0, -1)
             }
         }
-        textOutputB(LARGE_TEXT, e, g + 76, "LV  " + PartyLv[0], 16777215, 0);
-        textOutputB(LARGE_TEXT, e, g + 76, "        SP " + PlayerSp[SelectedPanel], 16777215, 0);
-        textOutputB(LARGE_TEXT, e, g + 88, "EXP " + PartyExp + "(" + srFloor(100 * (PartyExp - h) / (c - h)) + "%)", 16777215, 0);
-        textOutputB(LARGE_TEXT, e, g + 100, "$$$ " + PartyGold, 16777215, 0);
-        textOutputB(SMALL_TEXT, e + 105, g + 102, "FP " + PartyFp[0], -1, 0);
+        showTextSolidTopLeft(LARGE_TEXT, e, g + 76, "LV  " + PartyLv[0], 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, e, g + 76, "        SP " + PlayerSp[SelectedPanel], 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, e, g + 88, "EXP " + PartyExp + "(" + srFloor(100 * (PartyExp - h) / (c - h)) + "%)", 16777215, 0);
+        showTextSolidTopLeft(LARGE_TEXT, e, g + 100, "$$$ " + PartyGold, 16777215, 0);
+        showTextSolidTopLeft(SMALL_TEXT, e + 105, g + 102, "FP " + PartyFp[0], -1, 0);
         if (SR_PLAYER.pl_class[SelectedPanel] == PLAYER_CLASS_DEAD) {
             h = srMax(srFloor(PartyGold / 10), 10 * PartyLv[0]);
             b = "Revival $ " + h;
-            textOutputB(LARGE_TEXT, e, g + 40, b, 8421504, 0);
+            showTextSolidTopLeft(LARGE_TEXT, e, g + 40, b, 8421504, 0);
             if (isMouseHovered(e, g + 40, 8 * b.length, 12) && MouseUp) {
                 if (h <= PartyGold && Clicked && 0 != PlayerCurrentLp[0] + PlayerCurrentLp[1] + PlayerCurrentLp[2] + PlayerCurrentLp[3]) {
                     antiCheatCheck();
@@ -4140,7 +4166,7 @@ function drawUi(a) {
                     SR_PLAYER.plSet(SelectedPanel, srFloor(SR_PLAYER.pl_current_joint[SelectedPanel][0].x / 8), srFloor(SR_PLAYER.pl_current_joint[SelectedPanel][0].y / 8));
                     antiCheatSet();
                 }
-                textOutputB(LARGE_TEXT, e, g + 40, b, 16711680, 0)
+                showTextSolidTopLeft(LARGE_TEXT, e, g + 40, b, 16711680, 0)
             }
         } else if (0 < PlayerSp[SelectedPanel]) {
             h = Clicked;
@@ -4150,31 +4176,31 @@ function drawUi(a) {
                     PlayerSpLp[SelectedPanel]++;
                     PlayerSp[SelectedPanel]--;
                 }
-                textOutputB(LARGE_TEXT, e, g + 16, b, 16711680, 0);
+                showTextSolidTopLeft(LARGE_TEXT, e, g + 16, b, 16711680, 0);
             } else if (isMouseHovered(e, g + 28, 8 * d.length + 16, 12) && MouseUp) {
                 if (h) {
                     PlayerSpStr[SelectedPanel]++;
                     PlayerSp[SelectedPanel]--;
                 }
-                textOutputB(LARGE_TEXT, e, g + 28, d, 16711680, 0);
+                showTextSolidTopLeft(LARGE_TEXT, e, g + 28, d, 16711680, 0);
             } else if (isMouseHovered(e, g + 40, 8 * q.length + 16, 12) && MouseUp) {
                 if (h) {
                     PlayerSpDex[SelectedPanel]++;
                     PlayerSp[SelectedPanel]--;
                 }
-                textOutputB(LARGE_TEXT, e, g + 40, q, 16711680, 0);
+                showTextSolidTopLeft(LARGE_TEXT, e, g + 40, q, 16711680, 0);
             } else if (isMouseHovered(e, g + 52, 8 * m.length + 16, 12) && MouseUp) {
                 if (h) {
                     PlayerSpMag[SelectedPanel]++;
                     PlayerSp[SelectedPanel]--;
                 }
-                textOutputB(LARGE_TEXT, e, g + 52, m, 16711680, 0);
+                showTextSolidTopLeft(LARGE_TEXT, e, g + 52, m, 16711680, 0);
             }
             antiCheatSet();
-            textOutputB(LARGE_TEXT, e + 8 * b.length, g + 16, " +", 16711680, 0);
-            textOutputB(LARGE_TEXT, e + 8 * d.length, g + 28, " +", 16711680, 0);
-            textOutputB(LARGE_TEXT, e + 8 * q.length, g + 40, " +", 16711680, 0);
-            textOutputB(LARGE_TEXT, e + 8 * m.length, g + 52, " +", 16711680, 0)
+            showTextSolidTopLeft(LARGE_TEXT, e + 8 * b.length, g + 16, " +", 16711680, 0);
+            showTextSolidTopLeft(LARGE_TEXT, e + 8 * d.length, g + 28, " +", 16711680, 0);
+            showTextSolidTopLeft(LARGE_TEXT, e + 8 * q.length, g + 40, " +", 16711680, 0);
+            showTextSolidTopLeft(LARGE_TEXT, e + 8 * m.length, g + 52, " +", 16711680, 0)
         }
     } else {
         m = InventoryItem[SelectedPanel];
@@ -4184,17 +4210,17 @@ function drawUi(a) {
         if (12 <= SelectedPanel && 15 >= SelectedPanel) {
             m = InventoryCompo2[4 + SelectedPanel - 12];
         }
-        itemText(e, g + 0, ITEM_DATA[m][0] + " " + (ITEM_DATA[m][1] ? ITEM_DATA[m][1] : ""), 16777215, 0, -1);
+        showTextSolidSpacingTopLeft(e, g + 0, ITEM_DATA[m][0] + " " + (ITEM_DATA[m][1] ? ITEM_DATA[m][1] : ""), 16777215, 0, -1);
         if (0 != m && 59 != m) {
             b = getItemData(m, 5);
             if (9 == b) {
-                textOutputB(LARGE_TEXT, e, g + 16, "Compo Item", -1, 0);
-                itemText(e, g + 32, ITEM_DATA[m][10], 16777215, 0, -1);
-                itemText(e, g + 44, ITEM_DATA[m][11], 16777215, 0, -1);
+                showTextSolidTopLeft(LARGE_TEXT, e, g + 16, "Compo Item", -1, 0);
+                showTextSolidSpacingTopLeft(e, g + 32, ITEM_DATA[m][10], 16777215, 0, -1);
+                showTextSolidSpacingTopLeft(e, g + 44, ITEM_DATA[m][11], 16777215, 0, -1);
             } else {
-                textOutputB(LARGE_TEXT, e, g + 16, "AT " + ITEM_DATA[m][10] + "-" + ITEM_DATA[m][11], 16777215, 0);
-                textOutputB(LARGE_TEXT, e, g + 28, "AGI " + ITEM_DATA[m][14] + "-" + ITEM_DATA[m][15], 16777215, 0);
-                textOutputB(LARGE_TEXT, e, g + 40, "RANGE " + ITEM_DATA[m][16], 16777215, 0);
+                showTextSolidTopLeft(LARGE_TEXT, e, g + 16, "AT " + ITEM_DATA[m][10] + "-" + ITEM_DATA[m][11], 16777215, 0);
+                showTextSolidTopLeft(LARGE_TEXT, e, g + 28, "AGI " + ITEM_DATA[m][14] + "-" + ITEM_DATA[m][15], 16777215, 0);
+                showTextSolidTopLeft(LARGE_TEXT, e, g + 40, "RANGE " + ITEM_DATA[m][16], 16777215, 0);
                 c = getItemData(m, 34);
                 d = getItemData(m, 35);
                 h = srMax(getItemData(m, 36), 0);
@@ -4227,19 +4253,19 @@ function drawUi(a) {
                         d += getInventoryCompo(SelectedPanel, 8);
                     }
                 }
-                textOutputB(LARGE_TEXT, e, g + 56, "TYPE " + "physical fire ice thunder poison freeze".split(" ")[c], 16777215, 0);
-                textOutputB(LARGE_TEXT, e, g + 68, "AT " + q + "-" + m, 16777215, 0);
+                showTextSolidTopLeft(LARGE_TEXT, e, g + 56, "TYPE " + "physical fire ice thunder poison freeze".split(" ")[c], 16777215, 0);
+                showTextSolidTopLeft(LARGE_TEXT, e, g + 68, "AT " + q + "-" + m, 16777215, 0);
                 if (6 == b) {
-                    textOutputB(LARGE_TEXT, e, g + 80, "$$ " + h, 16777215, 0);
+                    showTextSolidTopLeft(LARGE_TEXT, e, g + 80, "$$ " + h, 16777215, 0);
                 } else {
-                    textOutputB(LARGE_TEXT, e, g + 80, "MP " + h, 16777215, 0);
+                    showTextSolidTopLeft(LARGE_TEXT, e, g + 80, "MP " + h, 16777215, 0);
                 }
                 if (2 == c) {
-                    textOutputB(LARGE_TEXT, e, g + 80, "        SLOW " + d + "%", 16777215, 0);
+                    showTextSolidTopLeft(LARGE_TEXT, e, g + 80, "        SLOW " + d + "%", 16777215, 0);
                 } else if (4 == c) {
-                    textOutputB(LARGE_TEXT, e, g + 80, "        TIME " + d / 50 + "s", 16777215, 0);
+                    showTextSolidTopLeft(LARGE_TEXT, e, g + 80, "        TIME " + d / 50 + "s", 16777215, 0);
                 } else if (5 == c) {
-                    textOutputB(LARGE_TEXT, e, g + 80, "        TIME " + d / 50 + "s", 16777215, 0);
+                    showTextSolidTopLeft(LARGE_TEXT, e, g + 80, "        TIME " + d / 50 + "s", 16777215, 0);
                 }
                 filledRect(e + 0, g + 96, 12, 12, 0);
                 filledRect(e + 75, g + 96, 12, 12, 0);
@@ -4247,19 +4273,19 @@ function drawUi(a) {
                 drawFromImage(SmallItemImage, e + 0, g + 96, 12, 12, 12 * getItemData(InventoryCompo1[SelectedPanel], 3), 0, 12, 12, getItemData(InventoryCompo1[SelectedPanel], 6));
                 drawFromImage(SmallItemImage, e + 75, g + 96, 12, 12, 12 * getItemData(InventoryCompo2[SelectedPanel], 3), 0, 12, 12, getItemData(InventoryCompo2[SelectedPanel], 6));
                 DisplayMode2 = 0;
-                textOutputB(SMALL_TEXT, e + 16, g + 99, ITEM_DATA[InventoryCompo1[SelectedPanel]][0].substring(0, srMin(8, ITEM_DATA[InventoryCompo1[SelectedPanel]][0].length)) + " " + ITEM_DATA[InventoryCompo1[SelectedPanel]][1], -1, 0);
-                textOutputB(SMALL_TEXT, e + 91, g + 99, ITEM_DATA[InventoryCompo2[SelectedPanel]][0].substring(0, srMin(8, ITEM_DATA[InventoryCompo2[SelectedPanel]][0].length)) + " " + ITEM_DATA[InventoryCompo2[SelectedPanel]][1], -1, 0)
+                showTextSolidTopLeft(SMALL_TEXT, e + 16, g + 99, ITEM_DATA[InventoryCompo1[SelectedPanel]][0].substring(0, srMin(8, ITEM_DATA[InventoryCompo1[SelectedPanel]][0].length)) + " " + ITEM_DATA[InventoryCompo1[SelectedPanel]][1], -1, 0);
+                showTextSolidTopLeft(SMALL_TEXT, e + 91, g + 99, ITEM_DATA[InventoryCompo2[SelectedPanel]][0].substring(0, srMin(8, ITEM_DATA[InventoryCompo2[SelectedPanel]][0].length)) + " " + ITEM_DATA[InventoryCompo2[SelectedPanel]][1], -1, 0)
             }
         }
     }
     e = 192;
     g = 271;
-    showText(SMALL_TEXT, e - 15, g + 8, "PLA  ", 0, 0, 0, 0, 0, 0, 0, 128, 5, 7);
-    showText(SMALL_TEXT, e - 15, g + 16, "  YER", 0, 0, 0, 0, 0, 0, 0, 128, 5, 7);
-    showText(SMALL_TEXT, e - 15, g + 36, "WEA  ", 0, 0, 0, 0, 0, 0, 0, 128, 5, 7);
-    showText(SMALL_TEXT, e - 15, g + 44, "  PON", 0, 0, 0, 0, 0, 0, 0, 128, 5, 7);
-    showText(SMALL_TEXT, e - 15, g + 68, "COMPO", 0, 0, 0, 0, 0, 0, 0, 128, 5, 7);
-    showText(SMALL_TEXT, e - 15, g + 96, "COMPO", 0, 0, 0, 0, 0, 0, 0, 128, 5, 7);
+    showTextCenter(SMALL_TEXT, e - 15, g + 8, "PLA  ", 0, 0, 0, 0, 0, 0, 0, 128, 5, 7);
+    showTextCenter(SMALL_TEXT, e - 15, g + 16, "  YER", 0, 0, 0, 0, 0, 0, 0, 128, 5, 7);
+    showTextCenter(SMALL_TEXT, e - 15, g + 36, "WEA  ", 0, 0, 0, 0, 0, 0, 0, 128, 5, 7);
+    showTextCenter(SMALL_TEXT, e - 15, g + 44, "  PON", 0, 0, 0, 0, 0, 0, 0, 128, 5, 7);
+    showTextCenter(SMALL_TEXT, e - 15, g + 68, "COMPO", 0, 0, 0, 0, 0, 0, 0, 128, 5, 7);
+    showTextCenter(SMALL_TEXT, e - 15, g + 96, "COMPO", 0, 0, 0, 0, 0, 0, 0, 128, 5, 7);
     for (b = 0; 4 > b; b++) {
         filledRect(e + 32 * b, g - 12, 24, 4, 0);
         filledRect(e + 32 * b, g - 12, srFloor(24 * PlayerCurrentLp[b] / PlayerMaxLp[b]), 4, 10027008);
@@ -4288,26 +4314,26 @@ function drawUi(a) {
         }
         DisplayMode2 = 0;
         if (ITEM_DATA[InventoryItem[4 + b]][1]) {
-            textOutputB(SMALL_TEXT, e + 32 * b + 19, g + 45, "" + ITEM_DATA[InventoryItem[4 + b]][1], 16777215, -1);
+            showTextSolidTopLeft(SMALL_TEXT, e + 32 * b + 19, g + 45, "" + ITEM_DATA[InventoryItem[4 + b]][1], 16777215, -1);
         }
         if (ITEM_DATA[InventoryCompo1[4 + b]][1] && restrictSlot(b, 0)) {
-            textOutputB(SMALL_TEXT, e + 32 * b + 19, g + 73, "" + ITEM_DATA[InventoryCompo1[4 + b]][1], 16777215, -1);
+            showTextSolidTopLeft(SMALL_TEXT, e + 32 * b + 19, g + 73, "" + ITEM_DATA[InventoryCompo1[4 + b]][1], 16777215, -1);
         }
         if (ITEM_DATA[InventoryCompo2[4 + b]][1] && restrictSlot(b, 1)) {
-            textOutputB(SMALL_TEXT, e + 32 * b + 19, g + 101, "" + ITEM_DATA[InventoryCompo2[4 + b]][1], 16777215, -1);
+            showTextSolidTopLeft(SMALL_TEXT, e + 32 * b + 19, g + 101, "" + ITEM_DATA[InventoryCompo2[4 + b]][1], 16777215, -1);
         }
     }
     frameRect(e + 32 * SelectedPlayer - 1, g - 1, 26, 26, 16711680);
     e = 344;
     g = 271;
-    textOutputB(LARGE_TEXT, e, g + -12, "ITEM", 16777215, 0);
+    showTextSolidTopLeft(LARGE_TEXT, e, g + -12, "ITEM", 16777215, 0);
     for (b = 0; 24 > b; b++) {
         filledRect(e + b % 6 * 28, g + 28 * srFloor(b / 6), 24, 24, 0);
         DisplayMode2 = 2;
         drawFromImage(LargeItemImage, e + b % 6 * 28, g + 28 * srFloor(b / 6), 24, 24, 24 * getItemData(InventoryItem[16 + b], 4), 0, 24, 24, getItemData(InventoryItem[16 + b], 6));
         DisplayMode2 = 0;
         if (ITEM_DATA[InventoryItem[16 + b]][1]) {
-            textOutputB(SMALL_TEXT, e + b % 6 * 28 + 19, g + 28 * srFloor(b / 6) + 17, "" + ITEM_DATA[InventoryItem[16 + b]][1], 16777215, -1);
+            showTextSolidTopLeft(SMALL_TEXT, e + b % 6 * 28 + 19, g + 28 * srFloor(b / 6) + 17, "" + ITEM_DATA[InventoryItem[16 + b]][1], 16777215, -1);
         }
     }
     b = -1;
@@ -4402,9 +4428,9 @@ function drawUi(a) {
         d = srClampA(MouseY1 - 8, 10, 374);
         if (16 <= b && 40 > b) {
             h = srFloor(getItemData(InventoryItem[b], 2) / 8);
-            centeredText(LARGE_TEXT, c, d, "" + h + "$ SELL", 16777215, 0)
+            showTextSolidCenter(LARGE_TEXT, c, d, "" + h + "$ SELL", 16777215, 0)
         } else {
-            centeredText(LARGE_TEXT, c, d, "CLICK TO SELL", 16777215, 0)
+            showTextSolidCenter(LARGE_TEXT, c, d, "CLICK TO SELL", 16777215, 0)
         }
     }
 }
@@ -4673,20 +4699,20 @@ SrPlayer.prototype.plMove = function (a, b) {
     var g, h, q;
     h = srClampA(c.x, 0, 511) >> 3;
     q = srClampA(c.y, 0, 383) >> 3;
-    h = SR_TERRAIN.a[q][h];
+    h = SR_TERRAIN.tr_data[q][h];
     if (9 == h) {
         scaleVec2(d, .95);
         this.pl_on_ground[a] |= 2;
     }
     var m = .5;
-    if (8 == STAGE_DATA[SR_TERRAIN.c][CurrentArea][0]) {
+    if (8 == STAGE_DATA[SR_TERRAIN.tr_stage_id][CurrentArea][0]) {
         m = 1;
     }
     for (var l = 0; l < e; l++) {
         g = c.y + d.y;
         h = srClampA(c.x, 0, 511) >> 3;
         q = srClampA(g, 0, 383) >> 3;
-        h = SR_TERRAIN.a[q][h];
+        h = SR_TERRAIN.tr_data[q][h];
         if (384 > g) {
             if (0 <= h && 8 >= h) {
                 d.x *= m;
@@ -4699,7 +4725,7 @@ SrPlayer.prototype.plMove = function (a, b) {
         g = c.x + d.x;
         h = srClampA(g, 0, 511) >> 3;
         q = srClampA(c.y, 0, 383) >> 3;
-        h = SR_TERRAIN.a[q][h];
+        h = SR_TERRAIN.tr_data[q][h];
         if (0 <= g && 512 > g) {
             if (0 <= h && 8 >= h) {
                 d.y *= m;
@@ -5378,10 +5404,10 @@ function plWalk(a, b) {
                 if (1 != GameMode && c < SR_ENEMY.en_current_joint[g][20].x || 1 == GameMode && c < a.pl_current_joint[g][2].x) {
                     c = srFloor(srClampA(c + 14, 0, 511) / 8);
                     d = srFloor(srClampA(d - 6, 8, 383) / 8);
-                    if (0 <= SR_TERRAIN.a[d][c] && 8 >= SR_TERRAIN.a[d][c]) {
+                    if (0 <= SR_TERRAIN.tr_data[d][c] && 8 >= SR_TERRAIN.tr_data[d][c]) {
                         e = 2;
                     }
-                    if (0 <= SR_TERRAIN.a[d - 1][c] && 8 >= SR_TERRAIN.a[d - 1][c]) {
+                    if (0 <= SR_TERRAIN.tr_data[d - 1][c] && 8 >= SR_TERRAIN.tr_data[d - 1][c]) {
                         e = 4;
                     }
                     if (a.pl_current_joint[b][9].x < a.pl_current_joint[b][10].x) {
@@ -5394,10 +5420,10 @@ function plWalk(a, b) {
                 } else {
                     c = srFloor(srClampA(c - 14, 0, 511) / 8);
                     d = srFloor(srClampA(d - 6, 8, 383) / 8);
-                    if (0 <= SR_TERRAIN.a[d][c] && 8 >= SR_TERRAIN.a[d][c]) {
+                    if (0 <= SR_TERRAIN.tr_data[d][c] && 8 >= SR_TERRAIN.tr_data[d][c]) {
                         e = 2;
                     }
-                    if (0 <= SR_TERRAIN.a[d - 1][c] && 8 >= SR_TERRAIN.a[d - 1][c]) {
+                    if (0 <= SR_TERRAIN.tr_data[d - 1][c] && 8 >= SR_TERRAIN.tr_data[d - 1][c]) {
                         e = 4;
                     }
                     if (a.pl_current_joint[b][9].x > a.pl_current_joint[b][10].x) {
@@ -5426,7 +5452,7 @@ function plSwim(a, b) {
         } else {
             e = plFindPlayer(c - 600, d - 300, c + 600, d + 300, 1 - (b >> 2) << 2);
         }
-        if (-1 != e && 9 == SR_TERRAIN.a[srFloor(srClampA(d, 8, 383) / 8)][srFloor(srClampA(c, 0, 511) / 8)]) {
+        if (-1 != e && 9 == SR_TERRAIN.tr_data[srFloor(srClampA(d, 8, 383) / 8)][srFloor(srClampA(c, 0, 511) / 8)]) {
             //if (c < (1 != GameMode ? SR_ENEMY.a[e][20].x : a.a[e][2].x)) {
             if (1 != GameMode && c < SR_ENEMY.en_current_joint[e][20].x || 1 == GameMode && c < a.pl_current_joint[e][2].x) {
                 a.pl_current_joint[b][0].x += .25;
@@ -5490,9 +5516,9 @@ SrPlayer.prototype.plMain = function () {
             if ((55 != CurrentStage && 89 != CurrentStage && CurrentArea != STAGE_DATA[CurrentStage].length - 1 || 0 == SR_ENEMY.en_last_index) && 0 < (this.pl_on_ground[a] & 1) && 0 != PlayerCurrentLp[a]) {
                 b = (this.pl_current_joint[a][9].x + this.pl_current_joint[a][10].x) / 2;
                 c = (this.pl_current_joint[a][9].y + this.pl_current_joint[a][10].y) / 2;
-                var e = SR_TERRAIN.g[63];
+                var e = SR_TERRAIN.tr_high_surface[63];
                 if (7 == STAGE_DATA[CurrentStage][CurrentArea][1]) {
-                    e = SR_TERRAIN.b[63];
+                    e = SR_TERRAIN.tr_low_surface[63];
                 }
                 if (500 < b && 10 > srAbs(8 * e - c)) {
                     if (CurrentArea != STAGE_DATA[CurrentStage].length - 1) {
@@ -6239,11 +6265,11 @@ SrPlayer.prototype.plWhipper = function (a) {
                 e = this.pl_current_joint[a][this.pl_attack_point[a]].y;
                 g = srFloor(srClampA(this.pl_current_joint[a][this.pl_attack_point[a]].x, 0, 511) / 8);
                 h = srFloor(srClampA(this.pl_current_joint[a][this.pl_attack_point[a]].y, 0, 255) / 8);
-                if (0 <= h - SR_TERRAIN.b[g]) {
-                    e = 8 * SR_TERRAIN.b[g] + 7;
+                if (0 <= h - SR_TERRAIN.tr_low_surface[g]) {
+                    e = 8 * SR_TERRAIN.tr_low_surface[g] + 7;
                 } else {
-                    if (3 >= srAbs(h - SR_TERRAIN.g[g])) {
-                        e = 8 * SR_TERRAIN.g[g] + 7;
+                    if (3 >= srAbs(h - SR_TERRAIN.tr_high_surface[g])) {
+                        e = 8 * SR_TERRAIN.tr_high_surface[g] + 7;
                     }
                 }
                 plProjectileAttack(this, a, this.pl_current_joint[a][this.pl_attack_point[a]].x, e, d);
@@ -6731,6 +6757,9 @@ SrPlayer.prototype.plDraw = function () {
         //    drawLine( srFloor(this.pl_current_joint[a][0].x), srFloor(this.pl_current_joint[a][0].y), srFloor(this.pl_current_joint[a][0].x), srFloor(this.pl_current_joint[a][0].y-100), 16777215);
         //}
         //console.log(this.pl_ring_hit_interval[0].toString());
+        //showTextSolidSpacingTopLeft(srFloor(this.pl_current_joint[a][0].x), srFloor(this.pl_current_joint[a][0].y),"abc",16777215,16771681,10);
+        //showTextSolidCenter(LARGE_TEXT,srFloor(this.pl_current_joint[a][0].x), srFloor(this.pl_current_joint[a][0].y),"abc",16777215,255);
+        //showTextMiddle(SMALL_TEXT,srFloor(this.pl_current_joint[a][0].x), srFloor(this.pl_current_joint[a][0].y),"abc",255,255,255,55,0,0,255,150,50,70)
     }
 };
 
@@ -7299,7 +7328,7 @@ function enGroundCollision(a, b, c, d) {
         h = a.en_current_joint[b][c].y + e.y;
         q = srClampA(a.en_current_joint[b][c].x, 0, 511) >> 3;
         m = srClampA(h, 0, 255) >> 3;
-        q = SR_TERRAIN.a[m][q];
+        q = SR_TERRAIN.tr_data[m][q];
         if (0 <= h && 256 > h) {
             if (0 <= q && 8 >= q) {
                 if (0 < e.y) {
@@ -7314,7 +7343,7 @@ function enGroundCollision(a, b, c, d) {
         h = a.en_current_joint[b][c].x + e.x;
         q = srClampA(h, 0, 511) >> 3;
         m = srClampA(a.en_current_joint[b][c].y, 0, 255) >> 3;
-        q = SR_TERRAIN.a[m][q];
+        q = SR_TERRAIN.tr_data[m][q];
         if (0 <= h && 512 > h) {
             if (0 <= q && 8 >= q) {
                 e.y *= d;
@@ -8036,7 +8065,7 @@ SrEnemy.prototype.enDragon = function (a) {
                     scaleVec2(c, .01);
                 }
             }
-            b = SR_TERRAIN.a[srFloor(srClampA(this.en_current_joint[a][0].y + 24, 0, 255) / 8)][srFloor(srClampA(this.en_current_joint[a][0].x, 0, 511) / 8)];
+            b = SR_TERRAIN.tr_data[srFloor(srClampA(this.en_current_joint[a][0].y + 24, 0, 255) / 8)][srFloor(srClampA(this.en_current_joint[a][0].x, 0, 511) / 8)];
             if (0 <= b && 8 >= b) {
                 c.y -= .02;
             }
@@ -8397,7 +8426,7 @@ SrEnemy.prototype.enFish = function (a) {
                     scaleVec2(c, .01);
                 }
             }
-            if (0 > SR_TERRAIN.a[srFloor(srClampA(this.en_current_joint[a][0].y - 7, 0, 255) / 8)][srFloor(srClampA(this.en_current_joint[a][0].x, 0, 511) / 8)]) {
+            if (0 > SR_TERRAIN.tr_data[srFloor(srClampA(this.en_current_joint[a][0].y - 7, 0, 255) / 8)][srFloor(srClampA(this.en_current_joint[a][0].x, 0, 511) / 8)]) {
                 c.y += .03;
             }
             if (2 > srRandom(100)) {
@@ -8542,13 +8571,13 @@ SrEnemy.prototype.enEel = function (a, b) {
                 }
                 c = srFloor(srClampA(this.en_current_joint[a][0].x, 0, 511) / 8);
                 var g = srFloor(srClampA(this.en_current_joint[a][0].y - 7, 0, 255) / 8);
-                c = SR_TERRAIN.a[g][c];
+                c = SR_TERRAIN.tr_data[g][c];
                 if (0 > c) {
                     d.y += .05;
                 }
                 c = srFloor(srClampA(this.en_current_joint[a][0].x + d.x, 0, 511) / 8);
                 g = srFloor(srClampA(this.en_current_joint[a][0].y + d.y, 0, 255) / 8);
-                c = SR_TERRAIN.a[g][c];
+                c = SR_TERRAIN.tr_data[g][c];
                 if (0 <= c && 8 >= c) {
                     setPerpendicular(d)
                 }
@@ -8572,7 +8601,7 @@ SrEnemy.prototype.enEel = function (a, b) {
                 }
                 c = srFloor(srClampA(this.en_current_joint[a][0].x + d.x, 0, 511) / 8);
                 g = srFloor(srClampA(this.en_current_joint[a][0].y + d.y, 0, 255) / 8);
-                c = SR_TERRAIN.a[g][c];
+                c = SR_TERRAIN.tr_data[g][c];
                 if (0 <= c && 8 >= c) {
                     setPerpendicular(d);
                     if (2 == this.en_state[a]) {
@@ -8581,7 +8610,7 @@ SrEnemy.prototype.enEel = function (a, b) {
                 }
                 c = srFloor(srClampA(this.en_current_joint[a][0].x + d.x, 0, 511) / 8);
                 g = srFloor(srClampA(this.en_current_joint[a][0].y + d.y, 0, 255) / 8);
-                c = SR_TERRAIN.a[g][c];
+                c = SR_TERRAIN.tr_data[g][c];
                 if (0 <= c && 8 >= c) {
                     setPerpendicular(d);
                     if (2 == this.en_state[a]) {
@@ -10902,7 +10931,7 @@ function PjMain() {
                     m = e.pj_position[g].y + c.y;
                     l = srFloor(srClampA(e.pj_position[g].x, 0, 511) / 8);
                     A = srFloor(srClampA(m, 0, 255) / 8);
-                    l = SR_TERRAIN.a[A][l];
+                    l = SR_TERRAIN.tr_data[A][l];
                     if (0 > l || 8 < l || e.pj_pierce[g]) {
                         e.pj_position[g].y = m;
                     } else if (e.pj_bounce[g]) {
@@ -10916,7 +10945,7 @@ function PjMain() {
                     m = e.pj_position[g].x + c.x;
                     l = srFloor(srClampA(m, 0, 511) / 8);
                     A = srFloor(srClampA(e.pj_position[g].y, 0, 255) / 8);
-                    l = SR_TERRAIN.a[A][l];
+                    l = SR_TERRAIN.tr_data[A][l];
                     if (0 <= l && 8 >= l && !e.pj_pierce[g]) {
                         if (!e.pj_bounce[g] || 1 == e.pj_bounce[g]) {
                             h = 1;
@@ -11192,7 +11221,8 @@ function PjDraw() {
                     B = CanvasSub1[ua];
                     while (B <= CanvasSub2[ua]) {
                         if (0 <= B && 512 > B) {
-                            T = c.l[(ia >> 16) * c.m + (S >> 16)];
+                            //im.l im.m
+                            T = c.im_array[(ia >> 16) * c.im_array_width + (S >> 16)];
                             if (DisplayMode2) {
                                 T = z * (T & 255) >> 8
                                 if (T) {
@@ -11321,13 +11351,15 @@ function InDraw() {
     var g;
     for (b = 0; b < a.in_last_index; b++) {
         //
-        textOutputM(SMALL_TEXT,srFloor(a.in_position[b].x), srFloor(a.in_position[b].y-30)," "+a.in_velocity[b].y,255,255,255,32,255,255,255,128,5,7);
+        //textOutputM(SMALL_TEXT,srFloor(a.in_position[b].x), srFloor(a.in_position[b].y)," "+a.in_velocity[b].y,255,255,255,32,255,255,255,128,5,7);
+        //textOutputB(SMALL_TEXT,srFloor(a.in_position[b].x), srFloor(a.in_position[b].y)," "+a.in_velocity[b].y,255,0,0,32,255,0,0,128,5,7);
+
         //
         c = a.in_color[b] >> 16 & 255;
         d = a.in_color[b] >> 8 & 255;
         e = a.in_color[b] & 255;
         g = srFloor(255 * srMin(100 - a.in_fade_time[b], 50) / 50);
-        showText(SMALL_TEXT, srFloor(a.in_position[b].x), srFloor(a.in_position[b].y), "" + a.in_value[b], c, d, e, g, 0, 0, 0, g, 5, 7)
+        showTextCenter(SMALL_TEXT, srFloor(a.in_position[b].x), srFloor(a.in_position[b].y), "" + a.in_value[b], c, d, e, g, 0, 0, 0, g, 5, 7)
     }
 }
 
@@ -11338,17 +11370,17 @@ var SR_DROP = new SrDrop;
 */
 function SrDrop() {
     var a;
-    this.b = Array(100);
-    this.c = Array(100);
-    this.g = new Int32Array(100);
-    this.value = new Int32Array(100);
-    this.i = new Int32Array(100);
-    this.h = new Int32Array(100);
-    for (a = this.f = this.a = 0; 100 > a; a++) {
-        this.b[a] = new SrVec2;
+    this.dp_position = Array(100);
+    this.dp_velocity = Array(100);
+    this.dp_id = new Int32Array(100);
+    this.dp_sub_data1 = new Int32Array(100);
+    this.dp_sub_data2 = new Int32Array(100);
+    this.dp_hit_delay = new Int32Array(100);
+    for (a = this.dp_anti_cheat_value = this.dp_last_index = 0; 100 > a; a++) {
+        this.dp_position[a] = new SrVec2;
     }
     for (a = 0; 100 > a; a++) {
-        this.c[a] = new SrVec2
+        this.dp_velocity[a] = new SrVec2
     }
 }
 
@@ -11356,30 +11388,30 @@ function SrDrop() {
 ドロップアイテム初期化
 */
 SrDrop.prototype.dpReset = function () {
-    this.f = this.a = 0
+    this.dp_anti_cheat_value = this.dp_last_index = 0
 };
 
 /*
 ドロップアイテム追加
 */
 SrDrop.prototype.dpAdd = function (a, b, c, d, e) {
-    if (100 != this.a) {
+    if (100 != this.dp_last_index) {
         a = srClampA(a, 16, 495);
         b = srClampA(b, 8, 247);
-        setVec2(this.b[this.a], a, b);
+        setVec2(this.dp_position[this.dp_last_index], a, b);
         if (MouseX1 < a) {
-            this.c[this.a].x = srRandomRange(-.5, -1);
+            this.dp_velocity[this.dp_last_index].x = srRandomRange(-.5, -1);
         } else {
-            this.c[this.a].x = srRandomRange(.5, 1);
+            this.dp_velocity[this.dp_last_index].x = srRandomRange(.5, 1);
         }
-        this.c[this.a].y = srRandomRange(-1, -2);
-        this.g[this.a] = c;
-        this.value[this.a] = d;
-        this.i[this.a] = e;
-        this.h[this.a] = 0;
-        this.a++;
-        for (c = this.f = 0; c < this.a; c++) {
-            this.f += 7 * this.g[c] + 3 * this.value[c] + 11 * this.i[c]
+        this.dp_velocity[this.dp_last_index].y = srRandomRange(-1, -2);
+        this.dp_id[this.dp_last_index] = c;
+        this.dp_sub_data1[this.dp_last_index] = d;
+        this.dp_sub_data2[this.dp_last_index] = e;
+        this.dp_hit_delay[this.dp_last_index] = 0;
+        this.dp_last_index++;
+        for (c = this.dp_anti_cheat_value = 0; c < this.dp_last_index; c++) {
+            this.dp_anti_cheat_value += 7 * this.dp_id[c] + 3 * this.dp_sub_data1[c] + 11 * this.dp_sub_data2[c]
         }
     }
 };
@@ -11388,15 +11420,15 @@ SrDrop.prototype.dpAdd = function (a, b, c, d, e) {
 ドロップアイテム削除
 */
 SrDrop.prototype.dpDelete = function (a) {
-    this.b[a].vecSet(this.b[this.a - 1]);
-    this.c[a].vecSet(this.c[this.a - 1]);
-    this.g[a] = this.g[this.a - 1];
-    this.value[a] = this.value[this.a - 1];
-    this.i[a] = this.i[this.a - 1];
-    this.h[a] = this.h[this.a - 1];
-    this.a--;
-    for (a = this.f = 0; a < this.a; a++) {
-        this.f += 7 * this.g[a] + 3 * this.value[a] + 11 * this.i[a]
+    this.dp_position[a].vecSet(this.dp_position[this.dp_last_index - 1]);
+    this.dp_velocity[a].vecSet(this.dp_velocity[this.dp_last_index - 1]);
+    this.dp_id[a] = this.dp_id[this.dp_last_index - 1];
+    this.dp_sub_data1[a] = this.dp_sub_data1[this.dp_last_index - 1];
+    this.dp_sub_data2[a] = this.dp_sub_data2[this.dp_last_index - 1];
+    this.dp_hit_delay[a] = this.dp_hit_delay[this.dp_last_index - 1];
+    this.dp_last_index--;
+    for (a = this.dp_anti_cheat_value = 0; a < this.dp_last_index; a++) {
+        this.dp_anti_cheat_value += 7 * this.dp_id[a] + 3 * this.dp_sub_data1[a] + 11 * this.dp_sub_data2[a]
     }
 };
 
@@ -11407,41 +11439,44 @@ function DpMain() {
     var a = SR_DROP;
     var b;
     var c;
-    for (b = c = 0; b < a.a; b++) {
-        c += 7 * a.g[b] + 3 * a.value[b] + 11 * a.i[b];
+    for (b = c = 0; b < a.dp_last_index; b++) {
+        c += 7 * a.dp_id[b] + 3 * a.dp_sub_data1[b] + 11 * a.dp_sub_data2[b];
     }
-    if (a.f != c) {
+    if (a.dp_anti_cheat_value != c) {
         game_cheated++;//GameCanvas = null;
     }
-    for (b = 0; b < a.a; b++) {
-        a.c[b].y += .04;
-        scaleVec2(a.c[b], .98);
+    for (b = 0; b < a.dp_last_index; b++) {
+        //
+
+        //
+        a.dp_velocity[b].y += .04;
+        scaleVec2(a.dp_velocity[b], .98);
         var d;
         var e;
-        c = srClampA(a.b[b].y + a.c[b].y, 8, 247);
-        d = srFloor(a.b[b].x / 8);
+        c = srClampA(a.dp_position[b].y + a.dp_velocity[b].y, 8, 247);
+        d = srFloor(a.dp_position[b].x / 8);
         e = srFloor(c / 8);
-        d = SR_TERRAIN.a[e][d];
+        d = SR_TERRAIN.tr_data[e][d];
         if (0 > d || 8 < d) {
-            a.b[b].y = c;
+            a.dp_position[b].y = c;
         }
-        c = srClampA(a.b[b].x + a.c[b].x, 16, 495);
+        c = srClampA(a.dp_position[b].x + a.dp_velocity[b].x, 16, 495);
         d = srFloor(c / 8);
-        e = srFloor(a.b[b].y / 8);
-        d = SR_TERRAIN.a[e][d];
+        e = srFloor(a.dp_position[b].y / 8);
+        d = SR_TERRAIN.tr_data[e][d];
         if (0 > d || 8 < d) {
-            a.b[b].x = c;
+            a.dp_position[b].x = c;
         }
-        if (100 > a.h[b]) {
-            a.h[b]++;
+        if (100 > a.dp_hit_delay[b]) {
+            a.dp_hit_delay[b]++;
         } else {
-            c = plFindPlayer(a.b[b].x - 12, a.b[b].y - 6 - 12, a.b[b].x + 12, a.b[b].y - 6 + 12, 0)
+            c = plFindPlayer(a.dp_position[b].x - 12, a.dp_position[b].y - 6 - 12, a.dp_position[b].x + 12, a.dp_position[b].y - 6 + 12, 0)
             if (-1 != c) {
                 antiCheatCheck();
-                if (1 == a.g[b]) {
-                    PartyGold = srClampA(PartyGold + a.value[b], 0, 9999999);
-                    SR_INDICATOR.inAdd(a.b[b].x, a.b[b].y, 0, a.value[b], 16776960);
-                } else if (2 == a.g[b]) {
+                if (1 == a.dp_id[b]) {
+                    PartyGold = srClampA(PartyGold + a.dp_sub_data1[b], 0, 9999999);
+                    SR_INDICATOR.inAdd(a.dp_position[b].x, a.dp_position[b].y, 0, a.dp_sub_data1[b], 16776960);
+                } else if (2 == a.dp_id[b]) {
                     //おにぎりの優先順位の処理
                     for (d = 0; 4 > d; d++) {
                         if (0 != SR_PLAYER.pl_is_found[d] && srFloor(100 * PlayerCurrentLp[c] / PlayerMaxLp[c]) > srFloor(100 * PlayerCurrentLp[d] / PlayerMaxLp[d])) {
@@ -11454,20 +11489,20 @@ function DpMain() {
                     antiCheatCheck();
                     PlayerCurrentLp[c] = srClampA(PlayerCurrentLp[c] + srFloor(PlayerMaxLp[c] / 5), 0, PlayerMaxLp[c]);
                     antiCheatSet();
-                    SR_INDICATOR.inAdd(a.b[b].x, a.b[b].y, 0, srFloor(PlayerMaxLp[c] / 5), 65280)
+                    SR_INDICATOR.inAdd(a.dp_position[b].x, a.dp_position[b].y, 0, srFloor(PlayerMaxLp[c] / 5), 65280)
                 } else {
                     for (c = 16; 40 > c; c++) {
                         if (0 == InventoryItem[c]) {
-                            InventoryItem[c] = a.g[b];
-                            InventoryCompo1[c] = a.value[b];
-                            InventoryCompo2[c] = a.i[b];
+                            InventoryItem[c] = a.dp_id[b];
+                            InventoryCompo1[c] = a.dp_sub_data1[b];
+                            InventoryCompo2[c] = a.dp_sub_data2[b];
                             break
                         }
                     }
                     if (40 == c) {
-                        a.c[b].x = srRandomRange(-1, 1);
-                        a.c[b].y = srRandomRange(-1, -2);
-                        a.h[b] = 0;
+                        a.dp_velocity[b].x = srRandomRange(-1, 1);
+                        a.dp_velocity[b].y = srRandomRange(-1, -2);
+                        a.dp_hit_delay[b] = 0;
                         continue
                     }
                 }
@@ -11485,12 +11520,17 @@ function DpDraw() {
     var a = SR_DROP;
     var b;
     DisplayMode2 = 2;
-    for (b = 0; b < a.a; b++) {
-        if (100 == a.h[b] || a.h[b] & 6) {
-            drawFromImage(SmallItemImage, srFloor(a.b[b].x) - 6, srFloor(a.b[b].y) - 12, 12, 12, 12 * getItemData(a.g[b], 3), 0, 12, 12, getItemData(a.g[b], 6));
+    for (b = 0; b < a.dp_last_index; b++) {
+        if (100 == a.dp_hit_delay[b] || a.dp_hit_delay[b] & 6) {
+            drawFromImage(SmallItemImage, srFloor(a.dp_position[b].x) - 6, srFloor(a.dp_position[b].y) - 12, 12, 12, 12 * getItemData(a.dp_id[b], 3), 0, 12, 12, getItemData(a.dp_id[b], 6));
         }
+        //
+        //consoleLog(a.f);
+        //showTextTopLeft(LARGE_TEXT,a.dp_position[b].x,a.dp_position[b].y,"abcdefg",255,255,255,255,255,255,255,32,20,20);
+        //
     }
     DisplayMode2 = 0
+    //showTextSolidTopLeft(LARGE_TEXT,10,10,"abc",16777215,0);
 }
 
 var SR_TERRAIN = new SrTerrain;
@@ -11499,18 +11539,18 @@ var SR_TERRAIN = new SrTerrain;
 地形のクラス的な
 */
 function SrTerrain() {
-    this.m = 64;
-    this.f = 48;
-    this.a = Array(this.f);
-    this.b = new Int32Array(this.m);
-    this.g = new Int32Array(this.m);
-    this.h = new Int32Array(this.m);
-    this.u = new Int32Array(this.m);
-    this.s = new Int32Array(48 * this.f);
-    this.c = this.i = 0;
-    this.j = -1;
-    for (var a = 0; a < this.f; a++) {
-        this.a[a] = new Int32Array(this.m)
+    this.tr_width = 64;
+    this.tr_height = 48;
+    this.tr_data = Array(this.tr_height);
+    this.tr_low_surface = new Int32Array(this.tr_width);
+    this.tr_high_surface = new Int32Array(this.tr_width);
+    this.tr_cavern_top = new Int32Array(this.tr_width);
+    this.tr_water_surface = new Int32Array(this.tr_width);
+    this.tr_water_can_spawn_location = new Int32Array(48 * this.tr_height);
+    this.tr_stage_id = this.tr_water_can_spawn_location_count = 0;
+    this.tr_image_resource = -1;
+    for (var a = 0; a < this.tr_height; a++) {
+        this.tr_data[a] = new Int32Array(this.tr_width)
     }
 }
 
@@ -11519,121 +11559,129 @@ function SrTerrain() {
 */
 SrTerrain.prototype.trSet = function (a) {
     var b, c;
-    this.c = a;
-    if (this.j != STAGE_DATA[this.c][CurrentArea][1]) {
-        this.j = STAGE_DATA[this.c][CurrentArea][1];
+    this.tr_stage_id = a;
+    if (this.tr_image_resource != STAGE_DATA[this.tr_stage_id][CurrentArea][1]) {
+        this.tr_image_resource = STAGE_DATA[this.tr_stage_id][CurrentArea][1];
         StageTerrainImage = new SrImage;
-        StageTerrainImage.imSet("st" + this.j + ".gif");
+        StageTerrainImage.imSet("st" + this.tr_image_resource + ".gif");
     }
     imageToArray(StageTerrainImage);
     if (ImageCounter) {
         return !1;
     }
-    this.f = StageTerrainImage.c;
-    for (c = 0; c < this.f; c++) {
-        for (b = 0; b < this.m; b++) {
-            this.a[c][b] = -1;
+    this.tr_height = StageTerrainImage.im_array_height;
+    for (c = 0; c < this.tr_height; c++) {
+        for (b = 0; b < this.tr_width; b++) {
+            this.tr_data[c][b] = -1;
         }
     }
-    var d = srFloor(srRandom(StageTerrainImage.m - 64));
-    for (c = 0; c < this.f; c++) {
-        for (b = 0; b < this.m; b++) {
-            a = c * StageTerrainImage.m + srClampA(b, 3, 60) + d;
+    //im.m
+    var d = srFloor(srRandom(StageTerrainImage.im_array_width - 64));
+    for (c = 0; c < this.tr_height; c++) {
+        for (b = 0; b < this.tr_width; b++) {
+            a = c * StageTerrainImage.im_array_width + srClampA(b, 3, 60) + d;
             var e;
-            if (3 >= b || this.m - 3 <= b) {
-                e = StageTerrainImage.l[a];
+            if (3 >= b || this.tr_width - 3 <= b) {
+                //im.l
+                e = StageTerrainImage.im_array[a];
             } else {
-                e = StageTerrainImage.l[a - 1];
+                e = StageTerrainImage.im_array[a - 1];
             }
             var g;
-            if (2 >= b || this.m - 4 <= b) {
-                g = StageTerrainImage.l[a];
+            if (2 >= b || this.tr_width - 4 <= b) {
+                g = StageTerrainImage.im_array[a];
             } else {
-                g = StageTerrainImage.l[a + 1];
+                g = StageTerrainImage.im_array[a + 1];
             }
             var h;
             if (c) {
-                h = StageTerrainImage.l[a - StageTerrainImage.m];
+                //im.l im.m
+                h = StageTerrainImage.im_array[a - StageTerrainImage.im_array_width];
             } else {
-                h = StageTerrainImage.l[a];
+                h = StageTerrainImage.im_array[a];
             }
             var q;
-            if (c == this.f - 1) {
-                q = StageTerrainImage.l[a];
+            if (c == this.tr_height - 1) {
+                //im.l
+                q = StageTerrainImage.im_array[a];
             } else {
-                q = StageTerrainImage.l[a + StageTerrainImage.m];
+                q = StageTerrainImage.im_array[a + StageTerrainImage.im_array_width];
             }
-            if (0 != StageTerrainImage.l[a]) {
-                if (255 == StageTerrainImage.l[a]) {
-                    this.a[c][b] = 9
+            if (0 != StageTerrainImage.im_array[a]) {
+                if (255 == StageTerrainImage.im_array[a]) {
+                    this.tr_data[c][b] = 9
                 }
+                //im.a
             } else if (0 != e && 0 == g && 0 != h && 0 == q) {
-                this.a[c][b] = 0
+                this.tr_data[c][b] = 0
             } else if (0 == e && 0 == g && 0 != h && 0 == q) {
-                this.a[c][b] = 1
+                this.tr_data[c][b] = 1
             } else if (0 == e && 0 != g && 0 != h && 0 == q) {
-                this.a[c][b] = 2
+                this.tr_data[c][b] = 2
             } else if (0 != e && 0 == g && 0 == h && 0 == q) {
-                this.a[c][b] = 3
+                this.tr_data[c][b] = 3
             } else if (0 == e && 0 == g && 0 == h && 0 == q) {
-                this.a[c][b] = 4
+                this.tr_data[c][b] = 4
             } else if (0 == e && 0 != g && 0 == h && 0 == q) {
-                this.a[c][b] = 5
+                this.tr_data[c][b] = 5
             } else if (0 != e && 0 == g && 0 == h && 0 != q) {
-                this.a[c][b] = 6
+                this.tr_data[c][b] = 6
             } else if (0 == e && 0 == g && 0 == h && 0 != q) {
-                this.a[c][b] = 7
+                this.tr_data[c][b] = 7
             } else if (0 == e && 0 != g && 0 == h && 0 != q) {
-                this.a[c][b] = 8
+                this.tr_data[c][b] = 8
             }
         }
     }
-    for (b = 0; b < this.m; b++) {
-        for (c = this.f - 1; 0 <= c; c--) {
-            if (0 > this.a[c][b] || 8 < this.a[c][b]) {
-                this.b[b] = c;
+    for (b = 0; b < this.tr_width; b++) {
+        for (c = this.tr_height - 1; 0 <= c; c--) {
+            if (0 > this.tr_data[c][b] || 8 < this.tr_data[c][b]) {
+                this.tr_low_surface[b] = c;
                 break
             }
         }
     }
-    for (b = 0; b < this.m; b++) {
-        for (c = 1; c < this.f; c++) {
-            if ((0 > this.a[c - 1][b] || 8 < this.a[c - 1][b]) && 0 <= this.a[c][b] && 8 >= this.a[c][b]) {
-                this.g[b] = c - 1;
+    for (b = 0; b < this.tr_width; b++) {
+        for (c = 1; c < this.tr_height; c++) {
+            if ((0 > this.tr_data[c - 1][b] || 8 < this.tr_data[c - 1][b]) && 0 <= this.tr_data[c][b] && 8 >= this.tr_data[c][b]) {
+                this.tr_high_surface[b] = c - 1;
                 break
             }
         }
     }
-    for (b = 0; b < this.m; b++) {
-        for (c = 0; c < this.f; c++) {
-            if (0 > this.a[c][b] || 8 < this.a[c][b]) {
-                this.h[b] = c;
+    for (b = 0; b < this.tr_width; b++) {
+        for (c = 0; c < this.tr_height; c++) {
+            if (0 > this.tr_data[c][b] || 8 < this.tr_data[c][b]) {
+                this.tr_cavern_top[b] = c;
                 break
             }
         }
     }
-    for (b = 0; b < this.m; b++) {
-        for (this.u[b] = this.h[b], c = 1; c < this.f; c++) {
-            if ((0 > this.a[c - 1][b] || 8 < this.a[c - 1][b]) && 0 <= this.a[c][b] && 9 >= this.a[c][b]) {
-                this.u[b] = c - 1;
+
+    for (b = 0; b < this.tr_width; b++) {
+        for (this.tr_water_surface[b] = this.tr_cavern_top[b], c = 1; c < this.tr_height; c++) {
+            if ((0 > this.tr_data[c - 1][b] || 8 < this.tr_data[c - 1][b]) && 0 <= this.tr_data[c][b] && 9 >= this.tr_data[c][b]) {
+                this.tr_water_surface[b] = c - 1;
                 break
             }
         }
     }
-    this.i = 0;
+    this.tr_water_can_spawn_location_count = 0;
+
     for (b = 12; 60 > b; b++) {
-        for (c = 1; c < this.f - 1; c++) {
-            if (9 == this.a[c - 1][b] && 9 == this.a[c][b]) {
-                this.s[this.i++] = c * this.m + b;
+        for (c = 1; c < this.tr_height - 1; c++) {
+            if (9 == this.tr_data[c - 1][b] && 9 == this.tr_data[c][b]) {
+                this.tr_water_can_spawn_location[this.tr_water_can_spawn_location_count++] = c * this.tr_width + b;
             }
         }
     }
     if (!CurrentArea) {
         for (a = 0; 196608 > a; a++) {
-            StageEffectCanvasImage.l[a] = 0;
+            //im.l
+            StageEffectCanvasImage.im_array[a] = 0;
         }
         b = GameCanvas;
-        switch (this.c) {
+        switch (this.tr_stage_id) {
             case 15:
             case 16:
             case 30:
@@ -11646,7 +11694,8 @@ SrTerrain.prototype.trSet = function (a) {
             case 69:
                 DisplayMode1 = 1;
                 DisplayMode2 = 3;
-                GameCanvas = StageEffectCanvasImage.l;
+                //im.l
+                GameCanvas = StageEffectCanvasImage.im_array;
                 for (a = 0; 196608 > a; a++) {
                     GameCanvas[a] = 0;
                 }
@@ -11671,21 +11720,21 @@ function TrDraw() {
     var c;
     var d = new Int32Array([0, 8, 16, 0, 8, 16, 0, 8, 16]);
     var e = new Int32Array([0, 0, 0, 8, 8, 8, 16, 16, 16]);
-    var g = TerrainTextureImageArray[STAGE_DATA[a.c][CurrentArea][0]];
-    for (c = 0; c < a.f; c++) {
-        for (b = 0; b < a.m; b++) {
-            var h = a.a[c][b];
+    var g = TerrainTextureImageArray[STAGE_DATA[a.tr_stage_id][CurrentArea][0]];
+    for (c = 0; c < a.tr_height; c++) {
+        for (b = 0; b < a.tr_width; b++) {
+            var h = a.tr_data[c][b];
             if (-1 != h) {
                 if (9 != h) {
                     drawItem(g, 8 * b, 8 * c, 8, 8, d[h], e[h], 8, 8)
-                } else if (82 == a.c) {
-                    if (-1 == a.a[c - 1][b]) {
+                } else if (82 == a.tr_stage_id) {
+                    if (-1 == a.tr_data[c - 1][b]) {
                         drawItem(BloodImage, 8 * b, 8 * c, 8, 8, 0, 0, 8, 8)
                     } else {
                         BackGroundFill(8 * b - 4, 8 * c, 16, 8, 5570560)
                     }
                 } else {
-                    if (-1 == a.a[c - 1][b]) {
+                    if (-1 == a.tr_data[c - 1][b]) {
                         drawItem(WaterImage, 8 * b, 8 * c, 8, 8, 0, 0, 8, 8)
                     } else {
                         BackGroundFill(8 * b - 4, 8 * c, 16, 8, 21916)
@@ -11694,6 +11743,18 @@ function TrDraw() {
             }
         }
     }
+    //
+    //for (b = 0; b < SR_TERRAIN.i; b++) {
+        //for (var bb = 0; bb < a.tr_width; bb++) {
+            //showTextSolidTopLeft(LARGE_TEXT,b*8,a.tr_low_surface[b]*8,"b",16777215,10000000)
+            //showTextSolidTopLeft(LARGE_TEXT,b*8,a.tr_high_surface[b]*8,"g",16777215,10000000)
+            //showTextSolidTopLeft(LARGE_TEXT,b*8,a.tr_cavern_top[b]*8,"h",16777215,10000000)
+            //showTextSolidTopLeft(LARGE_TEXT,b*8,a.tr_water_surface[b]*8,"u",16777215,10000000)
+        //d = srFloor(srRandom(SR_TERRAIN.i));
+        //showTextSolidTopLeft(LARGE_TEXT, (a.tr_water_can_spawn_location[b]&63) * 8, srFloor(a.tr_water_can_spawn_location[b]/64) * 8, "A", 16777215, 10000000)
+        //}
+    //}
+    //
 }
 
 var SR_WORLD_MAP = new SrWorldMap;
@@ -11702,13 +11763,13 @@ var SR_WORLD_MAP = new SrWorldMap;
 ワールドマップのクラス的な
 */
 function SrWorldMap() {
-    this.m = 78;
-    this.a = 0;
-    this.b = Array(16);
-    this.c = Array(16);
+    this.mp_width = 78;
+    this.mp_scroll_x = 0;
+    this.mp_tile = Array(16);
+    this.mp_symbol = Array(16);
     for (var a = 0; 16 > a; a++) {
-        this.b[a] = new Int32Array(this.m);
-        this.c[a] = new Int32Array(this.m)
+        this.mp_tile[a] = new Int32Array(this.mp_width);
+        this.mp_symbol[a] = new Int32Array(this.mp_width)
     }
 }
 
@@ -11720,13 +11781,13 @@ SrWorldMap.prototype.mpSet = function () {
     var b;
     var c;
     for (c = 0; 16 > c; c++) {
-        for (b = 0; b < this.m; b++) {
-            this.b[c][b] = -1;
+        for (b = 0; b < this.mp_width; b++) {
+            this.mp_tile[c][b] = -1;
         }
     }
     for (c = 0; 16 > c; c++) {
-        for (b = 0; b < this.m; b++) {
-            a = c * MapElevationImage.m + b;
+        for (b = 0; b < this.mp_width; b++) {
+            a = c * MapElevationImage.im_array_width + b;
             var d;
             if (b) {
                 d = -1;
@@ -11734,14 +11795,14 @@ SrWorldMap.prototype.mpSet = function () {
                 d = 0;
             }
             var e;
-            if (b == this.m - 1) {
+            if (b == this.mp_width - 1) {
                 e = 0;
             } else {
                 e = 1;
             }
             var g;
             if (c) {
-                g = -this.m;
+                g = -this.mp_width;
             } else {
                 g = 0;
             }
@@ -11749,72 +11810,74 @@ SrWorldMap.prototype.mpSet = function () {
             if (15 == c) {
                 h = 0;
             } else {
-                h = this.m;
+                h = this.mp_width;
             }
-            var q = MapElevationImage.l[a + d + g];
-            var m = MapElevationImage.l[a + g];
-            g = MapElevationImage.l[a + e + g];
-            var l = MapElevationImage.l[a + d];
-            var A = MapElevationImage.l[a + e];
-            d = MapElevationImage.l[a + d + h];
-            var z = MapElevationImage.l[a + h];
-            e = MapElevationImage.l[a + e + h];
-            if (65535 == MapImage.l[a]) {
-                this.b[c][b] = 15
-            } else if (6684672 == MapImage.l[a]) {
-                this.b[c][b] = 17
-            } else if (0 != MapElevationImage.l[a]) {
-                if (13209 == MapElevationImage.l[a]) {
-                    this.b[c][b] = 13
-                } else if (16764006 == MapImage.l[a]) {
-                    this.b[c][b] = 14
-                } else if (6710886 == MapImage.l[a]) {
-                    this.b[c][b] = 16
+            //im.l
+            var q = MapElevationImage.im_array[a + d + g];
+            var m = MapElevationImage.im_array[a + g];
+            g = MapElevationImage.im_array[a + e + g];
+            var l = MapElevationImage.im_array[a + d];
+            var A = MapElevationImage.im_array[a + e];
+            d = MapElevationImage.im_array[a + d + h];
+            var z = MapElevationImage.im_array[a + h];
+            e = MapElevationImage.im_array[a + e + h];
+            if (65535 == MapImage.im_array[a]) {
+                this.mp_tile[c][b] = 15
+            } else if (6684672 == MapImage.im_array[a]) {
+                this.mp_tile[c][b] = 17
+            } else if (0 != MapElevationImage.im_array[a]) {
+                if (13209 == MapElevationImage.im_array[a]) {
+                    this.mp_tile[c][b] = 13
+                } else if (16764006 == MapImage.im_array[a]) {
+                    this.mp_tile[c][b] = 14
+                } else if (6710886 == MapImage.im_array[a]) {
+                    this.mp_tile[c][b] = 16
                 } else {
-                    a = MapElevationImage.l[a];
+                    a = MapElevationImage.im_array[a];
                     if (m >= a && l >= a && A >= a && z >= a && e < a) {
-                        this.b[c][b] = 3
+                        this.mp_tile[c][b] = 3
                     } else if (m >= a && l >= a && A >= a && z >= a && d < a) {
-                        this.b[c][b] = 4
+                        this.mp_tile[c][b] = 4
                     } else if (m >= a && l >= a && A >= a && z >= a && g < a) {
-                        this.b[c][b] = 8
+                        this.mp_tile[c][b] = 8
                     } else if (m >= a && l >= a && A >= a && z >= a && q < a) {
-                        this.b[c][b] = 9
+                        this.mp_tile[c][b] = 9
                     } else if (l < a && A >= a && m < a && z >= a) {
-                        this.b[c][b] = 0
+                        this.mp_tile[c][b] = 0
                     } else if (l >= a && A >= a && m < a && z >= a) {
-                        this.b[c][b] = 1
+                        this.mp_tile[c][b] = 1
                     } else if (l >= a && A < a && m < a && z >= a) {
-                        this.b[c][b] = 2
+                        this.mp_tile[c][b] = 2
                     } else if (l < a && A >= a && m >= a && z >= a) {
-                        this.b[c][b] = 5
+                        this.mp_tile[c][b] = 5
                     } else if (l >= a && A < a && m >= a && z >= a) {
-                        this.b[c][b] = 7
+                        this.mp_tile[c][b] = 7
                     } else if (l < a && A >= a && m >= a && z < a) {
-                        this.b[c][b] = 10
+                        this.mp_tile[c][b] = 10
                     } else if (l >= a && A >= a && m >= a && z < a) {
-                        this.b[c][b] = 11
+                        this.mp_tile[c][b] = 11
                     } else if (l >= a && A < a && m >= a && z < a) {
-                        this.b[c][b] = 12
+                        this.mp_tile[c][b] = 12
                     }
                 }
             }
         }
     }
     for (c = 0; 16 > c; c++) {
-        for (b = 0; b < this.m; b++) {
-            a = c * MapImage.m + b;
-            this.c[c][b] = -1;
-            if (26112 == MapImage.l[a]) {
-                this.c[c][b] = 0
-            } else if (10066329 == MapImage.l[a]) {
-                this.c[c][b] = 1
-            } else if (8404992 == MapImage.l[a]) {
-                this.c[c][b] = 2
-            } else if (13434879 == MapImage.l[a]) {
-                this.c[c][b] = 5
-            } else if (12288 == MapImage.l[a]) {
-                this.c[c][b] = 6
+        for (b = 0; b < this.mp_width; b++) {
+            //im.m
+            a = c * MapImage.im_array_width + b;
+            this.mp_symbol[c][b] = -1;
+            if (26112 == MapImage.im_array[a]) {
+                this.mp_symbol[c][b] = 0
+            } else if (10066329 == MapImage.im_array[a]) {
+                this.mp_symbol[c][b] = 1
+            } else if (8404992 == MapImage.im_array[a]) {
+                this.mp_symbol[c][b] = 2
+            } else if (13434879 == MapImage.im_array[a]) {
+                this.mp_symbol[c][b] = 5
+            } else if (12288 == MapImage.im_array[a]) {
+                this.mp_symbol[c][b] = 6
             }
         }
     }
@@ -12001,34 +12064,44 @@ var ImageCounter = 0;
 画像クラス的な
 */
 function SrImage() {
-    this.b = 0;
-    this.i = "";
-    this.j = this.f = this.h = this.a = this.g = this.l = this.c = this.m = 0
+    //im.b
+    this.im_image = 0;
+    //im.i
+    this.im_name = "";
+    //im.j f h a g l c m
+    this.im_font = this.im_ctx = this.im_cv = this.im_text_width = this.im_what = this.im_array = this.im_array_height = this.im_array_width = 0
 }
 
 /*
 配列作る
 */
 function createNewPixelArray(a, b, c) {
-    a.m = b;
-    a.c = c;
+    //im.m
+    //im.c
+    a.im_array_width = b;
+    a.im_array_height = c;
     for (b = 0; 16 > b; b++) {
         //なにこれ
     }
-    a.l = new Int32Array(a.m * a.c)
+    //im.l
+    a.im_array = new Int32Array(a.im_array_width * a.im_array_height)
 }
 
 /*
 画像セット
 */
 SrImage.prototype.imSet = function (a) {
-    if (this.i != a) {
+    //im.i
+    if (this.im_name != a) {
         ImageCounter++;
-        this.i = a;
-        this.b = new Image;
-        this.b.src = CHAR_DATA_PATH + a + "?18.9";
-        delete this.l;
-        this.g = this.l = 0
+        this.im_name = a;
+        //im.b
+        this.im_image = new Image;
+        this.im_image.src = CHAR_DATA_PATH + a + "?18.9";
+        //im.l
+        delete this.im_array;
+        //im.g l
+        this.im_what = this.im_array = 0
     }
 };
 
@@ -12036,13 +12109,15 @@ SrImage.prototype.imSet = function (a) {
 画像データを配列にする
 */
 function imageToArray(a) {
-    if (!a.g && a.b.complete) {
+    //im.g im.b.complete
+    if (!a.im_what && a.im_image.complete) {
         ImageCounter--;
-        var b = a.b.width;
-        var c = a.b.height;
+        //im.b.
+        var b = a.im_image.width;
+        var c = a.im_image.height;
         if (!b || !c) {
-            delete a.b;
-            a.i = "";
+            delete a.im_image;
+            a.im_name = "";
             throw CHAR_ERROR;
             //throw delete a.b, a.i = "", CHAR_ERROR;
         }
@@ -12050,51 +12125,62 @@ function imageToArray(a) {
         d.width = b;
         d.height = c;
         d = d.getContext(CHAR_2D);
-        d.drawImage(a.b, 0, 0);
+        d.drawImage(a.im_image, 0, 0);
         d = d.getImageData(0, 0, b, c).data;
         createNewPixelArray(a, b, c);
         b = 0;
         for (c = d.length; b < c; b += 4) {
             if (0 == d[b + 3]) {
-                a.l[b >> 2] = -1;
+                //im.l
+                a.im_array[b >> 2] = -1;
             } else {
-                a.l[b >> 2] = d[b + 0] << 16 | d[b + 1] << 8 | d[b + 2];
+                a.im_array[b >> 2] = d[b + 0] << 16 | d[b + 1] << 8 | d[b + 2];
             }
         }
-        delete a.b;
-        a.g = 1
+        //im.b g
+        delete a.im_image;
+        a.im_what = 1
     }
 }
 
 function drawVsMessage(a, b) {
-    if (!a.g) {
-        a.g = 1;
+    //im.g
+    if (!a.im_what) {
+        a.im_what = 1;
         createNewPixelArray(a, 512, 16);
-        a.h = DOCUMENT.createElement(CHAR_CANVAS);
-        a.h.width = a.m;
-        a.h.height = a.c;
-        a.f = a.h.getContext(CHAR_2D);
+        //im.h
+        a.im_cv = DOCUMENT.createElement(CHAR_CANVAS);
+        //im.m c
+        a.im_cv.width = a.im_array_width;
+        a.im_cv.height = a.im_array_height;
+        //im.f
+        a.im_ctx = a.im_cv.getContext(CHAR_2D);
     }
     var c = b + "sans-serif014";
-    if (a.j != c) {
-        a.j = c;
-        a.f.fillStyle = "#000000";
-        a.f.fillRect(0, 0, a.m, a.c);
-        a.f.font = "14px sans-serif";
-        a.f.fillStyle = "#ffffff";
-        a.f.fillText(b, 0, 14);
-        var d = a.f.getImageData(0, 0, a.m, a.c).data
+    //im.j
+    if (a.im_font != c) {
+        a.im_font = c;
+        //im.f
+        a.im_ctx.fillStyle = "#000000";
+        //im.m c
+        a.im_ctx.fillRect(0, 0, a.im_array_width, a.im_array_height);
+        a.im_ctx.font = "14px sans-serif";
+        a.im_ctx.fillStyle = "#ffffff";
+        a.im_ctx.fillText(b, 0, 14);
+        var d = a.im_ctx.getImageData(0, 0, a.im_array_width, a.im_array_height).data
         for (var c = 0, e = d.length; c < e; c += 4) {
             if (1 <= d[c + 0]) {
-                a.l[c >> 2] = 16777215;
+                //im.l
+                a.im_array[c >> 2] = 16777215;
             } else {
-                a.l[c >> 2] = -1;
+                a.im_array[c >> 2] = -1;
             }
         }
-        for (c = d = a.a = 0; d < a.c; d++) {
-            for (e = 0; e < a.m; e++, c++) {
-                if (16777215 == a.l[c] && a.a <= e) {
-                    a.a = e + 1
+        //im.a c m l a a
+        for (c = d = a.im_text_width = 0; d < a.im_array_height; d++) {
+            for (e = 0; e < a.im_array_width; e++, c++) {
+                if (16777215 == a.im_array[c] && a.im_text_width<= e) {
+                    a.im_text_width = e + 1
                 }
             }
         }
@@ -12110,25 +12196,28 @@ var SMALL_TEXT = new SrText;
 テキストのクラス的な
 */
 function SrText() {
-    this.f = new SrImage;
-    this.a = this.b = this.g = this.c = 0
+    //tx.f
+    this.tx_image = new SrImage;
+    //tx.a b g c
+    this.tx_start_pos = this.tx_spacing = this.tx_height = this.tx_width = 0
 }
 
 /*
 テキストのセット
 */
 SrText.prototype.txSet = function (a, b, c) {
-    this.f.imSet(a);
-    this.c = b;
-    this.g = c;
-    this.a = this.b = 0
+    //tx.f c g a b
+    this.tx_image.imSet(a);
+    this.tx_width = b;
+    this.tx_height = c;
+    this.tx_start_pos = this.tx_spacing = 0
 };
 
 /*
 テキスト
 a:SrText
 */
-function textOutputB(a, b, c, d, e, g) {
+function showTextSolidTopLeft(a, b, c, d, e, g) {
     var h;
     var q;
     var m;
@@ -12136,8 +12225,10 @@ function textOutputB(a, b, c, d, e, g) {
     var A;
     var z;
     var Z;
-    var B = 512 - a.c;
-    var S = a.f.m - a.c;
+    //tx.c
+    var B = 512 - a.tx_width;
+    //tx.f.m tx.c
+    var S = a.tx_image.im_array_width - a.tx_width;
     var ia;
     if (-1 < e) {
         ia = 16777215;
@@ -12151,20 +12242,25 @@ function textOutputB(a, b, c, d, e, g) {
         za = 1;
     }
     var ta = d.length;
-    for (h = 0; h < ta; h++, b += a.c + a.b) {
+    //tx.c b
+    for (h = 0; h < ta; h++, b += a.tx_width + a.tx_spacing) {
         A = d.charCodeAt(h) - 32
         if (A) {
             if (96 <= A) {
                 A = 31;
             }
-            if (0 != a.a) {
-                b -= PVP_TEXT_SPACES[a.a - 1][A];
+            //tx.a
+            if (0 != a.tx_start_pos) {
+                b -= PVP_TEXT_SPACES[a.tx_start_pos - 1][A];
             }
-            z = A * a.c;
+            //tx.c
+            z = A * a.tx_width;
             l = 512 * c + b;
-            for (m = 0; m < a.g; m++, l += B, z += S) {
-                for (q = 0; q < a.c; q++, l++, z++) {
-                    Z = a.f.l[z];
+            //tx.g c
+            for (m = 0; m < a.tx_height; m++, l += B, z += S) {
+                for (q = 0; q < a.tx_width; q++, l++, z++) {
+                    //tx.f.l[z]
+                    Z = a.tx_image.im_array[z];
                     if (Z == ia) {
                         GameCanvas[l] = e;
                     } else if (Z == za) {
@@ -12172,39 +12268,42 @@ function textOutputB(a, b, c, d, e, g) {
                     }
                 }
             }
-            if (0 != a.a) {
-                b -= PVE_TEXT_SPACES[a.a - 1][A]
+            //tx.a
+            if (0 != a.tx_start_pos) {
+                b -= PVE_TEXT_SPACES[a.tx_start_pos - 1][A]
             }
         }
     }
-    a.a = 0
+    a.tx_start_pos = 0
 }
 
 /*
 中央テキスト
 a:SrText
 */
-function centeredText(a, b, c, d, e, g) {
-    b -= d.length * (a.c + a.b) >> 1;
-    c -= a.g >> 1;
-    textOutputB(a, b, c, d, e, g)
+function showTextSolidCenter(a, b, c, d, e, g) {
+    //tx.c b g
+    b -= d.length * (a.tx_width + a.tx_spacing) >> 1;
+    c -= a.tx_height >> 1;
+    showTextSolidTopLeft(a, b, c, d, e, g)
 }
 
 /*
 テキスト
 */
-function itemText(a, b, c, d, e, g) {
+function showTextSolidSpacingTopLeft(a, b, c, d, e, g) {
     var h = LARGE_TEXT;
-    h.b = g;
-    textOutputB(h, a, b, c, d, e);
-    h.b = 0
+    //tx.b
+    h.tx_spacing = g;
+    showTextSolidTopLeft(h, a, b, c, d, e);
+    h.tx_spacing = 0
 }
 
 /*
 テキスト
 a:SrText
 */
-function textOutputM(a, b, c, d, e, g, h, q, m, l, A, z, Z, B) {
+function showTextTopLeft(a, b, c, d, e, g, h, q, m, l, A, z, Z, B) {
     e = e * q >> 8;
     g = g * q >> 8;
     h = h * q >> 8;
@@ -12236,20 +12335,25 @@ function textOutputM(a, b, c, d, e, g, h, q, m, l, A, z, Z, B) {
         pa = 1;
     }
     var Ha = d.length;
-    for (S = 0; S < Ha; S++, b += Z + a.b) {
+    //tx.b
+    for (S = 0; S < Ha; S++, b += Z + a.tx_spacing) {
         X = d.charCodeAt(S) - 32
         if (X) {
             if (96 <= X) {
                 X = 31;
             }
-            if (0 != a.a) {
-                b -= srFloor(PVP_TEXT_SPACES[a.a - 1][X] * Z / a.c);
+            //tx.a
+            if (0 != a.tx_start_pos) {
+                b -= srFloor(PVP_TEXT_SPACES[a.tx_start_pos - 1][X] * Z / a.tx_width);
             }
-            T = X * a.c;
+            //tx.c
+            T = X * a.tx_width;
             ta = 512 * c + b;
             for (za = 0; za < B; za++, ta += Va) {
-                for (Ua = srFloor(za * a.g / B) * a.f.m + T << 8, eb = srFloor((a.c << 8) / Z), ia = 0; ia < Z; ia++, ta++, Ua += eb) {
-                    Y = a.f.l[Ua >> 8];
+                //tx.g tx.f.m tx.c
+                for (Ua = srFloor(za * a.tx_height / B) * a.tx_image.im_array_width + T << 8, eb = srFloor((a.tx_width << 8) / Z), ia = 0; ia < Z; ia++, ta++, Ua += eb) {
+                    //tx.f.l
+                    Y = a.tx_image.im_array[Ua >> 8];
                     if (Y == ua) {
                         Y = GameCanvas[ta];
                         GameCanvas[ta] = e + ((Y >> 16 & 255) * q >> 8) << 16 | g + ((Y >> 8 & 255) * q >> 8) << 8 | h + ((Y & 255) * q >> 8);
@@ -12259,20 +12363,23 @@ function textOutputM(a, b, c, d, e, g, h, q, m, l, A, z, Z, B) {
                     }
                 }
             }
-            if (0 != a.a) {
-                b -= srFloor(PVE_TEXT_SPACES[a.a - 1][X] * Z / a.c)
+            //tx.a c
+            if (0 != a.tx_start_pos) {
+                b -= srFloor(PVE_TEXT_SPACES[a.tx_start_pos - 1][X] * Z / a.tx_width)
             }
         }
     }
-    a.a = 0
+    //tx.a
+    a.tx_start_pos = 0
 }
 
 /*
 テキスト
 */
-function showText(a, b, c, d, e, g, h, q, m, l, A, z, Z, B) {
-    b -= d.length * (Z + a.b) >> 1;
-    textOutputM(a, b, c - (B >> 1), d, e, g, h, q, m, l, A, z, Z, B)
+function showTextCenter(a, b, c, d, e, g, h, q, m, l, A, z, Z, B) {
+    //tx.b
+    b -= d.length * (Z + a.tx_spacing) >> 1;
+    showTextTopLeft(a, b, c - (B >> 1), d, e, g, h, q, m, l, A, z, Z, B)
 }
 
 /*
@@ -12525,8 +12632,9 @@ function drawItem(a, b, c, d, e, g, h, q, m) {
             e = 512 * ~~(c + e)
         }
         while (l < e) {
-            for (b = ((h >> 8) * a.m << 8) + g; l < d; l++, b += q) {
-                c = a.l[b >> 8];
+            //im.m l
+            for (b = ((h >> 8) * a.im_array_width << 8) + g; l < d; l++, b += q) {
+                c = a.im_array[b >> 8];
                 if (-1 != c) {
                     GameCanvas[l] = c
                 }
@@ -12586,8 +12694,9 @@ function drawFromImage(a, b, c, d, e, g, h, q, m, l) {
         var Y;
         if (!DisplayMode2) {
             for (; c < e; c++, h += m) {
-                for (z = 512 * c + b, Z = ((h >> 8) * a.m << 8) + g, A = b; A < d; A++, z++, Z += q) {
-                    B = a.l[Z >> 8]
+                //im.m l
+                for (z = 512 * c + b, Z = ((h >> 8) * a.im_array_width << 8) + g, A = b; A < d; A++, z++, Z += q) {
+                    B = a.im_array[Z >> 8]
                     if (-1 != B) {
                         X = ia * (B >> 16 & 255) >> 8;
                         T = za * (B >> 8 & 255) >> 8;
@@ -12639,8 +12748,9 @@ function drawFromImage(a, b, c, d, e, g, h, q, m, l) {
             }
         } else if (1 == DisplayMode2) {
             for (; c < e; c++, h += m) {
-                for (z = 512 * c + b, Z = ((h >> 8) * a.m << 8) + g, A = b; A < d; A++, z++, Z += q) {
-                    B = S * (a.l[Z >> 8] & 255) >> 8
+                //im.m l
+                for (z = 512 * c + b, Z = ((h >> 8) * a.im_array_width << 8) + g, A = b; A < d; A++, z++, Z += q) {
+                    B = S * (a.im_array[Z >> 8] & 255) >> 8
                     if (B) {
                         if (1 == DisplayMode1) {
                             X = GameCanvas[z] >> 16 & 255;
@@ -12686,8 +12796,9 @@ function drawFromImage(a, b, c, d, e, g, h, q, m, l) {
             }
         } else if (2 == DisplayMode2) {
             for (; c < e; c++, h += m) {
-                for (z = 512 * c + b, Z = ((h >> 8) * a.m << 8) + g, A = b; A < d; A++, z++, Z += q) {
-                    B = a.l[Z >> 8];
+                //im.m l
+                for (z = 512 * c + b, Z = ((h >> 8) * a.im_array_width << 8) + g, A = b; A < d; A++, z++, Z += q) {
+                    B = a.im_array[Z >> 8];
                     if (0 != B) {
                         X = B >> 16 & 255;
                         T = B >> 8 & 255;
@@ -12702,8 +12813,9 @@ function drawFromImage(a, b, c, d, e, g, h, q, m, l) {
             }
         } else if (3 == DisplayMode2) {
             for (; c < e; c++, h += m) {
-                for (z = 512 * c + b, Z = ((h >> 8) * a.m << 8) + g, A = b; A < d; A++, z++, Z += q) {
-                    B = S * (a.l[Z >> 8] & 255) >> 8
+                //im.m l
+                for (z = 512 * c + b, Z = ((h >> 8) * a.im_array_width << 8) + g, A = b; A < d; A++, z++, Z += q) {
+                    B = S * (a.im_array[Z >> 8] & 255) >> 8
                     if (B) {
                         if (1 == DisplayMode1) {
                             GameCanvas[z] = ((255 - GameCanvas[z]) * B >> 8) + GameCanvas[z]
@@ -12807,9 +12919,10 @@ function colorPortraitWeap(a, b, c, d) {
         z = 24;
     }
     for (g = 0 > b ? -b : 0; g < z; g++) {
-        for (h = 512 * (b + g) + (a + l), q = (0 + srFloor(24 * g / 24)) * PlayerImage.m + c, e = l; e < A; e++, h++) {
+        //im.m l
+        for (h = 512 * (b + g) + (a + l), q = (0 + srFloor(24 * g / 24)) * PlayerImage.im_array_width + c, e = l; e < A; e++, h++) {
             m = q + srFloor(24 * e / 24);
-            if (16711680 == PlayerImage.l[m]) {
+            if (16711680 == PlayerImage.im_array[m]) {
                 GameCanvas[h] = d
             }
         }
