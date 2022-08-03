@@ -815,6 +815,7 @@ function getItemData(a, b) {
     if (ITEM_DATA[a].length <= b) {
         return 0
     } else if (6 == b || 19 == b || 44 == b) {
+        //色が符号付きの数とか小数とかにならないようにする
         return ITEM_DATA[a][b] >>> 0
     } else {
         return ITEM_DATA[a][b]
@@ -872,6 +873,7 @@ function generateSaveCode(a) {
     d[b++] = srFloor(srRandom(64));
     d[b++] = srFloor(srRandom(64));
     for (c = 0; 8 > c; c++) {
+        //ログイン時のユーザーごとのパラメーター
         d[b++] = UserCode2Array[c];
     }
     if (0 == a) {
@@ -961,6 +963,7 @@ function generateSaveCode(a) {
             }
         }
     }
+    //ハッシュ合計(エラー対策)
     for (c = e = 0; c < b; c++) {
         e += d[c] * (srFloor(c / 7) + 1);
     }
@@ -969,6 +972,7 @@ function generateSaveCode(a) {
     for (c = e = 0; c < b; c++) {
         e += d[c] * ((c & 15) + 1);
     }
+    //ぐちゃぐちゃにする
     d[b++] = e >> 8 & 47;
     d[b++] = e >> 4 & 31;
     d[b++] = e >> 0 & 15;
@@ -997,6 +1001,7 @@ function loadSaveCode(a, b) {
         return 1;
     }
     if (90 > h) {
+        //長いと一人用かな
         q = 1;
     }
     for (d = 0; d < h; d++) {
@@ -1632,6 +1637,7 @@ function startGame(a, b, c, d, e, g, h, q, m, l, A, z, Z, B) {
         }
         for (a = 0; 512 > a; a++) {
             b = 360 * a / 512 * PI / 180;
+            //角度からx,yを求める
             AngleArray[a][0] = Math.cos(b);
             AngleArray[a][1] = Math.sin(b);
         }
@@ -1696,10 +1702,12 @@ function startGame(a, b, c, d, e, g, h, q, m, l, A, z, Z, B) {
         IsKey4[160] = 94;
         IsKey5[160] = 126;
         for (a = 0; 1024 > a; a++) {
+            //0以上1未満の均等な配列
             RandomArray[a] = a / 1024;
         }
         for (a = 0; 1024 > a; a++) {
             b = srFloor(1024 * Math.random());
+            //ランダムな要素と交換
             c = RandomArray[a];
             RandomArray[a] = RandomArray[b];
             RandomArray[b] = c;
@@ -1761,6 +1769,7 @@ function startGame(a, b, c, d, e, g, h, q, m, l, A, z, Z, B) {
         imageToArray(MapImage);
         imageToArray(MapSymbolImage);
         if (ImageCounter) {
+            //画像が読み込めてない
             TIMEOUT(startGame, getNextTime())
         } else {
             StartUpStep++
@@ -1780,6 +1789,7 @@ function startGame(a, b, c, d, e, g, h, q, m, l, A, z, Z, B) {
         antiCheatDataSet();
         antiCheatSet();
         createNewPixelArray(StageEffectCanvasImage, 512, 384);
+        //メインループに飛ぶ
         mainSequence()
     }
 }
@@ -11949,6 +11959,8 @@ var CanvasSub6 = new Float32Array(384);
 */
 function mainSequence() {
     if (AnimationFrame) {
+        //AnimationFrameは不明
+        //fps修正とか?
         AnimationFrame(mainSequence);
         AnimationFrameCounter++;
         TimeCurrent = Date.now();
@@ -11990,8 +12002,11 @@ function mainSequence() {
         IsKeyPressed[a] = IsKey2[a];
         IsKey2[a] = !1;
     }
+    //乱数をランダムにする
     RandomVar1 = RandomVar1 + srFloor(1024 * Math.random()) & 1023;
     RandomVar2 = srFloor(512 * Math.random()) | 1;
+    //RandomVar2=256;たまたまこうなると乱数が壊れそうで怖い(多分大したことないけど)
+    //これはチート用に追加した繰り返し
     let multiple_move = DOCUMENT.getElementById("multiple_move").value;
     for (let ii = 0; ii < multiple_move; ii++) {
         playSequence();
@@ -11999,7 +12014,15 @@ function mainSequence() {
     //for (var b = 11 == HostLength ? 196608 : 0, a = 0; a < b; a++) og[a] = 4278190080 | (GameCanvas[a] & 255) << 16 | GameCanvas[a] & 65280 | GameCanvas[a] >> 16 & 255;
     if (11 == HostLength) {
         for (var b = 196608, a = 0; a < b; a++) {
+            //青 緑 赤
+            //赤 緑 青
+            //入れ替わってる!?
+            //不透明
             Bit8Color[a] = 4278190080 | (GameCanvas[a] & 255) << 16 | GameCanvas[a] & 65280 | GameCanvas[a] >> 16 & 255;
+            //半透明()()()
+            //Bit8Color[a] = 2130706432 | (GameCanvas[a] & 255) << 16 | GameCanvas[a] & 65280 | GameCanvas[a] >> 16 & 255;
+            //色ずらす
+            //Bit8Color[a] = 4278190080 | (GameCanvas[a-3] & 255) << 16 | GameCanvas[a+3] & 65280 | GameCanvas[a] >> 16 & 255;
         }
     } else {
         //ホストの文字数が合わないとき(なにもしない)
@@ -12008,6 +12031,7 @@ function mainSequence() {
         // }
     }
     cvPutImageData(MY_IMAGE_DATA, 0, 0);
+    //console.log(AnimationFrame);
     AnimationFrame || TIMEOUT(mainSequence, getNextTime())
 }
 
@@ -12030,6 +12054,7 @@ function checkHost() {
 }
 
 var AnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame;
+//AnimationFrame=null;
 var AnimationFrameCounter = 0;
 var PreviousGameTickPassed = 0;
 var FrameCounter = 0;
@@ -12107,6 +12132,7 @@ SrImage.prototype.imSet = function (a) {
 
 /*
 画像データを配列にする
+SrImage.im_arrayを作る
 */
 function imageToArray(a) {
     //im.g im.b.complete
@@ -12131,6 +12157,7 @@ function imageToArray(a) {
         b = 0;
         for (c = d.length; b < c; b += 4) {
             if (0 == d[b + 3]) {
+                //透明色
                 //im.l
                 a.im_array[b >> 2] = -1;
             } else {
