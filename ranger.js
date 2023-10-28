@@ -1214,36 +1214,66 @@ function antiCheatCheck() {
     var d;
     if (0 > PartyLv[0] || 99 < PartyLv[0]) {
         game_cheated++;//GameCanvas = null;
+        if (game_cheated > 0&&game_cheated<9999) {
+            console.log(1);
+        }
     }
     if (0 > PartyLv[1] || 99 < PartyLv[1]) {
         game_cheated++;//GameCanvas = null;
+        if (game_cheated > 0&&game_cheated<9999) {
+            console.log(2);
+        }
     }
     if (0 > PartyExp || 9999999 < PartyExp) {
         game_cheated++;//GameCanvas = null;
+        if (game_cheated > 0&&game_cheated<9999) {
+            console.log(3);
+        }
     }
     if (0 > PartyGold || 9999999 < PartyGold) {
         game_cheated++;//GameCanvas = null;
+        if (game_cheated > 0&&game_cheated<9999) {
+            console.log(4);
+        }
     }
     for (a = 0; 8 > a; a++) {
         if (0 > PlayerSp[a] || 196 < PlayerSp[a]) {
             game_cheated++;//GameCanvas = null;
+            if (game_cheated > 0&&game_cheated<9999) {
+                console.log(5);
+            }
         }
         if (0 > PlayerSpLp[a] || 196 < PlayerSpLp[a]) {
             game_cheated++;//GameCanvas = null;
+            if (game_cheated > 0&&game_cheated<9999) {
+                console.log(6);
+            }
         }
         if (0 > PlayerSpStr[a] || 196 < PlayerSpStr[a]) {
             game_cheated++;//GameCanvas = null;
+            if (game_cheated > 0&&game_cheated<9999) {
+                console.log(7);
+            }
         }
         if (0 > PlayerSpDex[a] || 196 < PlayerSpDex[a]) {
             game_cheated++;//GameCanvas = null;
+            if (game_cheated > 0&&game_cheated<9999) {
+                console.log(8);
+            }
         }
         if (0 > PlayerSpMag[a] || 196 < PlayerSpMag[a]) {
             game_cheated++;//GameCanvas = null;
+            if (game_cheated > 0&&game_cheated<9999) {
+                console.log(9);
+            }
         }
     }
     for (a = 0; 8 > a; a++) {
         if (0 != InventoryItem[4 + a] && getItemData(InventoryItem[4 + a], 5) != PlayerClass[a]) {
             game_cheated++;//GameCanvas = null;
+            if (game_cheated > 0&&game_cheated<9999) {
+                console.log(10);
+            }
         }
     }
     for (a = 0; 8 > a; a++) {
@@ -1253,23 +1283,38 @@ function antiCheatCheck() {
         if (0 != InventoryCompo1[4 + a]) {
             if (9 != getItemData(InventoryCompo1[4 + a], 5)) {
                 game_cheated++;//GameCanvas = null;
+                if (game_cheated > 0&&game_cheated<9999) {
+                    console.log(11);
+                }
             }
             if (getItemData(InventoryCompo1[4 + a], 7) == getItemData(InventoryCompo2[4 + a], 7)) {
                 game_cheated++;//GameCanvas = null;
+                if (game_cheated > 0&&game_cheated<9999) {
+                    console.log(12);
+                }
             }
             var e = getItemData(InventoryCompo1[4 + a], 7);
             if (0 == compoRestrictCheck(e, b, c, d)) {
                 game_cheated++;//GameCanvas = null;
+                if (game_cheated > 0&&game_cheated<9999) {
+                    console.log(13);
+                }
             }
         }
         //0 != InventoryCompo2[4 + a] && 59 != InventoryCompo2[4 + a] && (9 != getItemData(InventoryCompo2[4 + a], 5) && (game_cheated++;//GameCanvas = null;), e = getItemData(InventoryCompo2[4 + a], 7), 0 == compoRestrictCheck(e, b, c, d) && (game_cheated++;//GameCanvas = null;))
         if (0 != InventoryCompo2[4 + a] && 59 != InventoryCompo2[4 + a]) {
             if (9 != getItemData(InventoryCompo2[4 + a], 5)) {
                 game_cheated++;//GameCanvas = null;
+                if (game_cheated > 0&&game_cheated<9999) {
+                    console.log(14);
+                }
             }
             e = getItemData(InventoryCompo2[4 + a], 7);
             if (0 == compoRestrictCheck(e, b, c, d)) {
                 game_cheated++;//GameCanvas = null;
+                if (game_cheated > 0&&game_cheated<9999) {
+                    console.log(15);
+                }
             }
         }
     }
@@ -1287,6 +1332,9 @@ function antiCheatCheck() {
         }
         if (c + 10 + 2 < PartyLv[0]) {
             game_cheated++;//GameCanvas = null;
+            if (game_cheated > 0&&game_cheated<9999) {
+                console.log(16);
+            }
         }
     }
     if (!GameMode || 2 == GameMode) {
@@ -1301,6 +1349,9 @@ function antiCheatCheck() {
         }
         if (PartyExp < b || a < PartyExp) {
             game_cheated++;//GameCanvas = null;
+            if (game_cheated > 0&&game_cheated<9999) {
+                console.log(17);
+            }
         }
     }
     for (a = d = 0; 8 > a; a++) {
@@ -1320,6 +1371,9 @@ function antiCheatCheck() {
     }
     if (d != 8 * (PartyLv[0] - 1) + 8 * (PartyLv[1] - 1)) {
         game_cheated++;//GameCanvas = null;
+        if (game_cheated > 0&&game_cheated<9999) {
+            console.log(18);
+        }
     }
     d = AntiCheatSeed;
     d += (PartyExp | 1) * (d & 15 | 1);
@@ -1403,6 +1457,9 @@ function antiCheatCheck() {
     d += (PartyRank[1] | 1) * (d & 15 | 1);
     if (d != (AntiCheatTotal ^ 16777215)) {
         game_cheated++;//GameCanvas = null;
+        if (game_cheated > 0&&game_cheated<9999) {
+            console.log(19);
+        }
     }
     if (1 > srRandom(100)) {
         for (a = 0; a < ITEM_DATA.length; a++) {
@@ -1413,6 +1470,9 @@ function antiCheatCheck() {
             }
             if (d != AntiCheatItemData[a]) {
                 game_cheated++;//GameCanvas = null;
+                if (game_cheated > 0&&game_cheated<9999) {
+                    console.log(20);
+                }
             }
         }
     }
@@ -1426,6 +1486,9 @@ function antiCheatCheck() {
         }
         if (d != AntiCheatStageData) {
             game_cheated++;//GameCanvas = null;
+            if (game_cheated > 0&&game_cheated<9999) {
+                console.log(21);
+            }
         }
     }
     if (1 > srRandom(100)) {
@@ -1436,6 +1499,9 @@ function antiCheatCheck() {
         }
         if (d != AntiCheatEnemyData) {
             game_cheated++;//GameCanvas = null;
+            if (game_cheated > 0&&game_cheated<9999) {
+                console.log(22);
+            }
         }
     }
     if (1 > srRandom(100)) {
@@ -1448,6 +1514,9 @@ function antiCheatCheck() {
         }
         if (d != AntiCheatShopData) {
             game_cheated++;//GameCanvas = null;
+            if (game_cheated > 0&&game_cheated<9999) {
+                console.log(23);
+            }
         }
     }
     if (game_cheated > 0&&game_cheated<9999) {
