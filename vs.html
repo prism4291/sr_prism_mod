@@ -55,6 +55,8 @@ sl.appendChild(option1)
 </script>
 <div id="reload_info"></div>
 <input type="submit" value=" 多分リロード" onclick="
+PartyLv[0]=parseInt(document.getElementById('player_lv_A').value);
+PartyLv[1]=parseInt(document.getElementById('player_lv_B').value);
 for(var iiiii=0;iiiii<8;iiiii++){
     jjjjj=document.getElementById('summon_'+String(iiiii+1)).value;
     if(jjjjj==''){
@@ -76,6 +78,7 @@ PlayerSpLp[iiiii]= parseInt(document.getElementById('player_lp_'+String(iiiii+1)
 PlayerSpStr[iiiii]=parseInt(document.getElementById('player_st_'+String(iiiii+1)).value);
 PlayerSpDex[iiiii]=parseInt(document.getElementById('player_de_'+String(iiiii+1)).value);
 PlayerSpMag[iiiii]=parseInt(document.getElementById('player_ma_'+String(iiiii+1)).value);
+document.getElementById('calc_sppp_'+String(iiiii+1)).value='sp:'+parseInt(2*PartyLv[[0,0,0,0,1,1,1,1][iiiii]]-PlayerSpLp[iiiii]-PlayerSpStr[iiiii]-PlayerSpDex[iiiii]-PlayerSpMag[iiiii]-2)
 }
 reload_info_text='<table border=\'1\'><tr>'
 for(var iiiii=0;iiiii<8;iiiii++){
