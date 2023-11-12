@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <title>prismSR</title>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+<script type="text/javascript">
+</script>
+
+<div id="pass"></div>
+<canvas ID="cv" style="margin:auto;display:block;width:512px;height:384px; "></canvas>
+<script async src="./ranger.js" onload="startGame('','',0,'',1);"></script>
+
+<br>
+<script>
+    function itemSearchList(sl,num1,num2){
+	while(sl.lastChild)
+	{
+		sl.removeChild(sl.lastChild);
+	}                                            for(var i=0;i<ITEM_DATA.length;i++){
+if(num1!=0){
+ if(num1!=9){
+  if(ITEM_DATA[i][5]!=num1){
+   continue;
+  }
+ }else{
+  if(ITEM_DATA[i][5]<=8&&ITEM_DATA[i][5]>=1){
+
+   continue;
+  }
+ }
+}
+if(num2!=0){
+if(ITEM_DATA[i][1]!=num2){
+continue;
+}
+}
+var option1 = document.createElement('option');
+
+//option要素にvalueと表示名を設定
+option1.value = i;
+option1.textContent =ITEM_DATA[i][0]+'-'+ITEM_DATA[i][1];
+
+//select要素にoption要素を追加する
+sl.appendChild(option1)
+
+
+
+}
+    }
+function on_reload(){
+    PartyLv[0]=parseInt(document.getElementById('player_lv_A').value);
+PartyLv[1]=parseInt(document.getElementById('player_lv_B').value);
+for(var iiiii=0;iiiii<8;iiiii++){
+    jjjjj=document.getElementById('summon_'+String(iiiii+1)).value;
+    if(jjjjj==''){
+        jjjjj=0;
+    }
+InventoryItem[[4,5,6,7,8,9,10,11][iiiii]]=parseInt(jjjjj);
+PlayerClass[iiiii]=parseInt(document.getElementById('summon_class_'+String(iiiii+1)).value);
+jjjjj=document.getElementById('summon2_'+String(iiiii+1)).value;
+    if(jjjjj==''){
+        jjjjj=0;
+    }
+InventoryCompo1[[4,5,6,7,8,9,10,11][iiiii]]=parseInt(jjjjj);
+jjjjj=document.getElementById('summon3_'+String(iiiii+1)).value;
+    if(jjjjj==''){
+        jjjjj=0;
+    }
+InventoryCompo2[[4,5,6,7,8,9,10,11][iiiii]]=parseInt(jjjjj);
+PlayerSpLp[iiiii]= parseInt(document.getElementById('player_lp_'+String(iiiii+1)).value);
+PlayerSpStr[iiiii]=parseInt(document.getElementById('player_st_'+String(iiiii+1)).value);
+PlayerSpDex[iiiii]=parseInt(document.getElementById('player_de_'+String(iiiii+1)).value);
+PlayerSpMag[iiiii]=parseInt(document.getElementById('player_ma_'+String(iiiii+1)).value);
+document.getElementById('calc_sppp_'+String(iiiii+1)).value='sp:'+parseInt(2*PartyLv[[0,0,0,0,1,1,1,1][iiiii]]-PlayerSpLp[iiiii]-PlayerSpStr[iiiii]-PlayerSpDex[iiiii]-PlayerSpMag[iiiii]-2)
+}
+reload_info_text='<table border=\'1\'><tr>'
+for(var iiiii=0;iiiii<8;iiiii++){
+    reload_info_text+='<td>'+CLASS_NAME[PlayerClass[iiiii]]+'</td>';
+}
+reload_info_text+='</tr><tr>';
+for(var iiiii=4;iiiii<12;iiiii++){
+    reload_info_text+='<td>'+ITEM_DATA[InventoryItem[iiiii]][0]+'</td>';
+}
+reload_info_text+='</tr><tr>';
+for(var iiiii=4;iiiii<12;iiiii++){
+    reload_info_text+='<td>'+ITEM_DATA[InventoryCompo1[iiiii]][0]+'</td>';
+}
+reload_info_text+='</tr><tr>';
+for(var iiiii=4;iiiii<12;iiiii++){
+    reload_info_text+='<td>'+ITEM_DATA[InventoryCompo2[iiiii]][0]+'</td>';
+}
+reload_info_text+='</tr><tr>';
+for(var iiiii=0;iiiii<8;iiiii++){
+    reload_info_text+='<td>'+PlayerSpLp[iiiii]+'</td>';
+}
+reload_info_text+='</tr><tr>';
+for(var iiiii=0;iiiii<8;iiiii++){
+    reload_info_text+='<td>'+PlayerSpStr[iiiii]+'</td>';
+}
+reload_info_text+='</tr><tr>';
+for(var iiiii=0;iiiii<8;iiiii++){
+    reload_info_text+='<td>'+PlayerSpDex[iiiii]+'</td>';
+}
+reload_info_text+='</tr><tr>';
+for(var iiiii=0;iiiii<8;iiiii++){
+    reload_info_text+='<td>'+PlayerSpMag[iiiii]+'</td>';
+}
+reload_info_text+='</tr>';
+reload_info_text+='</table>';
+document.getElementById('reload_info').innerHTML=reload_info_text;
+SequenceStep = 60;
+}
+function no_reload(){
+    document.getElementById('player_lv_A').value=PartyLv[0];
+    document.getElementById('player_lv_B').value=PartyLv[1];
+for(var iiiii=0;iiiii<8;iiiii++){
+    document.getElementById('summon_class_'+String(iiiii+1)).value=PlayerClass[iiiii];
+    itemSearchList(document.getElementById('summon_'+String(iiiii+1)),parseInt(document.getElementById('summon_class_'+String(iiiii+1)).value),0);
+    itemSearchList(document.getElementById('summon2_'+String(iiiii+1)),9,0);
+    itemSearchList(document.getElementById('summon3_'+String(iiiii+1)),9,0);
+    document.getElementById('summon_'+String(iiiii+1)).value=InventoryItem[[4,5,6,7,8,9,10,11][iiiii]];
+document.getElementById('summon2_'+String(iiiii+1)).value=InventoryCompo1[[4,5,6,7,8,9,10,11][iiiii]];
+document.getElementById('summon3_'+String(iiiii+1)).value=InventoryCompo2[[4,5,6,7,8,9,10,11][iiiii]];
+document.getElementById('player_lp_'+String(iiiii+1)).value=PlayerSpLp[iiiii]
+document.getElementById('player_st_'+String(iiiii+1)).value=PlayerSpStr[iiiii]
+document.getElementById('player_de_'+String(iiiii+1)).value=PlayerSpDex[iiiii]
+document.getElementById('player_ma_'+String(iiiii+1)).value=PlayerSpMag[iiiii]
+
+
+}
+    on_reload();
+}
+function generate_fake_code(is_opponent){
+    var b;
+    var c;
+    var d = new Int32Array(512);
+    b = 0;
+    d[b++] = 1;
+    d[b++] = 0;
+    d[b++] = 0;
+    d[b++] = srFloor(srRandom(64));
+    d[b++] = srFloor(srRandom(64));
+    for (c = 0; 8 > c; c++) {
+        d[b++] = 0;
+    }
+    d[b++] = PartyLv[is_opponent] >> 6 & 63;
+    d[b++] = PartyLv[is_opponent] >> 0 & 63;
+    d[b++] = PartyRank[is_opponent];
+
+        for (c = 0; 4 > c; c++) {
+            d[b++] = PlayerSp[c+4*is_opponent] >> 6 & 63;
+            d[b++] = PlayerSp[c+4*is_opponent] >> 0 & 63;
+        }
+        for (c = 0; 4 > c; c++) {
+            d[b++] = PlayerClass[c+4*is_opponent] >> 0 & 63;
+        }
+        for (c = 0; 4 > c; c++) {
+            d[b++] = PlayerSpLp[c+4*is_opponent] >> 6 & 63;
+            d[b++] = PlayerSpLp[c+4*is_opponent] >> 0 & 63;
+            d[b++] = PlayerSpStr[c+4*is_opponent] >> 6 & 63;
+            d[b++] = PlayerSpStr[c+4*is_opponent] >> 0 & 63;
+            d[b++] = PlayerSpDex[c+4*is_opponent] >> 6 & 63;
+            d[b++] = PlayerSpDex[c+4*is_opponent] >> 0 & 63;
+            d[b++] = PlayerSpMag[c+4*is_opponent] >> 6 & 63;
+            d[b++] = PlayerSpMag[c+4*is_opponent] >> 0 & 63;
+        }
+        for (c = 4; 8 > c; c++) {
+            d[b++] = InventoryItem[c+4*is_opponent] >> 6 & 63;
+            d[b++] = InventoryItem[c+4*is_opponent] >> 0 & 63;
+            d[b++] = InventoryCompo1[c+4*is_opponent] >> 6 & 63;
+            d[b++] = InventoryCompo1[c+4*is_opponent] >> 0 & 63;
+            d[b++] = InventoryCompo2[c+4*is_opponent] >> 6 & 63;
+            d[b++] = InventoryCompo2[c+4*is_opponent] >> 0 & 63;
+        }
+    
+    //ハッシュ合計(エラー対策)
+    for (c = e = 0; c < b; c++) {
+        e += d[c] * (srFloor(c / 7) + 1);
+    }
+    d[1] = e >> 6 & 63;
+    d[2] = e & 63;
+    for (c = e = 0; c < b; c++) {
+        e += d[c] * ((c & 15) + 1);
+    }
+    //ぐちゃぐちゃにする
+    d[b++] = e >> 8 & 47;
+    d[b++] = e >> 4 & 31;
+    d[b++] = e >> 0 & 15;
+    a = "" + CHAR_LIST[d[0]];
+    a += CHAR_LIST[d[1]];
+    a += CHAR_LIST[d[2]];
+    e = d[2];
+    for (c = 3; c < b; c++) {
+        a += CHAR_LIST[d[c] + e & 63];
+        e += d[c] + c + d[1];
+    }
+    return a
+}
+function load_fake_code(a,is_opponent){
+    b=is_opponent
+    var c = 4 * b;
+    var d;
+    var e;
+    var g = new Int32Array(512);
+    var h = a.length;
+    var q = 0;
+    if (0 == h) {
+        return 1;
+    }
+    if (90 > h) {
+        //長いと一人用かな
+        q = 1;
+    }
+    for (d = 0; d < h; d++) {
+        var m = a.charAt(d);
+        for (e = 0; e < CHAR_LIST.length; e++) {
+            if (CHAR_LIST[e] == m) {
+                g[d] = e;
+                break
+            }
+        }
+    }
+    if (0 >= g[0]) {
+        return 2;
+    }
+    e = g[2];
+    for (d = 3; d < h; d++) {
+        g[d] = g[d] - e & 63;
+        e += g[d] + d + g[1];
+    }
+    for (d = e = 0; d < h - 3; d++) {
+        e += g[d] * ((d & 15) + 1);
+    }
+    if (g[d + 0] != (e >> 8 & 47) || g[d + 1] != (e >> 4 & 31) || g[d + 2] != (e >> 0 & 15)) {
+        return 3;
+    }
+    if (0 == b) {
+        for (d = 0; 8 > d; d++) {
+            if (g[d + 5] != UserCode2Array[d]) {
+                UserCode2Array[d] = g[d + 5];
+            }
+        }
+    }
+    d = 0;
+    d++;
+    d++;
+    d++;
+    d++;
+    d++;
+    d += 8;
+    if (!q) {
+        CurrentStage = (g[d++] << 6) + g[d++];
+    }
+    PartyLv[b] = (g[d++] << 6) + g[d++];
+    if (1 == q) {
+        PartyRank[b] = g[d++];
+    }
+    for (e = c; e < c + 4; e++) {
+        PlayerSp[e] = (g[d++] << 6) + g[d++];
+    }
+    if (!q) {
+        PartyExp = (g[d++] << 18) + (g[d++] << 12) + (g[d++] << 6) + g[d++];
+        PartyGold = (g[d++] << 18) + (g[d++] << 12) + (g[d++] << 6) + g[d++];
+    }
+    for (e = c; e < c + 4; e++) {
+        PlayerClass[e] = g[d++];
+    }
+    if (!q) {
+        for (e = c; e < c + 4; e++) {
+            PlayerCurrentLp[e] = (g[d++] << 12) + (g[d++] << 6) + g[d++];
+        }
+    }
+    for (e = c; e < c + 4; e++) {
+        PlayerSpLp[e] = (g[d++] << 6) + g[d++];
+        PlayerSpStr[e] = (g[d++] << 6) + g[d++];
+        PlayerSpDex[e] = (g[d++] << 6) + g[d++];
+        PlayerSpMag[e] = (g[d++] << 6) + g[d++];
+    }
+    for (e = 4 + c; e < 8 + c; e++) {
+        InventoryItem[e] = (g[d++] << 6) + g[d++];
+        InventoryCompo1[e] = (g[d++] << 6) + g[d++];
+        InventoryCompo2[e] = (g[d++] << 6) + g[d++];
+    }
+    if (1 == q) {
+        return 0;
+    }
+    for (e = 16; 41 > e; e++) {
+        InventoryItem[e] = (g[d++] << 6) + g[d++];
+        InventoryCompo1[e] = (g[d++] << 6) + g[d++];
+        InventoryCompo2[e] = (g[d++] << 6) + g[d++];
+    }
+    for (e = 0; 4 > e; e++) {
+        PlayerAutoMove[e] = g[d++];
+    }
+    PartyMoveIfDying = g[d++];
+    PartyDamageEffect = g[d++];
+    PartyShowLpBar = g[d++];
+    PartyPlayerSymbol = g[d++];
+    PartyDragDeadBody = g[d++];
+    for (e = 0; 3 > e; e++) {
+        d++;
+    }
+    for (e = 0; e < StageCount; e++) {
+        StageOpenData[e] = 0;
+    }
+    //for (e = 0; d < h - 3; d++) if (16 > g[d]) $c[e++] = g[d]; else for (c = 0; c < g[d] - 16; c++) $c[e++] = g[d - 1];
+    for (e = 0; d < h - 3; d++) {
+        if (16 > g[d]) {
+            StageOpenData[e++] = g[d];
+        } else {
+            for (c = 0; c < g[d] - 16; c++) {
+                StageOpenData[e++] = g[d - 1];
+            }
+        }
+    }
+    //for (e = 0; e < Zc; e++) $c[e] & ad && ($c[e] |= STAGE_UNLOCKED, 0 < MAP_DATA[e][3] && ($c[MAP_DATA[e][3]] |= STAGE_UNLOCKED), 0 < MAP_DATA[e][4] && ($c[MAP_DATA[e][4]] |= STAGE_UNLOCKED));
+    for (e = 0; e < StageCount; e++) {
+        if (StageOpenData[e] & STAGE_BEATEN) {
+            StageOpenData[e] |= STAGE_UNLOCKED;
+            if (0 < MAP_DATA[e][3]) {
+                StageOpenData[MAP_DATA[e][3]] |= STAGE_UNLOCKED;
+            }
+            if (0 < MAP_DATA[e][4]) {
+                StageOpenData[MAP_DATA[e][4]] |= STAGE_UNLOCKED;
+            }
+        }
+    }
+    return 0
+}
+</script>
+<div id="reload_info"></div>
+<input type="submit" value=" 多分リロード" onclick="
+on_reload();
+"><br>
+<textarea id="import1" onclick="this.select();"></textarea>
+<input type="button" value="味方インポート" onclick="
+on_reload();
+console.log(load_fake_code(document.getElementById('import1').value,0));
+no_reload();
+"></input>
+<input type="button" value="敵インポート" onclick="
+on_reload();
+console.log(load_fake_code(document.getElementById('import1').value,1));
+no_reload();
+"></input>
+<input type="button" value="味方エクスポート" onclick="
+on_reload();
+document.getElementById('import1').value=generate_fake_code(0);"></input>
+<input type="button" value="敵エクスポート" onclick="
+on_reload();
+document.getElementById('import1').value=generate_fake_code(1);"></input>
+<br>
+味方レベル <input type="number" id="player_lv_A" value="1" onclick="PartyLv[0]=parseInt(document.getElementById('player_lv_A').value);" size="8"><br>
+敵レベル <input type="number" id="player_lv_B" value="1" onclick="PartyLv[1]=parseInt(document.getElementById('player_lv_B').value);" size="8"><br>
+味方1
+class <select name="summon_class_1" id="summon_class_1">
+    <option value="1">boxer</option>
+    <option value="2">gladiator</option>
+    <option value="3">sniper</option>
+    <option value="4">magician</option>
+    <option value="5">priest</option>
+    <option value="6">gunner</option>
+    <option value="7">whipper</option>
+    <option value="8">angel</option>
+</select>
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon_1'),parseInt(document.getElementById('summon_class_1').value),0)">
+<select name="summon_1" id="summon_1" onclick="InventoryItem[[4,5,6,7,8,9,10,11][0]]=parseInt(document.getElementById('summon_1').value);PlayerClass[0]=parseInt(document.getElementById('summon_class_1').value)"></select>
+<br>compo 1
+<input type="number" id="item_lv1_1" value="0" size="8">
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon2_1'),9,parseInt(document.getElementById('item_lv1_1').value))">
+<select name="summon2_1" id="summon2_1" onclick="InventoryCompo1[[4,5,6,7,8,9,10,11][0]]=parseInt(document.getElementById('summon2_1').value);"></select>
+<br>compo 2
+<input type="number" id="item_lv2_1" value="0" size="8">
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon3_1'),9,parseInt(document.getElementById('item_lv2_1').value))">
+<select name="summon3_1" id="summon3_1" onclick="InventoryCompo2[[4,5,6,7,8,9,10,11][0]]=parseInt(document.getElementById('summon3_1').value);"></select>
+<br>sp 
+<input type="number" id="player_lp_1" value="0" onclick="PlayerSpLp[0] =parseInt(document.getElementById('player_lp_1').value)" size="8">
+<input type="number" id="player_st_1" value="0" onclick="PlayerSpStr[0]=parseInt(document.getElementById('player_st_1').value)" size="8">
+<input type="number" id="player_de_1" value="0" onclick="PlayerSpDex[0]=parseInt(document.getElementById('player_de_1').value)" size="8">
+<input type="number" id="player_ma_1" value="0" onclick="PlayerSpMag[0]=parseInt(document.getElementById('player_ma_1').value)" size="8">
+<input type="submit" id="calc_sppp_1" value="sp:" onclick="document.getElementById('calc_sppp_1').value='sp:'+parseInt(2*PartyLv[0]-PlayerSpLp[0]-PlayerSpStr[0]-PlayerSpDex[0]-PlayerSpMag[0]-2)"><br><br>
+味方2
+class <select name="summon_class_2" id="summon_class_2">
+    <option value="1">boxer</option>
+    <option value="2">gladiator</option>
+    <option value="3">sniper</option>
+    <option value="4">magician</option>
+    <option value="5">priest</option>
+    <option value="6">gunner</option>
+    <option value="7">whipper</option>
+    <option value="8">angel</option>
+</select>
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon_2'),parseInt(document.getElementById('summon_class_2').value),0)">
+<select name="summon_2" id="summon_2" onclick="InventoryItem[[4,5,6,7,8,9,10,11][1]]=parseInt(document.getElementById('summon_2').value);PlayerClass[1]=parseInt(document.getElementById('summon_class_2').value)"></select>
+<br>compo 1
+<input type="number" id="item_lv1_2" value="0" size="8">
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon2_2'),9,parseInt(document.getElementById('item_lv1_2').value))">
+<select name="summon2_2" id="summon2_2" onclick="InventoryCompo1[[4,5,6,7,8,9,10,11][1]]=parseInt(document.getElementById('summon2_2').value);"></select>
+<br>compo 2
+<input type="number" id="item_lv2_2" value="0" size="8">
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon3_2'),9,parseInt(document.getElementById('item_lv2_2').value))">
+<select name="summon3_2" id="summon3_2" onclick="InventoryCompo2[[4,5,6,7,8,9,10,11][1]]=parseInt(document.getElementById('summon3_2').value);"></select>
+<br>sp 
+<input type="number" id="player_lp_2" value="0" onclick="PlayerSpLp[1] =parseInt(document.getElementById('player_lp_2').value)" size="8">
+<input type="number" id="player_st_2" value="0" onclick="PlayerSpStr[1]=parseInt(document.getElementById('player_st_2').value)" size="8">
+<input type="number" id="player_de_2" value="0" onclick="PlayerSpDex[1]=parseInt(document.getElementById('player_de_2').value)" size="8">
+<input type="number" id="player_ma_2" value="0" onclick="PlayerSpMag[1]=parseInt(document.getElementById('player_ma_2').value)" size="8">
+<input type="submit" id="calc_sppp_2" value="sp:" onclick="document.getElementById('calc_sppp_2').value='sp:'+parseInt(2*PartyLv[0]-PlayerSpLp[1]-PlayerSpStr[1]-PlayerSpDex[1]-PlayerSpMag[1]-2)"><br><br>
+味方3
+class <select name="summon_class_3" id="summon_class_3">
+    <option value="1">boxer</option>
+    <option value="2">gladiator</option>
+    <option value="3">sniper</option>
+    <option value="4">magician</option>
+    <option value="5">priest</option>
+    <option value="6">gunner</option>
+    <option value="7">whipper</option>
+    <option value="8">angel</option>
+</select>
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon_3'),parseInt(document.getElementById('summon_class_3').value),0)">
+<select name="summon_3" id="summon_3" onclick="InventoryItem[[4,5,6,7,8,9,10,11][2]]=parseInt(document.getElementById('summon_3').value);PlayerClass[2]=parseInt(document.getElementById('summon_class_3').value)"></select>
+<br>compo 1
+<input type="number" id="item_lv1_3" value="0" size="8">
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon2_3'),9,parseInt(document.getElementById('item_lv1_3').value))">
+<select name="summon2_3" id="summon2_3" onclick="InventoryCompo1[[4,5,6,7,8,9,10,11][2]]=parseInt(document.getElementById('summon2_3').value);"></select>
+<br>compo 2
+<input type="number" id="item_lv2_3" value="0" size="8">
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon3_3'),9,parseInt(document.getElementById('item_lv2_3').value))">
+<select name="summon3_3" id="summon3_3" onclick="InventoryCompo2[[4,5,6,7,8,9,10,11][2]]=parseInt(document.getElementById('summon3_3').value);"></select>
+<br>sp 
+<input type="number" id="player_lp_3" value="0" onclick="PlayerSpLp[2] =parseInt(document.getElementById('player_lp_3').value)" size="8">
+<input type="number" id="player_st_3" value="0" onclick="PlayerSpStr[2]=parseInt(document.getElementById('player_st_3').value)" size="8">
+<input type="number" id="player_de_3" value="0" onclick="PlayerSpDex[2]=parseInt(document.getElementById('player_de_3').value)" size="8">
+<input type="number" id="player_ma_3" value="0" onclick="PlayerSpMag[2]=parseInt(document.getElementById('player_ma_3').value)" size="8">
+<input type="submit" id="calc_sppp_3" value="sp:" onclick="document.getElementById('calc_sppp_3').value='sp:'+parseInt(2*PartyLv[0]-PlayerSpLp[2]-PlayerSpStr[2]-PlayerSpDex[2]-PlayerSpMag[2]-2)"><br><br>
+味方4
+class <select name="summon_class_4" id="summon_class_4">
+    <option value="1">boxer</option>
+    <option value="2">gladiator</option>
+    <option value="3">sniper</option>
+    <option value="4">magician</option>
+    <option value="5">priest</option>
+    <option value="6">gunner</option>
+    <option value="7">whipper</option>
+    <option value="8">angel</option>
+</select>
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon_4'),parseInt(document.getElementById('summon_class_4').value),0)">
+<select name="summon_4" id="summon_4" onclick="InventoryItem[[4,5,6,7,8,9,10,11][3]]=parseInt(document.getElementById('summon_4').value);PlayerClass[3]=parseInt(document.getElementById('summon_class_4').value)"></select>
+<br>compo 1
+<input type="number" id="item_lv1_4" value="0" size="8">
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon2_4'),9,parseInt(document.getElementById('item_lv1_4').value))">
+<select name="summon2_4" id="summon2_4" onclick="InventoryCompo1[[4,5,6,7,8,9,10,11][3]]=parseInt(document.getElementById('summon2_4').value);"></select>
+<br>compo 2
+<input type="number" id="item_lv2_4" value="0" size="8">
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon3_4'),9,parseInt(document.getElementById('item_lv2_4').value))">
+<select name="summon3_4" id="summon3_4" onclick="InventoryCompo2[[4,5,6,7,8,9,10,11][3]]=parseInt(document.getElementById('summon3_4').value);"></select>
+<br>sp 
+<input type="number" id="player_lp_4" value="0" onclick="PlayerSpLp[3] =parseInt(document.getElementById('player_lp_4').value)" size="8">
+<input type="number" id="player_st_4" value="0" onclick="PlayerSpStr[3]=parseInt(document.getElementById('player_st_4').value)" size="8">
+<input type="number" id="player_de_4" value="0" onclick="PlayerSpDex[3]=parseInt(document.getElementById('player_de_4').value)" size="8">
+<input type="number" id="player_ma_4" value="0" onclick="PlayerSpMag[3]=parseInt(document.getElementById('player_ma_4').value)" size="8">
+<input type="submit" id="calc_sppp_4" value="sp:" onclick="document.getElementById('calc_sppp_4').value='sp:'+parseInt(2*PartyLv[0]-PlayerSpLp[3]-PlayerSpStr[3]-PlayerSpDex[3]-PlayerSpMag[3]-2)"><br><br>
+敵1
+class <select name="summon_class_5" id="summon_class_5">
+    <option value="1">boxer</option>
+    <option value="2">gladiator</option>
+    <option value="3">sniper</option>
+    <option value="4">magician</option>
+    <option value="5">priest</option>
+    <option value="6">gunner</option>
+    <option value="7">whipper</option>
+    <option value="8">angel</option>
+</select>
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon_5'),parseInt(document.getElementById('summon_class_5').value),0)">
+<select name="summon_5" id="summon_5" onclick="InventoryItem[[4,5,6,7,8,9,10,11][4]]=parseInt(document.getElementById('summon_5').value);PlayerClass[4]=parseInt(document.getElementById('summon_class_5').value)"></select>
+<br>compo 1
+<input type="number" id="item_lv1_5" value="0" size="8">
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon2_5'),9,parseInt(document.getElementById('item_lv1_5').value))">
+<select name="summon2_5" id="summon2_5" onclick="InventoryCompo1[[4,5,6,7,8,9,10,11][4]]=parseInt(document.getElementById('summon2_5').value);"></select>
+<br>compo 2
+<input type="number" id="item_lv2_5" value="0" size="8">
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon3_5'),9,parseInt(document.getElementById('item_lv2_5').value))">
+<select name="summon3_5" id="summon3_5" onclick="InventoryCompo2[[4,5,6,7,8,9,10,11][4]]=parseInt(document.getElementById('summon3_5').value);"></select>
+<br>sp 
+<input type="number" id="player_lp_5" value="0" onclick="PlayerSpLp[4] =parseInt(document.getElementById('player_lp_5').value)" size="8">
+<input type="number" id="player_st_5" value="0" onclick="PlayerSpStr[4]=parseInt(document.getElementById('player_st_5').value)" size="8">
+<input type="number" id="player_de_5" value="0" onclick="PlayerSpDex[4]=parseInt(document.getElementById('player_de_5').value)" size="8">
+<input type="number" id="player_ma_5" value="0" onclick="PlayerSpMag[4]=parseInt(document.getElementById('player_ma_5').value)" size="8">
+<input type="submit" id="calc_sppp_5" value="sp:" onclick="document.getElementById('calc_sppp_5').value='sp:'+parseInt(2*PartyLv[1]-PlayerSpLp[4]-PlayerSpStr[4]-PlayerSpDex[4]-PlayerSpMag[4]-2)"><br><br>
+敵2
+class <select name="summon_class_6" id="summon_class_6">
+    <option value="1">boxer</option>
+    <option value="2">gladiator</option>
+    <option value="3">sniper</option>
+    <option value="4">magician</option>
+    <option value="5">priest</option>
+    <option value="6">gunner</option>
+    <option value="7">whipper</option>
+    <option value="8">angel</option>
+</select>
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon_6'),parseInt(document.getElementById('summon_class_6').value),0)">
+<select name="summon_6" id="summon_6" onclick="InventoryItem[[4,5,6,7,8,9,10,11][5]]=parseInt(document.getElementById('summon_6').value);PlayerClass[5]=parseInt(document.getElementById('summon_class_6').value)"></select>
+<br>compo 1
+<input type="number" id="item_lv1_6" value="0" size="8">
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon2_6'),9,parseInt(document.getElementById('item_lv1_6').value))">
+<select name="summon2_6" id="summon2_6" onclick="InventoryCompo1[[4,5,6,7,8,9,10,11][5]]=parseInt(document.getElementById('summon2_6').value);"></select>
+<br>compo 2
+<input type="number" id="item_lv2_6" value="0" size="8">
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon3_6'),9,parseInt(document.getElementById('item_lv2_6').value))">
+<select name="summon3_6" id="summon3_6" onclick="InventoryCompo2[[4,5,6,7,8,9,10,11][5]]=parseInt(document.getElementById('summon3_6').value);"></select>
+<br>sp 
+<input type="number" id="player_lp_6" value="0" onclick="PlayerSpLp[5] =parseInt(document.getElementById('player_lp_6').value)" size="8">
+<input type="number" id="player_st_6" value="0" onclick="PlayerSpStr[5]=parseInt(document.getElementById('player_st_6').value)" size="8">
+<input type="number" id="player_de_6" value="0" onclick="PlayerSpDex[5]=parseInt(document.getElementById('player_de_6').value)" size="8">
+<input type="number" id="player_ma_6" value="0" onclick="PlayerSpMag[5]=parseInt(document.getElementById('player_ma_6').value)" size="8">
+<input type="submit" id="calc_sppp_6" value="sp:" onclick="document.getElementById('calc_sppp_6').value='sp:'+parseInt(2*PartyLv[1]-PlayerSpLp[5]-PlayerSpStr[5]-PlayerSpDex[5]-PlayerSpMag[5]-2)"><br><br>
+敵3
+class <select name="summon_class_7" id="summon_class_7">
+    <option value="1">boxer</option>
+    <option value="2">gladiator</option>
+    <option value="3">sniper</option>
+    <option value="4">magician</option>
+    <option value="5">priest</option>
+    <option value="6">gunner</option>
+    <option value="7">whipper</option>
+    <option value="8">angel</option>
+</select>
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon_7'),parseInt(document.getElementById('summon_class_7').value),0)">
+<select name="summon_7" id="summon_7" onclick="InventoryItem[[4,5,6,7,8,9,10,11][6]]=parseInt(document.getElementById('summon_7').value);PlayerClass[6]=parseInt(document.getElementById('summon_class_7').value)"></select>
+<br>compo 1
+<input type="number" id="item_lv1_7" value="0" size="8">
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon2_7'),9,parseInt(document.getElementById('item_lv1_7').value))">
+<select name="summon2_7" id="summon2_7" onclick="InventoryCompo1[[4,5,6,7,8,9,10,11][6]]=parseInt(document.getElementById('summon2_7').value);"></select>
+<br>compo 2
+<input type="number" id="item_lv2_7" value="0" size="8">
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon3_7'),9,parseInt(document.getElementById('item_lv2_7').value))">
+<select name="summon3_7" id="summon3_7" onclick="InventoryCompo2[[4,5,6,7,8,9,10,11][6]]=parseInt(document.getElementById('summon3_7').value);"></select>
+<br>sp 
+<input type="number" id="player_lp_7" value="0" onclick="PlayerSpLp[6] =parseInt(document.getElementById('player_lp_7').value)" size="8">
+<input type="number" id="player_st_7" value="0" onclick="PlayerSpStr[6]=parseInt(document.getElementById('player_st_7').value)" size="8">
+<input type="number" id="player_de_7" value="0" onclick="PlayerSpDex[6]=parseInt(document.getElementById('player_de_7').value)" size="8">
+<input type="number" id="player_ma_7" value="0" onclick="PlayerSpMag[6]=parseInt(document.getElementById('player_ma_7').value)" size="8">
+<input type="submit" id="calc_sppp_7"value="sp:" onclick="document.getElementById('calc_sppp_7').value='sp:'+parseInt(2*PartyLv[1]-PlayerSpLp[6]-PlayerSpStr[6]-PlayerSpDex[6]-PlayerSpMag[6]-2)"><br><br>
+敵4
+class <select name="summon_class_8" id="summon_class_8">
+    <option value="1">boxer</option>
+    <option value="2">gladiator</option>
+    <option value="3">sniper</option>
+    <option value="4">magician</option>
+    <option value="5">priest</option>
+    <option value="6">gunner</option>
+    <option value="7">whipper</option>
+    <option value="8">angel</option>
+</select>
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon_8'),parseInt(document.getElementById('summon_class_8').value),0)">
+<select name="summon_8" id="summon_8" onclick="InventoryItem[[4,5,6,7,8,9,10,11][7]]=parseInt(document.getElementById('summon_8').value);PlayerClass[7]=parseInt(document.getElementById('summon_class_8').value)"></select>
+<br>compo 1
+<input type="number" id="item_lv1_8" value="0" size="8">
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon2_8'),9,parseInt(document.getElementById('item_lv1_8').value))">
+<select name="summon2_8" id="summon2_8" onclick="InventoryCompo1[[4,5,6,7,8,9,10,11][7]]=parseInt(document.getElementById('summon2_8').value);"></select>
+<br>compo 2
+<input type="number" id="item_lv2_8" value="0" size="8">
+<input type="submit" value="search" onclick="itemSearchList(document.getElementById('summon3_8'),9,parseInt(document.getElementById('item_lv2_8').value))">
+<select name="summon3_8" id="summon3_8" onclick="InventoryCompo2[[4,5,6,7,8,9,10,11][7]]=parseInt(document.getElementById('summon3_8').value);"></select>
+<br>sp 
+<input type="number" id="player_lp_8" value="0" onclick="PlayerSpLp[7] =parseInt(document.getElementById('player_lp_8').value)" size="8">
+<input type="number" id="player_st_8" value="0" onclick="PlayerSpStr[7]=parseInt(document.getElementById('player_st_8').value)" size="8">
+<input type="number" id="player_de_8" value="0" onclick="PlayerSpDex[7]=parseInt(document.getElementById('player_de_8').value)" size="8">
+<input type="number" id="player_ma_8" value="0" onclick="PlayerSpMag[7]=parseInt(document.getElementById('player_ma_8').value)" size="8">
+<input type="submit" id="calc_sppp_8"value="sp:" onclick="document.getElementById('calc_sppp_8').value='sp:'+parseInt(2*PartyLv[1]-PlayerSpLp[7]-PlayerSpStr[7]-PlayerSpDex[7]-PlayerSpMag[7]-2)"><br><br>
+
+<br>
+<label for="custom_fps">fps:</label><input type="number" id="custom_fps" value="60"> <label for="multiple_move">
+    処理数:</label><input type="number" id="multiple_move" value="1"><br>
+
+</body>
+
+</html>
