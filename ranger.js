@@ -4,6 +4,9 @@
 */
 'use strict'
 //チートチェック無効化mod
+//dps mod
+let dps_list=[];
+let dps=[0,0];
 //一応チート検出でログ出す
 let game_cheated = 0;
 var WINDOW = window;
@@ -1869,6 +1872,25 @@ function startGame(a, b, c, d, e, g, h, q, m, l, A, z, Z, B) {
 ゲームの分岐
 */
 function playSequence() {
+    //dps mod
+    dps_list.push(dps);
+    dps=[0,0];
+    let dps_length=DOCUMENT.getElementById('dps_length').value;
+    let dps_sum=[0,0];
+    let dps_length_count=0;
+    for(let i=0;i<dps_length;i++){
+        let j=dps_list.length-i-1;
+        if(j<0){
+            break;
+        }
+        dps_length_count++;
+        dps_sum[0]+=dps_list[j][0];
+        dps_sum[1]+=dps_list[j][1];
+    }
+    dps_sum[0]=dps_sum[0]*60/dps_length_count;
+    dps_sum[1]=dps_sum[1]*60/dps_length_count;
+    DOCUMENT.getElementById('dps').textContent=dps_sum[0].toFixed(2)+' , '+dps_sum[1].toFixed(2);
+
     if (0 < HostChecked) {
         HostChecked++;
     } else {
@@ -4920,6 +4942,13 @@ function plGetDamage(a, b, c, d, e, g, h, q, m, l) {
                 S = 16744576;
             }
             antiCheatCheck();
+            //dps mod
+            if(l<4){
+                dps[1]+=PlayerCurrentLp[l]-srClampA(PlayerCurrentLp[l] - B, 0, PlayerMaxLp[l]);
+            }else{
+                dps[0]+=PlayerCurrentLp[l]-srClampA(PlayerCurrentLp[l] - B, 0, PlayerMaxLp[l]);
+            }
+
             PlayerCurrentLp[l] = srClampA(PlayerCurrentLp[l] - B, 0, PlayerMaxLp[l]);
             antiCheatSet();
             if (2 > PartyDamageEffect) {
@@ -5573,6 +5602,13 @@ SrPlayer.prototype.plMain = function () {
         if (0 < this.pl_poison_time[a] && 0 < PlayerCurrentLp[a]) {
             this.pl_poison_time[a]--;
             antiCheatCheck();
+            //dps mod
+            if(a<4){
+                dps[1]=PlayerCurrentLp[a]-srMax(PlayerCurrentLp[a] - this.pl_poison_damage[a], 0);
+            }else{
+                dps[0]=PlayerCurrentLp[a]-srMax(PlayerCurrentLp[a] - this.pl_poison_damage[a], 0);
+            }
+
             PlayerCurrentLp[a] = srMax(PlayerCurrentLp[a] - this.pl_poison_damage[a], 0);
             antiCheatSet()
         }
