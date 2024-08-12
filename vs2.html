@@ -52,6 +52,8 @@ sl.appendChild(option1)
 }
     }
 function on_reload(){
+    dps_list=[];
+    dps=[0,0];
     PartyLv[0]=parseInt(document.getElementById('player_lv_A').value);
 PartyLv[1]=parseInt(document.getElementById('player_lv_B').value);
 for(var iiiii=0;iiiii<8;iiiii++){
@@ -332,10 +334,14 @@ function load_fake_code(a,is_opponent){
     return 0
 }
 </script>
-<div id="reload_info"></div>
+
+<br>
+dps(60f) <input type="number" id="dps_length" value="600" size="8"> 
+<div id="dps"></div>
 <input type="submit" value=" 多分リロード" onclick="
 on_reload();
 "><br>
+<div id="reload_info"></div>
 <textarea id="import1" onclick="this.select();"></textarea>
 <input type="button" value="味方インポート" onclick="
 on_reload();
